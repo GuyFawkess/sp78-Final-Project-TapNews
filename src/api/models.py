@@ -19,6 +19,16 @@ class User(db.Model):
     comment_replies = db.relationship("CommentReply", back_populates="user")
     profile = db.relationship("Profile", uselist=False, back_populates="user")
     
+    def __repr__(self):
+        return '<User %r>' % self.username
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "username": self.username,
+        }
+    
 class Profile(db.Model):
     __tablename__ = "profile"
     
@@ -30,6 +40,18 @@ class Profile(db.Model):
 
     user = db.relationship("User", back_populates="profile")
 
+    def __repr__(self):
+        return '<Profile %r>' % self.user_id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "img url": self.img_url,
+            "description": self.description,
+            "birth date": self.birthdate.isoformat() if self.created_at else None,
+        }
+    
 class News(db.Model):
     __tablename__ = 'news'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
@@ -48,6 +70,23 @@ class News(db.Model):
     likes = db.relationship("Like", back_populates="news")
     saved_news = db.relationship("SavedNews", back_populates="news")
 
+    def __repr__(self):
+        return '<News %r>' % self.title
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "author": self.author,
+            "genre": self.genre,
+            "url": self.url,
+            "source": self.source,
+            "newspaper": self.newspaper,
+            "published_at": self.published_at.isoformat() if self.created_at else None,
+            "media_type": self.media_type,
+            "media_url": self.media_url,
+        }
+    
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
@@ -60,6 +99,18 @@ class Comment(db.Model):
     news = db.relationship("News", back_populates="comments")
     replies = db.relationship("CommentReply", back_populates="comment")
 
+    def __repr__(self):
+        return '<Comment %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "news_id": self.news_id,
+            "content": self.content,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
 class CommentReply(db.Model):
     __tablename__ = 'comment_replies' 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
@@ -71,6 +122,17 @@ class CommentReply(db.Model):
     comment = db.relationship("Comment", back_populates="replies")
     user = db.relationship("User", back_populates="comment_replies")
     
+    def __repr__(self):
+        return '<CommentReply %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "comment_id": self.comment_id,
+            "user_id": self.user_id,
+            "content": self.content,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
 class Like(db.Model):
     __tablename__ = 'likes' 
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
@@ -78,6 +140,15 @@ class Like(db.Model):
 
     user = db.relationship("User", back_populates="likes")
     news = db.relationship("News", back_populates="likes")
+
+    def __repr__(self):
+        return '<Like user_id=%r, news_id=%r>' % (self.user_id, self.news_id)
+
+    def serialize(self):
+        return {
+            "user_id": self.user_id,
+            "news_id": self.news_id
+        }
 
 class SavedNews(db.Model):
     __tablename__ = 'saved_news'
@@ -87,6 +158,15 @@ class SavedNews(db.Model):
     user = db.relationship("User", back_populates="saved_news")
     news = db.relationship("News", back_populates="saved_news")
 
+    def __repr__(self):
+        return '<SavedNews user_id=%r, news_id=%r>' % (self.user_id, self.news_id)
+
+    def serialize(self):
+        return {
+            "user_id": self.user_id,
+            "news_id": self.news_id
+        }
+    
 class Chat(db.Model):
     __tablename__ = 'chats'
 
@@ -95,6 +175,17 @@ class Chat(db.Model):
     user2_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
+    def __repr__(self):
+        return '<Chat id=%r, user1_id=%r, user2_id=%r>' % (self.id, self.user1_id, self.user2_id)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user1_id": self.user1_id,
+            "user2_id": self.user2_id,
+            "created_at": self.created_at.isoformat() if self.created_at else None
+        }
+    
 class Message(db.Model):
     __tablename__ = 'messages'
     
@@ -106,6 +197,19 @@ class Message(db.Model):
 
     sender = db.relationship("User", back_populates="messages")
 
+
+    def __repr__(self):
+        return '<Message id=%r, chat_id=%r, sender_id=%r>' % (self.id, self.chat_id, self.sender_id)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "chat_id": self.chat_id,
+            "sender_id": self.sender_id,
+            "content": self.content,
+            "created_at": self.created_at.isoformat() if self.created_at else None
+        }
+    
 class Friendship(db.Model):
     __tablename__ = 'friendships'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
@@ -116,13 +220,14 @@ class Friendship(db.Model):
 
     user = db.relationship("User", back_populates="friendships")
     
-
     def __repr__(self):
-        return f'<User {self.email}>'
+        return '<Friendship id=%r, user_id=%r, friend_id=%r>' % (self.id, self.user_id, self.friend_id)
 
     def serialize(self):
         return {
             "id": self.id,
-            "email": self.email,
-            # do not serialize the password, its a security breach
+            "user_id": self.user_id,
+            "friend_id": self.friend_id,
+            "is_active": self.is_active,
+            "created_at": self.created_at.isoformat() if self.created_at else None
         }
