@@ -60,15 +60,14 @@ class News(db.Model):
     author = db.Column(db.String)
     genre = db.Column(db.String)
     url = db.Column(db.String, nullable=False)
-    source = db.Column(db.String, nullable=False)
-    newspaper = db.Column(db.String)
+    source = db.Column(db.String, nullable=True)
+    newspaper = db.Column(db.String, nullable=False)
     published_at = db.Column(db.TIMESTAMP)
     media_type = db.Column(db.String, db.CheckConstraint("media_type IN ('image', 'video')"))
     media_url = db.Column(db.String)
 
     comments = db.relationship("Comment", back_populates="news")
     likes = db.relationship("Like", back_populates="news")
-    saved_news = db.relationship("SavedNews", back_populates="news")
 
     def __repr__(self):
         return '<News %r>' % self.title
