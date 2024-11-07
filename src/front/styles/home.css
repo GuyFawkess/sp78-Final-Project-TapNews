@@ -1,7 +1,15 @@
-/*
-    home.css: This website contains selectors only used in home.css
+.top-right-image {
+    position: absolute;
+    top: 0; /* Posiciona la imagen en la parte superior */
+    right: 0; /* Posiciona la imagen en el lado derecho */
+    max-width: 150px; /* Ajusta el tamaño de la imagen si es necesario */
+    height: auto;
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.full-screen-container{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
