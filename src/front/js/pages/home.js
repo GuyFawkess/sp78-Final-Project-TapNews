@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
@@ -11,10 +10,17 @@ export const Home = () => {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("")
   
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!userName || !email || !password || !setPassword) {
+      alert("Por favor complete todos los campos");
+      return;
+    }
+
     if (password !== confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
@@ -31,11 +37,11 @@ export const Home = () => {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label></Form.Label>
-              <Form.Control type="user" placeholder="Ingrese su Usuario" />
+              <Form.Control type="user" placeholder="Ingrese su Usuario" value={userName} onChange={(e) => setUserName(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label></Form.Label>
-              <Form.Control type="email" placeholder="Ingrese su Email" />
+              <Form.Control type="email" placeholder="Ingrese su Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -56,12 +62,12 @@ export const Home = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Form.Group>
-            {/* <Link to="/demo"> */}
+            
               
               <Button variant="primary" type="submit">
                 Rgistrese
               </Button>
-            {/* </Link> */}
+            
           </Form>
         </div>
       </div>
