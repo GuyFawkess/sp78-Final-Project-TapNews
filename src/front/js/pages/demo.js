@@ -1,41 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
+import tapnews from "/workspaces/sp78-Final-Project-TapNews/public/Captura de pantalla 2024-11-06 a las 20.51.37.png";
+
 
 export const Demo = () => {
-	const { store, actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
 
-	return (
-		<div className="container">
-			<ul className="list-group">
-				{store.demo.map((item, index) => {
-					return (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<br />
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
-		</div>
-	);
+  return (
+    <div className="container">
+		<div className="full-screen-container">
+		<div className="form-container">
+      <Form>
+	  <img className="top-right-image" src={tapnews} alt="tapnews" />
+		<h1>Acceso de Usurio</h1>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label></Form.Label>
+          <Form.Control type="email" placeholder="Ingresar email" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label></Form.Label>
+          <Form.Control type="password" placeholder="Ingresar Contraseña" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Acceder
+        </Button>
+      </Form>
+    </div>
+	</div>
+	</div>
+  );
 };
