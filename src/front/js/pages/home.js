@@ -20,7 +20,12 @@ export const Home = () => {
       alert("Por favor complete todos los campos");
       return;
     }
-
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert("La contraseña debe tener al menos 8 caracteres y contener tanto letras como números");
+      return;
+    }
+    
     if (password !== confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
