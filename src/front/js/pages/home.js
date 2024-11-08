@@ -1,20 +1,34 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
-// import tapnews from "/workspaces/sp78-Final-Project-TapNews/public/tapnews.jpg";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
+    navigate("/demo");
+  };
 
   return (
     <div className="text-center mt-5">
-      {/* <img className="top-left-image" src={tapnews} alt="tapnews" /> */}
       <div className="full-screen-container">
         <div className="form-container">
           <h1 className="text-center mb-4">Registro de Usuario</h1>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label></Form.Label>
               <Form.Control type="user" placeholder="Ingrese su Usuario" />
@@ -26,20 +40,28 @@ export const Home = () => {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label></Form.Label>
-              <Form.Control type="password" placeholder="Contraseña" />
+              <Form.Control
+                type="password"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label></Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Repita su Contraseña"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Form.Group>
-            <Link to="/demo">
+            {/* <Link to="/demo"> */}
+              
               <Button variant="primary" type="submit">
                 Rgistrese
               </Button>
-            </Link>
+            {/* </Link> */}
           </Form>
         </div>
       </div>
