@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
-import tapnews from "/workspaces/sp78-Final-Project-TapNews/public/Captura de pantalla 2024-11-06 a las 20.51.37.png";
+// import tapnews from "/workspaces/sp78-Final-Project-TapNews/public/tapnews.jpg";
 
 
 export const Demo = () => {
@@ -14,7 +14,7 @@ export const Demo = () => {
 		<div className="full-screen-container">
 		<div className="form-container">
       <Form>
-	  <img className="top-right-image" src={tapnews} alt="tapnews" />
+	  {/* <img className="top-left-image" src={tapnews} alt="tapnews" /> */}
 		<h1>Acceso de Usurio</h1>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label></Form.Label>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
-import tapnews from "/workspaces/sp78-Final-Project-TapNews/public/Captura de pantalla 2024-11-06 a las 20.51.37.png";
+// import tapnews from "/workspaces/sp78-Final-Project-TapNews/public/tapnews.jpg";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -10,10 +10,10 @@ export const Home = () => {
 
   return (
     <div className="text-center mt-5">
-      <img className="top-right-image" src={tapnews} alt="tapnews" />
+      {/* <img className="top-left-image" src={tapnews} alt="tapnews" /> */}
       <div className="full-screen-container">
         <div className="form-container">
-          <h1>Registro de Usuario</h1>
+          <h1 className="text-center mb-4">Registro de Usuario</h1>
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label></Form.Label>
