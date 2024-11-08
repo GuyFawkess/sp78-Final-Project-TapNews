@@ -26,3 +26,8 @@ body{
     background-position: center;
     background-attachment: fixed;
 }
+
+h1{
+    background-color: #003366;
+    color: white;
+}
