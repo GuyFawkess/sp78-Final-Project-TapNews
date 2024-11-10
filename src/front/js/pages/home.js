@@ -16,6 +16,7 @@ export const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    actions.addUser(email, password);
     if (!userName || !email || !password || !setPassword) {
       alert("Por favor complete todos los campos");
       return;
