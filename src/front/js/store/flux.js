@@ -13,7 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			token: null,
+			users: []
 			
 		},
 		actions: {
@@ -21,6 +23,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
+
+			addUser: (email, password) => {
+				const store = getStore();
+				const newUser = { email, password }; // Crear un objeto de usuario
+				const updatedUsers = [...store.users, newUser];
+				setStore({ users: updatedUsers });
+				localStorage.setItem("users", JSON.stringify(updatedUsers));
+			  },
+
+			  getMyTasks: async () => {
+				// Recupera el token desde la localStorage
+				const token = localStorage.getItem('jwt-token');
+		   
+				const resp = await fetch(`https://urban-chainsaw-g455rxp7x6vg29jxj-3001.app.github.dev/api/users`, {
+				   method: 'GET',
+				   headers: { 
+					 "Content-Type": "application/json",
+					 'Authorization': 'Bearer ' + token // ⬅⬅⬅ authorization token
+				   } 
+				});
+		   
+				if(!resp.ok) {
+					 throw Error("There was a problem in the login request")
+				} else if(resp.status === 403) {
+					 throw Error("Missing or invalid token");
+				} else {
+					throw Error("Unknown error");
+				}
+		   
+				
+		   },
 
 			getMessage: async () => {
 				try{
