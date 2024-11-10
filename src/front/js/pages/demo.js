@@ -39,6 +39,7 @@ import { Context } from "../store/appContext";
 		<div className="form-container">
       <Form onSubmit={handleLogin}>
 		<h1>Acceso de Usuario</h1>
+    {errorMessage && <p className="text-danger">{errorMessage}</p>}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label></Form.Label>
           <Form.Control type="email" placeholder="Ingresar email"  value={email}
