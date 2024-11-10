@@ -22,10 +22,10 @@ const injectContext = PassedComponent => {
 		);
 
 		useEffect(() => {
-			const token = localStorage.getItem("jwt-token");
-			if (token) {
-				state.actions.setToken(token);
-			}
+			// const token = localStorage.getItem("jwt-token");
+			// if (token) {
+			// 	state.actions.setToken(token);
+			// }
 			state.actions.getMessage(); // <---- calling this function from the flux.js actions
 		}, []);
 
