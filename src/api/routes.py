@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 api = Blueprint('api', __name__)
 
@@ -19,7 +20,9 @@ from flask_jwt_extended import create_access_token
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-
+    user = User(email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
     # Consulta la base de datos por el nombre de usuario y la contraseña
     user = User.query.filter_by(email=email, password=password).first()
 
@@ -31,10 +34,14 @@ def create_token():
     access_token = create_access_token(identity=user.id)
     return jsonify({ "token": access_token, "user_id": user.id })
 
-@api.route ('/User', method= [POST] )
+@api.route ('/User', method= [GET] )
+@jwt_required()
 def get_users():
     users = User.query.all()
-    result = user.serialize
+    result = [user.serialize() for user in users]
+    current_user_id = get_jwt_identity()
+    print(current_user_id)
+    return jsonify({"users": result}), 200
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
