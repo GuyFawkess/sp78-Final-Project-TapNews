@@ -14,6 +14,20 @@ CORS(api)
 
 from flask_jwt_extended import create_access_token
 
+@api.route('/signup', methods=['POST'])
+def create_user():
+    request_body = request.json
+    user_query = User.query.filter_by(email = request_body["email"]).first()
+    if user_query is None:
+        create_user = User(email = request_body["email"], password = request_body["password"], is_active = request_body["is_active"])
+        db.session.add(create_user)
+        db.session.commit()
+        response_body = {
+             "msg": "Usuario creado con exito"
+            }
+
+        return jsonify(response_body), 404
+
 # Crea una ruta para autenticar a los usuarios y devolver el token JWT
 # La función create_access_token() se utiliza para generar el JWT
 @api.route("/login", methods=["POST"])
