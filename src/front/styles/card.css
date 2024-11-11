@@ -1,0 +1,21 @@
+.title {
+    font-family: 'Quicksand';
+    color: #ffffff; 
+    font-weight: bold;
+
+}
+
+.description {
+    font-family: 'Quicksand'  ;
+    color: #ffffff;
+}
+
+.mycardbody{
+    position:absolute;
+    padding-bottom: 100px;
+}
+
+.actions.d-flex.flex-column {
+   margin-top: 100%;
+   margin-left: 90%;
+}
