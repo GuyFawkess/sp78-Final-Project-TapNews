@@ -1,41 +1,62 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
 
-export const Demo = () => {
-	const { store, actions } = useContext(Context);
 
-	return (
-		<div className="container">
-			<ul className="list-group">
-				{store.demo.map((item, index) => {
-					return (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<br />
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
-		</div>
-	);
+// export const Demo = () => {
+//   const { store, actions } = useContext(Context);
+
+  export const Demo = () => {
+    const { store } = useContext(Context);
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
+  
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    //Buscar al usuario registrado en el store
+    const user = store.users.find(user => user.email === email);
+
+    if(user) {
+      if(user.password === password) {
+        //si la contraseña es correcta, hacel el login 
+        localStorage.setItem("jwt-token", "some-valid-token")
+        setErrorMessage(""); //limpiar el mensaje de error
+        alert("Login successfull");
+      }else{
+        setErrorMessage("email o contraseña no registrada")
+      }
+    }else{
+      setErrorMessage("email o contraseña no registrada")
+    }
+  }
+
+  return (
+    <div className="container">
+		<div className="full-screen-container">
+		<div className="form-container">
+      <Form onSubmit={handleLogin}>
+		<h1>Acceso de Usuario</h1>
+    {errorMessage && <p className="text-danger">{errorMessage}</p>}
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label></Form.Label>
+          <Form.Control type="email" placeholder="Ingresar email"  value={email}
+              onChange={(e) => setEmail(e.target.value)}/>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label></Form.Label>
+          <Form.Control type="password" placeholder="Ingresar Contraseña"  value={password}
+              onChange={(e) => setPassword(e.target.value)}/>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Acceder
+        </Button>
+      </Form>
+    </div>
+	</div>
+	</div>
+  );
 };
