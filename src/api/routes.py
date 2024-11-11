@@ -26,7 +26,7 @@ def create_user():
              "msg": "Usuario creado con exito"
             }
 
-        return jsonify(response_body), 404
+        return jsonify(response_body), 200
 
 # Crea una ruta para autenticar a los usuarios y devolver el token JWT
 # La función create_access_token() se utiliza para generar el JWT
@@ -48,7 +48,7 @@ def create_token():
     access_token = create_access_token(identity=user.id)
     return jsonify({ "token": access_token, "user_id": user.id })
 
-@api.route ('/User', method= [GET] )
+@api.route ('/User', methods= ['GET'] )
 @jwt_required()
 def get_users():
     users = User.query.all()
