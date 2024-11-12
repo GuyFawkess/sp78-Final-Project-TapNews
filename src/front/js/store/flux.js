@@ -53,9 +53,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem("jwt-token", data.token);
 		   
 				return data
-		   }
+		   },
 
-			  getMyTasks: async () => {
+			getMyTasks : async () => {
 				// Recupera el token desde la localStorage
 				const token = localStorage.getItem('jwt-token');
 		   
