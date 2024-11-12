@@ -36,7 +36,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const resp = await fetch(`https://obscure-pancake-x599pr4vr6vq366v-3001.app.github.dev/token`, { 
 					 method: "POST",
 					 headers: { "Content-Type": "application/json" },
-					 body: JSON.stringify({ email, password }) 
+					 body: JSON.stringify({ email: email, password: password }) 
 				})
 		   
 				if(!resp.ok) throw Error("There was a problem in the login request")
