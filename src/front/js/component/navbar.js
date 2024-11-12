@@ -9,18 +9,16 @@ import Navbar from 'react-bootstrap/Navbar';
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png'
 
 const NavbarBottom = () => {
-
-
 	return (
     <Navbar className="navbar-fixed-bottom">
       <Container fluid>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="d-flex">
-            <Nav.Link href="#profile"><FontAwesomeIcon size="2xl" icon={faUser} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
-            <Nav.Link href="#friends"><FontAwesomeIcon size="2xl" icon={faUserGroup} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
-            <Nav.Link href="#home"><img className="logo" src={TapNewsLogo} /></Nav.Link>
-            <Nav.Link href="#national"><FontAwesomeIcon size="2xl" icon={faMagnifyingGlass} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
-            <Nav.Link href="#regional"><FontAwesomeIcon size="2xl" icon={faFilter} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+            <Nav.Link  as={Link}  to="/profile"><FontAwesomeIcon size="2xl" icon={faUser} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+            <Nav.Link  as={Link} to="#friends"><FontAwesomeIcon size="2xl" icon={faUserGroup} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+            <Nav.Link  as={Link} to="/"><img className="logo" src={TapNewsLogo} /></Nav.Link>
+            <Nav.Link  as={Link} to="#national"><FontAwesomeIcon size="2xl" icon={faMagnifyingGlass} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+            <Nav.Link  as={Link} to="#regional"><FontAwesomeIcon size="2xl" icon={faFilter} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

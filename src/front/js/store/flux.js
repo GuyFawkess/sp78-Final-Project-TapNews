@@ -2,6 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
+			favouriteNews: [],
 			topnews: [
 					{
 					"uuid": "7834e499-15eb-46dd-a1ce-ecb479bbb2a2",
@@ -132,7 +133,57 @@ const getState = ({ getStore, getActions, setStore }) => {
 					],
 					"relevance_score": null,
 					"locale": "es"
-					}
+					},{
+						"uuid": "3ed16af7-5d66-4442-a414-058e28f9ad82",
+						"title": "El precio del avión, al alza: los fletes crecen a doble dígito en octubre",
+						"description": "A pesar de la rápida solución a las huelgas de los estibadores en algunos puertos de Estados Unidos, el precio de los fletes de carga aérea ha seguido…",
+						"keywords": "",
+						"snippet": "En octubre, el precio de los fletes aéreos entre Europa y Norteamérica aumentaron un 11%, según los datos de la plataforma de análisis de demanda marítima ...",
+						"url": "https://www.modaes.com/entorno/el-precio-del-avion-al-alza-los-fletes-crecen-a-doble-digito-en-octubre",
+						"image_url": "https://www.modaes.com/thumb/eyJ0IjoiZCIsInciOjEyMDAsImgiOjY3NSwibSI6MSwidiI6IjEuNi43In0/files/2024/13-recursos/maersk-contenedores-camion-980.jpg",
+						"language": "es",
+						"published_at": "2024-11-12T16:43:31.000000Z",
+						"source": "modaes.es",
+						"categories": [
+						"entertainment"
+						],
+						"relevance_score": null,
+						"locale": "es"
+						},
+						{
+						"uuid": "a487713c-50db-4c9c-b2da-12ba11a3db88",
+						"title": "Extreme caution is advised in Malaga over incoming storms: Residents on the Costa del Sol are told to close windows and shutters during deluge tonight",
+						"description": "COSTA del Sol residents are bracing themselves for incoming DANA storms as landlords warn tenants to batten down the hatches. After witnessing the",
+						"keywords": "",
+						"snippet": "COSTA del Sol residents are bracing themselves for incoming DANA storms as landlords warn tenants to batten down the hatches.\n\nAfter witnessing the destruction ...",
+						"url": "https://www.theolivepress.es/spain-news/2024/11/12/extreme-caution-is-advised-in-malaga-over-incoming-storms-residents-on-the-costa-del-sol-are-told-to-close-windows-and-shutters-during-deluge-tonight-as-expats-fear-repeat-of-historic-2016-floods/",
+						"image_url": "https://www.theolivepress.es/wp-content/uploads/2024/11/464783350_8719006728158853_196144836466269578_n.jpg",
+						"language": "en",
+						"published_at": "2024-11-12T16:30:00.000000Z",
+						"source": "theolivepress.es",
+						"categories": [
+						"general"
+						],
+						"relevance_score": null,
+						"locale": "es"
+						},
+						{
+						"uuid": "dd3f414a-30aa-48f3-8f1a-521db565ea8b",
+						"title": "Climate change is behind deadly DANA floods in Valencia, says Spain’s Pedro Sanchez",
+						"description": "PRIME Minister Pedro Sanchez has resoundingly blamed climate change for the DANA weather fronts that caused at least 220 deaths from flooding in Spain-",
+						"keywords": "",
+						"snippet": "PRIME Minister Pedro Sanchez has resoundingly blamed climate change for the DANA weather fronts that caused at least 220 deaths from flooding in Spain- mainly i...",
+						"url": "https://www.theolivepress.es/spain-news/2024/11/12/climate-change-is-behind-deadly-dana-floods-in-valencia-says-spains-pedro-sanchez/",
+						"image_url": "https://www.theolivepress.es/wp-content/uploads/2024/11/Spains-Pedro-Sanchez-blames-climate-change-for-flood-disaster-and-220-deaths-during-COP29-speech-scaled.jpg",
+						"language": "en",
+						"published_at": "2024-11-12T16:30:00.000000Z",
+						"source": "theolivepress.es",
+						"categories": [
+						"general"
+						],
+						"relevance_score": null,
+						"locale": "es"
+						}
 					],
 			demo: [
 				{
@@ -152,7 +203,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
+			
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -165,10 +216,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading message from backend", error)
 				}
 			},
-		/*		
-			getNews: async() => {
+			
+			addFavouriteNew: (item) => {
+				const store = getStore();
+				const arrayFavoritos = store.favouriteNews
+				if (!arrayFavoritos.includes(item)){
+				setStore({ favouriteNews: [...store.favouriteNews, item] })
+				console.log(store.favouriteNews)
+				}
+				else 
+					console.log("Don´t repeat favourite")
+			},
+
+			deleteFavouriteNew: (indexid) => {
+				const store = getStore();
+				store.favouriteNews = store.favouriteNews.filter((_, index) => index !== indexid);
+				setStore ({ favouriteNews: [...store.favouriteNews]})
+			}, 
+
+		/*	getNews: async() => {
 				try{
-					const response = await fetch (`https://api.thenewsapi.com/v1/news/top?api_token=BzuDilxzikTqvcsVRrO3rgf1CvC5ADDBPLsBXvDk&locale=es&limit=3`)
+					const response = await fetch (process.env.DOMAIN_API+"/v1/news/top?api_token="+ process.env.API_TOKEN+"locale=es&limit=3")
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}

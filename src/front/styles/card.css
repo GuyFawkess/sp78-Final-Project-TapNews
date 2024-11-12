@@ -2,7 +2,6 @@
     font-family: 'Quicksand';
     color: #ffffff; 
     font-weight: bold;
-
 }
 
 .description {
@@ -18,4 +17,9 @@
 .actions.d-flex.flex-column {
    margin-top: 100%;
    margin-left: 90%;
+}
+
+.save.p-2:active{
+    box-shadow: 0 5px #ffffff;
+    transform: translateY(4px);
 }
