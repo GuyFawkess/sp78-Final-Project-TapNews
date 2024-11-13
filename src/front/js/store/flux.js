@@ -32,11 +32,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem("users", JSON.stringify(updatedUsers));
 			  },
 
-			  getMyTasks: async () => {
+			  login : async (email, password) => {
+				const resp = await fetch(`https://obscure-pancake-x599pr4vr6vq366v-3001.app.github.dev/token`, { 
+					 method: "POST",
+					 headers: { "Content-Type": "application/json" },
+					 body: JSON.stringify({ email: email, password: password }) 
+				})
+		   
+				if(!resp.ok) throw Error("There was a problem in the login request")
+		   
+				if(resp.status === 401){
+					 throw("Invalid credentials")
+				}
+				else if(resp.status === 400){
+					 throw ("Invalid email or password format")
+				}
+				const data = await resp.json()
+				// Guarda el token en la localStorage
+				// También deberías almacenar el usuario en la store utilizando la función setItem
+				localStorage.setItem("jwt-token", data.token);
+		   
+				return data
+		   },
+
+			getMyTasks : async () => {
 				// Recupera el token desde la localStorage
 				const token = localStorage.getItem('jwt-token');
 		   
-				const resp = await fetch(`https://urban-chainsaw-g455rxp7x6vg29jxj-3001.app.github.dev/api/users`, {
+				const resp = await fetch(`https://obscure-pancake-x599pr4vr6vq366v-3001.app.github.dev/api/users`, {
 				   method: 'GET',
 				   headers: { 
 					 "Content-Type": "application/json",

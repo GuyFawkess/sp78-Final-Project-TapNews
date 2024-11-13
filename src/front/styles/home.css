@@ -1,35 +1,11 @@
-.top-right-image {
-    position: absolute;
-    top: 0; /* Posiciona la imagen en la parte superior */
-    right: 0; /* Posiciona la imagen en el lado derecho */
-    max-width: 150px; /* Ajusta el tamaño de la imagen si es necesario */
-    height: auto;
-}
-
-.full-screen-container{
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.form-container{
-    width: 80%;
-    border-radius: 8px;
-    text-align: center;
-}
-
-body{
-    background-image: url("https://media.istockphoto.com/id/1058384844/es/foto/mujer-sosteniendo-peri%C3%B3dicos-y-taza-de-caf%C3%A9-mirando-a-c%C3%A1mara.jpg?s=612x612&w=0&k=20&c=DqLOOK4d6uxw1nQ0h5Thxi6vXltzpKyS_buJa5WB3pM=");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
-
-h1{
-    background-color: #003366;
-    color: white;
-    text-align: center;
-}
+.form-container {
+    background-color: #f9f9f9; /* Fondo claro */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #ddd; /* Borde gris claro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 400px; /* Ancho máximo */
+    margin: 0 auto; /* Centrado horizontal */
+    margin-top: 50px;
+     /* Reducir el ancho máximo */
+  }
