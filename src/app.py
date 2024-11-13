@@ -81,6 +81,22 @@ def get_user(id):
     response_body = user.serialize()
     return jsonify(response_body), 200
 
+@app.route('/user/<int:id>/friends', methods=['GET'])
+def get_user_friends(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User id doesn't exist"}), 404
+    friends_ids = [friendship.friend_id for friendship in user.friendships if friendship.is_active]
+    return jsonify({"friends": friends_ids}), 200
+
+@app.route('/profile/<int:id>', methods=['GET'])
+def get_profile(id):
+    profile = Profile.query.get(id)
+    if not profile:
+        return jsonify({"error": "This profile doesn't exist"}), 404
+    response_body = profile.serialize()
+    return jsonify(response_body), 200
+
 @app.route('/profile/<int:id>', methods=['PUT'])
 def modify_profile(id):
     data = request.get_json()
