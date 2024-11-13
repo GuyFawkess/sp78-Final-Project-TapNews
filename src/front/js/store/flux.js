@@ -3,6 +3,62 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			favouriteNews: [],
+			userexample: [
+				{
+				  "username": "JaneDoe",
+				  "user_id": 1,
+				  "description": "Desarrolladora de software y amante de la inteligencia artificial. Me encanta aprender nuevas tecnologías y enseñar a otros.",
+				  "img_url": "https://avatars.githubusercontent.com/u/32409832?v=4"
+				},
+				{
+				  "username": "CarlosCoder",
+				  "user_id": 2,
+				  "description": "Backend Developer. Entusiasta de Python y el aprendizaje automático. Siempre en busca de mejorar mis habilidades.",
+				  "img_url": "https://avatars.githubusercontent.com/u/5765686?v=4"
+				},
+				{
+				  "username": "MariaAI",
+				  "user_id": 3,
+				  "description": "Investigadora en Inteligencia Artificial. Creando soluciones innovadoras con algoritmos avanzados.",
+				  "img_url": "https://avatars.githubusercontent.com/u/5403899?v=4"
+				},
+				{
+				  "username": "TechTommy",
+				  "user_id": 4,
+				  "description": "Desarrollador Frontend y apasionado por la experiencia de usuario. Siempre experimentando con nuevas librerías y frameworks.",
+				  "img_url": "https://avatars.githubusercontent.com/u/28462170?v=4"
+				},
+				{
+				  "username": "NinaNovice",
+				  "user_id": 5,
+				  "description": "Programadora novata con interés en el desarrollo web. Buscando mejorar mis habilidades todos los días.",
+				  "img_url": "https://avatars.githubusercontent.com/u/50960772?v=4"
+				},
+				{
+				  "username": "LuisTech",
+				  "user_id": 6,
+				  "description": "Ingeniero de software con experiencia en aplicaciones móviles. Entusiasta del diseño de interfaces y el desarrollo ágil.",
+				  "img_url": "https://avatars.githubusercontent.com/u/1936746?v=4"
+				},
+				{
+				  "username": "SaraData",
+				  "user_id": 7,
+				  "description": "Data Scientist enfocada en Big Data y visualización de datos. Mi objetivo es encontrar patrones que cambien el mundo.",
+				  "img_url": "https://avatars.githubusercontent.com/u/10394380?v=4"
+				},
+				{
+				  "username": "RoboRico",
+				  "user_id": 8,
+				  "description": "Apasionado por la robótica y la automatización. Actualmente desarrollando proyectos con Raspberry Pi y Arduino.",
+				  "img_url": "https://avatars.githubusercontent.com/u/7587480?v=4"
+				},
+				{
+				  "username": "EmmaUX",
+				  "user_id": 9,
+				  "description": "Diseñadora UX/UI. Mi trabajo es crear interfaces simples y accesibles para todos. Estoy en constante búsqueda de nuevas tendencias de diseño.",
+				  "img_url": "https://avatars.githubusercontent.com/u/146219?v=4"
+				}
+			  ],
 			topnews: [
 					{
 					"uuid": "7834e499-15eb-46dd-a1ce-ecb479bbb2a2",

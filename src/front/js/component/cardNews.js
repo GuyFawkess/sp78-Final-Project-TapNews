@@ -1,11 +1,10 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, {useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import Card from 'react-bootstrap/Card';
-import { Button } from "react-bootstrap";
 import "../../styles/card.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark, faComment, faHeart, faSave, faShare } from '@fortawesome/free-solid-svg-icons'
-function BasicExample() {
+import { faBookmark, faComment, faHeart, faShare } from '@fortawesome/free-solid-svg-icons'
+function CardNew() {
 
   const [description, setDescription] = useState(false)
   const {store , actions} = useContext(Context);
@@ -18,7 +17,7 @@ function BasicExample() {
       <>
       {store.topnews.map((singleNew, index) => {
         return(
-            <Card className=" Card-bg" key={index} style={{backgroundImage: `url(${singleNew.image_url})`, width: '27rem', height: '55rem', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+            <Card className=" Card-bg" key={index} style={{backgroundImage: `url(${singleNew.image_url})`, width: '100%', height: '55rem', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
                 <div className="actions d-flex flex-column" style={{backdropFilter: description ? 'brightness(30%)' : 'brightness(60%)'}}>
                     <FontAwesomeIcon size="2xl" icon={faHeart} style={{color: "#FFFFFF",}} className="like p-2" aria-controls="basic-navbar-nav"/>
                     <FontAwesomeIcon onClick={() => actions.addFavouriteNew(singleNew)}size="2xl" icon={faBookmark} style={{color: "#FFFFFF",}} className="save p-2" aria-controls="basic-navbar-nav"/>
@@ -37,4 +36,4 @@ function BasicExample() {
     );
   }
   
-  export default BasicExample;
+  export default CardNew;

@@ -12,7 +12,7 @@ const ProfileCard = () => {
 
   return (
     <>
-      <Card style={{width: '27rem', height: '26.2rem', backgroundColor: '#0044CC'}}>
+      <Card style={{width: '100%', height: '26.2rem', backgroundColor: '#0044CC'}}>
         <Card.Img className="mx-auto m-4 profileimage" variant="top" src="https://avatars.githubusercontent.com/u/171564426?v=4" />
           <Card.Body>
             <Card.Title className="username">ADayekh - Alejandro Dayekh</Card.Title>
@@ -22,7 +22,7 @@ const ProfileCard = () => {
           </Card.Body>
           <ListGroup className="list-group-flush">
             <ListGroup.Item className="text-center">Amistades - 47</ListGroup.Item>
-            <ListGroup.Item><Button className="editprofile" onClick={() => openModal()}>Editar perfil</Button></ListGroup.Item>
+            <ListGroup.Item className="d-flex justify-content-center"><Button className="editprofile" onClick={() => openModal()}>Editar perfil</Button></ListGroup.Item>
           </ListGroup>
           <hr/>
       </Card>

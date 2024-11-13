@@ -1,7 +1,7 @@
 import React from "react";
 import { Context } from "../store/appContext";
-import BasicExample from "../component/cardNews";
+import CardNew from "../component/cardNews";
 
 export const Feed = () => {
-    return(<BasicExample></BasicExample>)
+    return(<CardNew></CardNew>)
 }

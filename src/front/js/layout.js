@@ -12,6 +12,7 @@ import NavbarBottom from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Feed } from "./pages/Feed";
 import { UserProfile } from "./pages/UserProfile";
+import { FriendsView } from "./pages/Friends";
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -28,7 +29,7 @@ const Layout = () => {
                             <Routes>
                                 <Route element={<Feed />} path="/" />
                                 <Route element={<Demo />} path="/demo" />
-                                <Route element={<Single />} path="/single/:theid" />
+                                <Route element={<FriendsView />} path="/friends" />
                                 <Route element={<UserProfile/>} path="/profile" />
                             </Routes>
                         </div>
