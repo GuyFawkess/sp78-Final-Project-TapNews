@@ -55,30 +55,40 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       login: async (email, password) => {
-        const resp = await fetch(
-          `https://obscure-pancake-x599pr4vr6vq366v-3001.app.github.dev/api/login`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: email, password: password }),
+        try {
+          const resp = await fetch(
+            `https://obscure-pancake-x599pr4vr6vq366v-3001.app.github.dev/api/login`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: email, password: password }),
+            }
+          );
+      
+          if (!resp.ok) {
+            // Si la respuesta no es 2xx, lanzamos un error general
+            throw new Error("There was a problem in the login request");
           }
-        );
-
-        if (!resp.ok) throw Error("There was a problem in the login request");
-
-        if (resp.status === 401) {
-          throw "Invalid credentials";
-        } else if (resp.status === 400) {
-          throw "Invalid email or password format";
+      
+          const data = await resp.json();
+          
+          if (resp.status === 401) {
+            // Si el estado es 401 (credenciales incorrectas), lanzamos un error específico
+            throw new Error("Usuario o contraseña incorrectos");
+          } else if (resp.status === 400) {
+            // Si el estado es 400 (formato incorrecto de email o contraseña)
+            throw new Error("Formato de email o contraseña inválido");
+          }
+      
+          // Si todo está bien, guardamos el token y retornamos los datos
+          localStorage.setItem("jwt-token", data.token);
+          return data;
+        } catch (error) {
+          // En caso de cualquier otro error, lo propagamos
+          throw error;
         }
-        const data = await resp.json();
-        console.log(data)
-        // Guarda el token en la localStorage
-        // También deberías almacenar el usuario en la store utilizando la función setItem
-        localStorage.setItem("jwt-token", data.token);
-
-        return data;
       },
+      
 
       getMyTasks: async () => {
         // Recupera el token desde la localStorage
