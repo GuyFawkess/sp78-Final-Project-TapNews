@@ -1,0 +1,22 @@
+.col-4{
+    width: 8.5rem;
+    height: 8.5rem;
+    margin-inline: 1px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.title2{
+    backdrop-filter: brightness(50%);
+    font-family:'Quicksand';
+    font-size: 7px;
+    color: #FFFFFF;
+    margin-top:75px;
+}
+
+.trash{
+    margin-left: 90px;
+    margin-top: 10px;
+    filter: drop-shadow (0 0 10px rgba(0, 0, 0, .8) )
+}
