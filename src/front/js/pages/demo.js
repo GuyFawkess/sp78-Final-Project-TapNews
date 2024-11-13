@@ -22,22 +22,11 @@ import { Context } from "../store/appContext";
       setErrorMessage("");
       localStorage.setItem("jwt-token", data.token);
       alert("Acceso exitoso")
-      
     })
-    // const user = store.users.find(user => user.email === email);
-
-    // if(user) {
-    //   if(user.password === password) {
-    //     //si la contraseña es correcta, hacel el login 
-    //     localStorage.setItem("jwt-token", "some-valid-token")
-    //     setErrorMessage(""); //limpiar el mensaje de error
-    //     alert("Login successfull");
-    //   }else{
-    //     setErrorMessage("email o contraseña no registrada")
-    //   }
-    // }else{
-    //   setErrorMessage("email o contraseña no registrada")
-    // }
+    .catch((error) => {
+      setErrorMessage(error.message); // Mostrar el mensaje de error si hay alguno
+      alert(error.message);  // Alerta en caso de error
+    });
   }
 
 
