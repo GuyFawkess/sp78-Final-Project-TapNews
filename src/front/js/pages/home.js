@@ -36,21 +36,21 @@ export const Home = () => {
   };
 
   return (
-    <div className="text-center mt-5">
+    <div className="text-center mt-3">
       <div className="full-screen-container">
         <div className="form-container">
-          <h1 className="text-center mb-4">Registro de Usuario</h1>
+          <h1 className="text-center mb-2">Registro de Usuario</h1>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-2" controlId="formBasicEmail">
               <Form.Label></Form.Label>
               <Form.Control type="user" placeholder="Ingrese su Usuario" value={userName} onChange={(e) => setUserName(e.target.value)}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-2" controlId="formBasicEmail">
               <Form.Label></Form.Label>
               <Form.Control type="email" placeholder="Ingrese su Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-2" controlId="formBasicPassword">
               <Form.Label></Form.Label>
               <Form.Control
                 type="password"
