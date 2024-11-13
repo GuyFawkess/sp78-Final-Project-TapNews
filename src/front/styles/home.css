@@ -1,12 +1,12 @@
-.top-right-image {
+/* .top-right-image {
     position: absolute;
-    top: 0; /* Posiciona la imagen en la parte superior */
-    right: 0; /* Posiciona la imagen en el lado derecho */
-    max-width: 150px; /* Ajusta el tamaño de la imagen si es necesario */
+    top: 0; /* Posiciona la imagen en la parte superior 
+    right: 0; /* Posiciona la imagen en el lado derecho 
+    max-width: 150px; /* Ajusta el tamaño de la imagen si es necesario 
     height: auto;
-}
+} */
 
-.full-screen-container{
+/* .full-screen-container{
     display: flex;
     height: 100vh;
     justify-content: center;
@@ -32,4 +32,4 @@ h1{
     background-color: #003366;
     color: white;
     text-align: center;
-}
+} */
