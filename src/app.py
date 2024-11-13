@@ -11,6 +11,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+from api.models import db, User, Friendship, Profile
 
 
 # from models import Person
@@ -71,6 +72,87 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+@app.route('/user/<int:id>', methods=['GET'])
+def get_user(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User id doesn't exist"}), 404
+    response_body = user.serialize()
+    return jsonify(response_body), 200
+
+@app.route('/profile/<int:id>', methods=['PUT'])
+def modify_profile(id):
+    data = request.get_json()
+    profile = Profile.query.get(id)
+    if not profile:
+        return jsonify({"error": "This profile doesn't exist"}), 404
+    img_url = data.get('image_url')
+    if img_url is not None:
+        profile.img_url = img_url
+    description = data.get('description')
+    if description is not None:
+        profile.description = description
+    birthdate = data.get('birthdate')
+    if birthdate is not None:
+        profile.birthdate = birthdate
+    db.session.commit()
+    return jsonify(profile.serialize()), 200
+ 
+
+@app.route('/users', methods=['GET'])
+def get_all_users():
+    users = User.query.all()
+    response_body = [user.serialize() for user in users]
+    return jsonify(response_body), 200
+
+@app.route('/friendship', methods=['POST'])
+def add_friendship():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    friend_id = data.get('friend_id')
+    if not user_id or not friend_id:
+        return jsonify({"error": "user_id and friend_id are required"}), 400
+    existing_friend = Friendship.query.filter_by(user_id=user_id, friend_id=friend_id).first()
+    if existing_friend:
+        return jsonify({"error": "This friendship already exists"}), 409
+    if user_id == friend_id:
+        return jsonify({"error": "User and friend can't have the same id"}), 400
+    friendship = Friendship(user_id=user_id, friend_id=friend_id)
+    db.session.add(friendship)
+    db.session.commit()
+    return jsonify(friendship.serialize()), 200
+
+@app.route('/friendship', methods=['DELETE'])
+def delete_friendship():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    friend_id = data.get('friend_id')
+    if not user_id or not friend_id:
+        return jsonify({"error": "user_id and friend_id are required"}), 400
+    friendship = Friendship.query.filter_by(user_id=user_id, friend_id=friend_id).first()
+    if not friendship:
+        return jsonify({"error": "This friendship doesn't exist"}), 404
+    db.session.delete(friendship)
+    db.session.commit()
+    return jsonify({"success": "Friendship was correctly deleted"}), 200
+
+@app.route('/friendship', methods=['PUT'])
+def update_friend():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    friend_id = data.get('friend_id')
+    if not user_id or not friend_id:
+        return jsonify({"error": "user_id and friend_id are required"}), 400
+    friendship = Friendship.query.filter_by(user_id=user_id, friend_id=friend_id).first()
+    if not friendship:
+        return jsonify({"error": "This friendship doesn't exist"}), 404
+    if friendship.is_active == True:
+        friendship.is_active = False
+    else:
+        friendship.is_active = True
+    db.session.commit()
+    return jsonify(friendship.serialize()), 200
 
 
 # this only runs if `$ python src/main.py` is executed
