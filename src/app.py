@@ -11,7 +11,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
-from api.models import db, User, Friendship, Profile
+from api.models import db, User, Friendship, Profile, Like, SavedNews, News
 
 
 # from models import Person
@@ -169,6 +169,108 @@ def update_friend():
         friendship.is_active = True
     db.session.commit()
     return jsonify(friendship.serialize()), 200
+
+@app.route('/like', methods=['POST'])
+def add_like():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    news_id = data.get('news_id')
+    if not user_id or not news_id:
+        return jsonify({"error": "user_id and news_id is required"}), 400
+    existing_like = Like.query.filter_by(user_id=user_id, news_id=news_id).first()
+    if existing_like:
+        return jsonify({"error": "This user has already liked this news"}), 409
+    like = Like(user_id=user_id, news_id=news_id)
+    db.session.add(like)
+    db.session.commit()
+    return jsonify(like.serialize()), 200
+
+@app.route('/like', methods=['DELETE'])
+def remove_like():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    news_id = data.get('news_id')
+    if not user_id or not news_id:
+        return jsonify({"error": "user_id and news_id is required"}), 400
+    like = Like.query.filter_by(user_id=user_id, news_id=news_id).first()
+    if not like:
+        return jsonify({"error": "This like doesn't exist"}), 404
+    db.session.delete(like)
+    db.session.commit()
+    return jsonify({"succes": "Like was correctly removed"}), 200
+
+@app.route('/saved_news', methods=['POST'])
+def save_news():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    news_id = data.get('news_id')
+    if not user_id or not news_id:
+        return jsonify({"error": "user_id and news_id is required"}), 400
+    existing_save = SavedNews.query.filter_by(user_id=user_id, news_id=news_id).first()
+    if existing_save:
+        return jsonify({"error": "This user has already saved this news"}), 409
+    save = SavedNews(user_id=user_id, news_id=news_id)
+    db.session.add(save)
+    db.session.commit()
+    return jsonify(save.serialize()), 200
+
+@app.route('/saved_news', methods=['DELETE'])
+def remove_saved_news():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    news_id = data.get('news_id')
+    if not user_id or not news_id:
+        return jsonify({"error": "user_id and news_id is required"}), 400
+    save = SavedNews.query.filter_by(user_id=user_id, news_id=news_id).first()
+    if not save:
+        return jsonify({"error": "These news isn't saved"}), 404
+    db.session.delete(save)
+    db.session.commit()
+    return jsonify({"succes": "News was correctly removed"}), 200
+
+@app.route('/news', methods=['POST'])
+def add_news():
+    data = request.get_json()
+    id = data.get('uuid')
+    existing_news = News.query.filter_by(id=id).first()
+    if existing_news:
+        return jsonify({"error": "News is already in database"}), 400
+    title = data.get('title')
+    content = data.get('snippet')
+    genre = data.get('categories')
+    url = data.get('url')
+    newspaper = data.get('source')
+    published_at = data.get('published_at')
+    media_url = data.get('image_url')
+    similar_news = data.get('similar')
+    news = News(id=id, title=title, content=content, genre=genre, url=url, newspaper=newspaper, published_at=published_at, media_url=media_url, similar_news=similar_news)
+    db.session.add(news)
+    db.session.commit()
+    return jsonify(news.serialize()), 200
+
+@app.route('/news', methods=['GET'])
+def get_all_news():
+    all_news = News.query.all()
+    response_body = [news.serialize() for news in all_news]
+    return jsonify(response_body), 200
+
+@app.route('/news/<int:id>', methods=['GET'])
+def get_single_news(id):
+    news = News.query.get(id)
+    if not news:
+        return jsonify({"error": "News id doesn't exist"}), 404
+    response_body = news.serialize()
+    return jsonify(response_body), 200
+
+
+@app.route('/news/<int:id>/likes', methods=['GET'])
+def get_news_like_count(id):
+    news = News.query.get(id)
+    if not news:
+        return jsonify({"error": "News id doesn't exist"}), 404
+    likes = len(news.likes)
+    return jsonify({"like_count": likes}), 200
+
 
 
 # this only runs if `$ python src/main.py` is executed
