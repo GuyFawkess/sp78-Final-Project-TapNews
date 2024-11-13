@@ -29,7 +29,8 @@ const Layout = () => {
                         <div style={{overflow:'scroll'}}>
                             <Routes>
                                 <Route element={<Feed />} path="/" />
-                                <Route element={<Demo />} path="/demo" />
+                                <Route element={<Home />} path="/signup" />
+                                <Route element={<Demo />} path="/login" />
                                 <Route element={<FriendsView />} path="/friends" />
                                 <Route element={<UserProfile/>} path="/profile" />
                             </Routes>
