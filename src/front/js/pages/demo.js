@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
-import usuario from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png";
 import { useNavigate } from "react-router-dom";
 
 // export const Demo = () => {
@@ -44,7 +43,6 @@ export const Demo = () => {
       <div className="full-screen-container">
         <div className="form-container">
           <Form onSubmit={handleLogin}>
-            <img src={usuario} style={{ height: "250px", width: "auto" }} />
             <h1 className="my-5">Acceso de Usuario</h1>
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
             <Form.Group className="mb-3" controlId="formBasicEmail">

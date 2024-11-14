@@ -33,7 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       signup: async (username, email, password) => {
         const resp = await fetch(
-          `https://obscure-pancake-x599pr4vr6vq366v-3000.app.github.dev/api/signup`,
+          `${process.env.BACKEND_URL}/api/signup`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -57,7 +57,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       login: async (email, password) => {
         try {
           const resp = await fetch(
-            `https://obscure-pancake-x599pr4vr6vq366v-3001.app.github.dev/api/login`,
+            `${process.env.BACKEND_URL}/api/login`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -95,7 +95,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const token = localStorage.getItem("jwt-token");
 
         const resp = await fetch(
-          `https://obscure-pancake-x599pr4vr6vq366v-3001.app.github.dev/api/users`,
+          `${process.env.BACKEND_URL}/api/users`,
           {
             method: "GET",
             headers: {

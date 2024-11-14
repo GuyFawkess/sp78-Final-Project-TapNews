@@ -81,7 +81,7 @@ def create_token():
     # db.session.add(user)
     # db.session.commit()
     # Consulta la base de datos por el nombre de usuario y la contraseña
-    user = User.query.filter_by(email=email, password=password).first()
+    user = User.query.filter_by(email=email).first()
 
     if user is None or not check_password_hash(user.password, password):
         return jsonify({"msg": "Bad username or password"}), 401
