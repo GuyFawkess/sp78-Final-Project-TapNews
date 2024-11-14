@@ -3,6 +3,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			favouriteNews: [],
+			profile:[],
+			listuser:[],
+			listprofile:[],
+			user:[],
+			friends:[],
 			userexample: [
 				{
 				  "username": "JaneDoe",
@@ -358,6 +363,105 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Not found news", error)
 				}
 			}, */
+
+			getProfile: async(profile_id) => {
+				try{
+					const response = await fetch (`${process.env.BACKEND_URL}/api/profile/${profile_id}`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({profile: data})
+					console.log(profile)
+				}catch(error){
+					console.log("Not profile found", error)
+				}
+			},
+
+			getUser: async(user_id) => {
+				try{
+					const response = await fetch (`${process.env.BACKEND_URL}/api/user/${user_id}`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({user: data})
+					console.log(user)
+				}catch(error){
+					console.log("Not user found", error)
+				}
+			},
+
+			getFriends: async(user_id) => {
+				try{
+					const response = await fetch (`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({friends: data.friends})
+					console.log(friends)
+				}catch(error){
+					console.log("Not friends found", error)
+				}
+			},
+
+			getAllUsers: async() => {
+				try{
+					const response = await fetch (`${process.env.BACKEND_URL}/api/users`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({listuser: data})
+					console.log(listuser)
+				}catch(error){
+					console.log("Not users found", error)
+				}
+			},
+
+
+			getAllProfiles: async() => {
+				try{
+					const response = await fetch (`${process.env.BACKEND_URL}/api/profiles`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({listprofile: data})
+					console.log(listprofile)
+				}catch(error){
+					console.log("Not users found", error)
+				}
+			},
+
+			deleteFriend: async (userId, friendId) => {
+				try {
+					const data = {
+						user_id: userId,
+						friend_id: friendId
+					};
+					const response = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json' 
+						},
+						body: JSON.stringify(data) 
+					});
+			
+					if (!response.ok) {
+						throw new Error('Error al eliminar la amistad');
+					}
+					const result = await response.json();
+					console.log('Resultado:', result);
+				} catch (error) {
+					console.log('Error al eliminar la amistad:', error);
+				}
+			},
+
+			changeColor: (index, color) => {
+				//get the store
+				const store = getStore();
 
       getMyTasks: async () => {
         // Recupera el token desde la localStorage

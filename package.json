@@ -78,6 +78,7 @@
 		"@fortawesome/react-fontawesome": "^0.2.2",
 		"appwrite": "^16.0.2",
 		"bootstrap": "^5.3.3",
+		"cors": "^2.8.5",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
 		"react-bootstrap": "^2.10.5",

@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Profile, SavedNews, Like, Friendship, Message, Chat, News, Comment
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -126,7 +126,8 @@ def get_user_friends(id):
     if not user:
         return jsonify({"error": "User id doesn't exist"}), 404
     friends_ids = [friendship.friend_id for friendship in user.friendships if friendship.is_active]
-    return jsonify({"friends": friends_ids}), 200
+    friends = [{"friend_id": friend_id} for friend_id in friends_ids]
+    return jsonify({"friends": friends}), 200
 
 @api.route('/profile/<int:id>', methods=['GET'])
 def get_profile(id):
@@ -159,6 +160,12 @@ def modify_profile(id):
 def get_all_users():
     users = User.query.all()
     response_body = [user.serialize() for user in users]
+    return jsonify(response_body), 200
+
+@api.route('/profiles', methods=['GET'])
+def get_all_profiles():
+    profiles = Profile.query.all()
+    response_body = [profile.serialize() for profile in profiles]
     return jsonify(response_body), 200
 
 @api.route('/friendship', methods=['POST'])

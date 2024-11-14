@@ -2,31 +2,49 @@ import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import {Button, Modal, Card, ListGroup, Form} from "react-bootstrap";
 import "../../styles/profilecard.css";
+import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png'
 
 const ProfileCard = () => {
-
+  const {store , actions} = useContext(Context);
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
+  
+  useEffect (() => {
+    actions.getProfile(1)
+    actions.getUser(1)
+    actions.getFriends(1)
+},[])
+
+
+if (!store.user || !store.profile || !store.friends || !store.user.username) {
+  return (
+    <div className="loading">
+      <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
+    </div>
+  );
+}
+
+
+
   return (
     <>
-      <Card style={{width: '100%', height: '26.2rem', backgroundColor: '#0044CC'}}>
-        <Card.Img className="mx-auto m-4 profileimage" variant="top" src="https://avatars.githubusercontent.com/u/171564426?v=4" />
+      <Card style={{width: '100%', backgroundColor: '#0044CC'}}>
+        <Card.Img className="mx-auto m-4 profileimage" variant="top" src={store.profile.img_url} />
           <Card.Body>
-            <Card.Title className="username">ADayekh - Alejandro Dayekh</Card.Title>
-            <Card.Text className="description">
-            Maestro de Primaria. Full Stack Programming Learner. Piloto de dron/Fotografía
+            <Card.Title className="text-center username">{store.user.username}</Card.Title>
+            <Card.Text className="text-center description">
+             {store.profile.description}
             </Card.Text>
           </Card.Body>
           <ListGroup className="list-group-flush">
-            <ListGroup.Item className="text-center">Amistades - 47</ListGroup.Item>
+            <ListGroup.Item className="text-center">Amistades - {store.friends && store.friends.length ? store.friends.length : ""} </ListGroup.Item>
             <ListGroup.Item className="d-flex justify-content-center"><Button className="editprofile" onClick={() => openModal()}>Editar perfil</Button></ListGroup.Item>
+            <ListGroup.Item className="text-center gridtitle">Noticias guardadas</ListGroup.Item>
           </ListGroup>
-          <hr/>
       </Card>
-
         <Modal show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title className="modaltitle">Editar perfil</Modal.Title>

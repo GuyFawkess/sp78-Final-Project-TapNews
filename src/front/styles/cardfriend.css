@@ -8,7 +8,8 @@
 
 .friendcard{
     background-color: #0044CC;
-    border: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+
 }
 
 .frienduser{
@@ -19,3 +20,27 @@
     margin-top: 45px;
 }
 
+.loading{
+    background-color: #0044CC;
+    height: 1200px;
+}
+
+.logo-2{
+    width: 40%;
+    aspect-ratio: 1;
+    margin-top: 400px;
+    margin-left: 30%;
+}
+
+.text-title{
+    color:#002B80;
+}
+
+.text-modal{
+ background-color: #0044CC;
+ color:#ffffff
+}
+
+.delete{
+    background-color: #0044CC;
+}

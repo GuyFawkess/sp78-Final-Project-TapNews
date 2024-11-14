@@ -13,6 +13,7 @@ import { Footer } from "./component/footer";
 import { Feed } from "./pages/Feed";
 import { UserProfile } from "./pages/UserProfile";
 import { FriendsView } from "./pages/Friends";
+import { FriendProfileView } from "./pages/FriendProfileView";
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -26,13 +27,14 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                     <ScrollToTop>
-                        <div style={{overflow:'scroll'}}>
+                        <div style={{overflow:'hidden'}}>
                             <Routes>
                                 <Route element={<Feed />} path="/" />
                                 <Route element={<Home />} path="/signup" />
                                 <Route element={<Demo />} path="/login" />
                                 <Route element={<FriendsView />} path="/friends" />
                                 <Route element={<UserProfile/>} path="/profile" />
+                                <Route element={<FriendProfileView />} path="/friends/:friend_id" />
                             </Routes>
                         </div>
                     </ScrollToTop>
@@ -40,22 +42,6 @@ const Layout = () => {
             </BrowserRouter>
         </div>
     );
-  return (
-    <div>
-      <BrowserRouter basename={basename}>
-        <ScrollToTop>
-          <Navbar />
-          <Routes>
-            <Route element={<Home />} path="/" />
-            <Route element={<Demo />} path="/demo" />
-            <Route element={<Single />} path="/single/:theid" />
-            <Route element={<h1>Not found!</h1>} />
-          </Routes>
-          <Footer />
-        </ScrollToTop>
-      </BrowserRouter>
-    </div>
-  );
 };
 
 export default injectContext(Layout);
