@@ -1,11 +1,11 @@
-.username {
+.text-center.username{
     font-family: 'Quicksand';
     color: #ffffff; 
     font-weight: bold;
 
 }
 
-.description {
+.text-center.description {
     font-family: 'Quicksand'  ;
     color: #ffffff;
 }
@@ -47,4 +47,20 @@
 
 .savechanges{
     background-color: #0044CC;
+}
+
+.text-center.gridtitle{
+    background-color: #0044CC;
+    color:#ffffff;
+    font-family: 'Quicksand';
+    font-size:larger ;
+    font-weight: bold;
+}
+
+.logo-3{
+    width: 40%;
+    aspect-ratio: 1;
+    margin-top: 400px;
+    margin-left: 30%;
+
 }

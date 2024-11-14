@@ -49,9 +49,9 @@ class Profile(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "img url": self.img_url,
+            "img_url": self.img_url,
             "description": self.description,
-            "birth date": self.birthdate.isoformat() if self.created_at else None,
+            "birthdate": self.birthdate.isoformat() if self.birthdate else None,
         }
     
 class News(db.Model):
@@ -81,7 +81,7 @@ class News(db.Model):
             "genre": self.genre,
             "url": self.url,
             "newspaper": self.newspaper,
-            "published_at": self.published_at.isoformat() if self.created_at else None,
+            "published_at": self.published_at.isoformat() if self.published_at else None,
             "media_url": self.media_url,
         }
     
