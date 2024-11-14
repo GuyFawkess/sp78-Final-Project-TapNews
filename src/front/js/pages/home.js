@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import usuario from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -39,19 +40,20 @@ export const Home = () => {
     <div className="text-center mt-3">
       <div className="full-screen-container">
         <div className="form-container">
-          <h1 className="text-center mb-2">Registro de Usuario</h1>
+          <img src={usuario} style={{ height: "250px", width: "auto" }}/>
+          <h1 className="text-center mb-2 mt-4">Registro de Usuario</h1>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-2" controlId="formBasicEmail">
-              <Form.Label></Form.Label>
+            <Form.Group className="mb-1" controlId="formBasicEmail">
+              <Form.Label>Usuario</Form.Label>
               <Form.Control type="user" placeholder="Ingrese su Usuario" value={userName} onChange={(e) => setUserName(e.target.value)}/>
             </Form.Group>
-            <Form.Group className="mb-2" controlId="formBasicEmail">
-              <Form.Label></Form.Label>
+            <Form.Group className="mb-1" controlId="formBasicEmail">
+              <Form.Label>Email</Form.Label>
               <Form.Control type="email" placeholder="Ingrese su Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </Form.Group>
 
-            <Form.Group className="mb-2" controlId="formBasicPassword">
-              <Form.Label></Form.Label>
+            <Form.Group className="mb-1" controlId="formBasicPassword">
+              <Form.Label>Contraseña</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Contraseña"
@@ -59,8 +61,8 @@ export const Home = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label></Form.Label>
+            <Form.Group className="mb-1" controlId="formBasicPassword">
+              <Form.Label>Confirmacion de Contraseña</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Repita su Contraseña"
@@ -70,7 +72,7 @@ export const Home = () => {
             </Form.Group>
             
               
-              <Button variant="primary" type="submit">
+              <Button className="mt-3" variant="primary" type="submit">
                 Rgistrese
               </Button>
             
