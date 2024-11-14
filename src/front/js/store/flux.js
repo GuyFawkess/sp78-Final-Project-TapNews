@@ -67,7 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       
           if (!resp.ok) {
             // Si la respuesta no es 2xx, lanzamos un error general
-            throw new Error("There was a problem in the login request");
+            throw new Error("usuario o contraseña incorrecta");
           }
       
           const data = await resp.json();
