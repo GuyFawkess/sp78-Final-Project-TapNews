@@ -9,7 +9,7 @@ class User(db.Model):
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     username = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
+    password = db.Column(db.String(300), nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
     comments = db.relationship("Comment", back_populates="user")

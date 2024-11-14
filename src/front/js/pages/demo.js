@@ -2,61 +2,72 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
-
+import { useNavigate, Link } from "react-router-dom";
+import usuario  from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
 
 // export const Demo = () => {
 //   const { store, actions } = useContext(Context);
 
-  export const Demo = () => {
-    const { store } = useContext(Context);
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [errorMessage, setErrorMessage] = useState("")
-  
+export const Demo = () => {
+  const { store, actions } = useContext(Context);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate()
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
-    //Buscar al usuario registrado en el store
-    const user = store.users.find(user => user.email === email);
-
-    if(user) {
-      if(user.password === password) {
-        //si la contraseña es correcta, hacel el login 
-        localStorage.setItem("jwt-token", "some-valid-token")
-        setErrorMessage(""); //limpiar el mensaje de error
-        alert("Login successfull");
-      }else{
-        setErrorMessage("email o contraseña no registrada")
-      }
-    }else{
-      setErrorMessage("email o contraseña no registrada")
+    //Buscar al usuario registrado en el actions
+      if(email && password){
+        try
+        {await actions.login(email, password)
+        .then(() => {
+            navigate("/single/1")
+        })}
+        catch (e) {
+            setErrorMessage(e.message)
+        }
     }
-  }
+      
+  };
 
   return (
-    <div className="container">
-		<div className="full-screen-container">
-		<div className="form-container">
-      <Form onSubmit={handleLogin}>
-		<h1>Acceso de Usuario</h1>
-    {errorMessage && <p className="text-danger">{errorMessage}</p>}
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label></Form.Label>
-          <Form.Control type="email" placeholder="Ingresar email"  value={email}
-              onChange={(e) => setEmail(e.target.value)}/>
-        </Form.Group>
+    <div className="text-center container mt-5">
+      <div className="full-screen-container">
+        <div className="form-container">
+          <Form onSubmit={handleLogin}>
+          <img src={usuario} style={{ height: "250px", width: "auto" }} />
+            <h1 className="my-5">Acceso de Usuario</h1>
+            {errorMessage && <p className="text-danger">{errorMessage}</p>}
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Ingresar email"
+                value={email}
+                onChange={(e) => {setEmail(e.target.value)
+                }}
+              />
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label></Form.Label>
-          <Form.Control type="password" placeholder="Ingresar Contraseña"  value={password}
-              onChange={(e) => setPassword(e.target.value)}/>
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Acceder
-        </Button>
-      </Form>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Ingresar Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Acceder
+            </Button>
+          </Form>
+        </div>
+        <Link to="/" className="link">
+                Acceso a Registro
+             </Link>
+      </div>
     </div>
-	</div>
-	</div>
   );
 };

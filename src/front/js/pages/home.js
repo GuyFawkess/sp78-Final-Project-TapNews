@@ -2,7 +2,9 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import usuario  from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
+
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -11,47 +13,58 @@ export const Home = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("")
-  
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    actions.addUser(email, password);
-    if (!userName || !email || !password || !setPassword) {
+    if (!userName || !email || !password || !confirmPassword) {
       alert("Por favor complete todos los campos");
       return;
     }
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!passwordRegex.test(password)) {
-      alert("La contraseña debe tener al menos 8 caracteres y contener tanto letras como números");
+      alert(
+        "La contraseña debe tener al menos 8 caracteres y contener tanto letras como números"
+      );
       return;
     }
-    
+
     if (password !== confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
     }
-
+    actions.signup(userName, email, password);
     navigate("/demo");
   };
 
   return (
-    <div className="text-center mt-5">
+    <div className="text-center mt-3">
       <div className="full-screen-container">
         <div className="form-container">
-          <h1 className="text-center mb-4">Registro de Usuario</h1>
+        <img src={usuario} style={{ height: "250px", width: "auto" }} />
+          <h1 className="text-center mb-2 mt-4">Registro de Usuario</h1>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label></Form.Label>
-              <Form.Control type="user" placeholder="Ingrese su Usuario" value={userName} onChange={(e) => setUserName(e.target.value)}/>
+            <Form.Group className="mb-1" controlId="formBasicUser">
+              <Form.Label>Usuario</Form.Label>
+              <Form.Control
+                type="user"
+                placeholder="Ingrese su Usuario"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label></Form.Label>
-              <Form.Control type="email" placeholder="Ingrese su Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <Form.Group className="mb-1" controlId="formBasicEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Ingrese su Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label></Form.Label>
+            <Form.Group className="mb-1" controlId="formBasicPassword">
+              <Form.Label>Contraseña</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Contraseña"
@@ -59,8 +72,8 @@ export const Home = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label></Form.Label>
+            <Form.Group className="mb-1" controlId="formBasicPassword2">
+              <Form.Label>Confirmacion de Contraseña</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Repita su Contraseña"
@@ -68,14 +81,16 @@ export const Home = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Form.Group>
-            
-              
-              <Button variant="primary" type="submit">
-                Rgistrese
-              </Button>
+
+            <Button className="mt-3" variant="primary" type="submit">
+              Registrese
+            </Button>
             
           </Form>
         </div>
+        <Link to="/demo" className="link">
+                Acceso a usuarios ya registrados
+             </Link>
       </div>
     </div>
   );
