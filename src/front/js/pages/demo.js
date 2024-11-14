@@ -16,7 +16,7 @@ import { Context } from "../store/appContext";
 
   const handleLogin = (e) => {
     e.preventDefault();
-    //Buscar al usuario registrado en el store
+    //Buscar al usuario registrado en el actions
     actions.login(email, password)
     .then((data) => {
       setErrorMessage("");
@@ -24,8 +24,8 @@ import { Context } from "../store/appContext";
       alert("Acceso exitoso")
     })
     .catch((error) => {
-      setErrorMessage(error.message); // Mostrar el mensaje de error si hay alguno
-      alert(error.message);  // Alerta en caso de error
+      setErrorMessage("usuario o contraseña no registrada"); // Mostrar el mensaje de error si hay alguno
+      alert("usuario o contraseña no registrada");  // Alerta en caso de error
     });
   }
 
