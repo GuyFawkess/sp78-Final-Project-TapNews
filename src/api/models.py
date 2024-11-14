@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import ARRAY
 
 db = SQLAlchemy()
 
@@ -55,11 +56,11 @@ class Profile(db.Model):
     
 class News(db.Model):
     __tablename__ = 'news'
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
-    author = db.Column(db.String)
-    genre = db.Column(db.String)
+    similar_news = db.Column(ARRAY(db.String))
+    genre = db.Column(ARRAY(db.String))
     url = db.Column(db.String, nullable=False)
     newspaper = db.Column(db.String, nullable=False)
     published_at = db.Column(db.TIMESTAMP)
@@ -76,7 +77,7 @@ class News(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "author": self.author,
+            "similar_news": self.similar_news,
             "genre": self.genre,
             "url": self.url,
             "newspaper": self.newspaper,

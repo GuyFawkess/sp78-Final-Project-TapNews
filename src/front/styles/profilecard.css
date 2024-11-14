@@ -1,0 +1,50 @@
+.username {
+    font-family: 'Quicksand';
+    color: #ffffff; 
+    font-weight: bold;
+
+}
+
+.description {
+    font-family: 'Quicksand'  ;
+    color: #ffffff;
+}
+
+.mx-auto.m-4.profileimage {
+    width: 16rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff
+}
+
+.editprofile {
+    font-family: 'Quicksand';
+    color: #ffffff;
+    width: 90%;
+    background-color: #0044CC;
+}
+
+.form-bg{
+    background-color: #0044CC;
+}
+
+.label{
+    color:#ffffff;
+}
+
+.modaltitle{
+    color:#002B80;
+}
+
+.text-center{
+    color:#002B80;
+}
+
+.close{
+    background-color: #9b9b9b;
+}
+
+.savechanges{
+    background-color: #0044CC;
+}

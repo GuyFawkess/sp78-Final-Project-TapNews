@@ -8,9 +8,11 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import NavbarBottom from "./component/navbar";
 import { Footer } from "./component/footer";
-
+import { Feed } from "./pages/Feed";
+import { UserProfile } from "./pages/UserProfile";
+import { FriendsView } from "./pages/Friends";
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -20,6 +22,24 @@ const Layout = () => {
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
     return <BackendURL />;
 
+    return (
+        <div>
+            <BrowserRouter basename={basename}>
+                    <ScrollToTop>
+                        <div style={{overflow:'scroll'}}>
+                            <Routes>
+                                <Route element={<Feed />} path="/" />
+                                <Route element={<Home />} path="/signup" />
+                                <Route element={<Demo />} path="/login" />
+                                <Route element={<FriendsView />} path="/friends" />
+                                <Route element={<UserProfile/>} path="/profile" />
+                            </Routes>
+                        </div>
+                    </ScrollToTop>
+                <NavbarBottom />
+            </BrowserRouter>
+        </div>
+    );
   return (
     <div>
       <BrowserRouter basename={basename}>
