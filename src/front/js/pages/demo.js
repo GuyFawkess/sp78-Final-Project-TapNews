@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import usuario  from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
 
 // export const Demo = () => {
 //   const { store, actions } = useContext(Context);
@@ -27,15 +28,7 @@ export const Demo = () => {
             setErrorMessage(e.message)
         }
     }
-      // .then((data) => {
-      //   setErrorMessage("");
-      //   localStorage.setItem("jwt-token", data.token);
-      //   alert("Acceso exitoso");
-      // })
-      // .catch((error) => {
-      //   setErrorMessage("usuario o contraseña no registrada"); // Mostrar el mensaje de error si hay alguno
-      //   alert("usuario o contraseña no registrada"); // Alerta en caso de error
-      // });
+      
   };
 
   return (
@@ -43,6 +36,7 @@ export const Demo = () => {
       <div className="full-screen-container">
         <div className="form-container">
           <Form onSubmit={handleLogin}>
+          <img src={usuario} style={{ height: "250px", width: "auto" }} />
             <h1 className="my-5">Acceso de Usuario</h1>
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -52,7 +46,6 @@ export const Demo = () => {
                 placeholder="Ingresar email"
                 value={email}
                 onChange={(e) => {setEmail(e.target.value)
-                  console.log(email)
                 }}
               />
             </Form.Group>
@@ -71,6 +64,9 @@ export const Demo = () => {
             </Button>
           </Form>
         </div>
+        <Link to="/" className="link">
+                Acceso a Registro
+             </Link>
       </div>
     </div>
   );

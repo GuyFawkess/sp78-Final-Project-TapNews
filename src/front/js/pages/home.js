@@ -2,7 +2,8 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import usuario  from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
 
 
 export const Home = () => {
@@ -40,6 +41,7 @@ export const Home = () => {
     <div className="text-center mt-3">
       <div className="full-screen-container">
         <div className="form-container">
+        <img src={usuario} style={{ height: "250px", width: "auto" }} />
           <h1 className="text-center mb-2 mt-4">Registro de Usuario</h1>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-1" controlId="formBasicUser">
@@ -83,8 +85,12 @@ export const Home = () => {
             <Button className="mt-3" variant="primary" type="submit">
               Registrese
             </Button>
+            
           </Form>
         </div>
+        <Link to="/demo" className="link">
+                Acceso a usuarios ya registrados
+             </Link>
       </div>
     </div>
   );
