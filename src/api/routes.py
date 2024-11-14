@@ -6,6 +6,7 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from api.models import db, User, Profile
 
 api = Blueprint('api', __name__)
 
@@ -22,6 +23,15 @@ def create_user():
         create_user = User(username = request_body["username"], email = request_body["email"], password = request_body["password"])
         db.session.add(create_user)
         db.session.commit()
+
+        #creacion del profile
+        new_profile = Profile(
+            bio="Este es el perfil de " + request_body["username"],  # Ejemplo de biografía predeterminada
+            user_id=create_user.id
+        )
+        db.session.add(new_profile)
+        db.session.commit()
+
         response_body = {
              "msg": "Usuario creado con exito"
             }
@@ -38,9 +48,9 @@ def create_user():
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    user = User(email=email, password=password)
-    db.session.add(user)
-    db.session.commit()
+    # user = User(email=email, password=password)
+    # db.session.add(user)
+    # db.session.commit()
     # Consulta la base de datos por el nombre de usuario y la contraseña
     user = User.query.filter_by(email=email, password=password).first()
 
