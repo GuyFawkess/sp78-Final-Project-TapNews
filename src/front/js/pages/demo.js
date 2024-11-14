@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
+import usuario from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png";
 
 
 // export const Demo = () => {
@@ -31,20 +32,21 @@ import { Context } from "../store/appContext";
 
 
   return (
-    <div className="container">
+    <div className="text-center container mt-5">
 		<div className="full-screen-container">
 		<div className="form-container">
       <Form onSubmit={handleLogin}>
-		<h1>Acceso de Usuario</h1>
+      <img src={usuario} style={{ height: "250px", width: "auto" }} />
+		<h1 className="my-5">Acceso de Usuario</h1>
     {errorMessage && <p className="text-danger">{errorMessage}</p>}
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label></Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control type="email" placeholder="Ingresar email"  value={email}
               onChange={(e) => setEmail(e.target.value)}/>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label></Form.Label>
+          <Form.Label>Contraseña</Form.Label>
           <Form.Control type="password" placeholder="Ingresar Contraseña"  value={password}
               onChange={(e) => setPassword(e.target.value)}/>
         </Form.Group>
