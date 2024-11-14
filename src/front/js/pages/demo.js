@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
 import usuario from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png";
+import { useNavigate } from "react-router-dom";
 
 // export const Demo = () => {
 //   const { store, actions } = useContext(Context);
@@ -12,21 +13,30 @@ export const Demo = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate()
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
     //Buscar al usuario registrado en el actions
-    actions
-      .login(email, password)
-      .then((data) => {
-        setErrorMessage("");
-        localStorage.setItem("jwt-token", data.token);
-        alert("Acceso exitoso");
-      })
-      .catch((error) => {
-        setErrorMessage("usuario o contraseña no registrada"); // Mostrar el mensaje de error si hay alguno
-        alert("usuario o contraseña no registrada"); // Alerta en caso de error
-      });
+      if(email && password){
+        try
+        {await actions.login(email, password)
+        .then(() => {
+            navigate("/single/1")
+        })}
+        catch (e) {
+            setErrorMessage(e.message)
+        }
+    }
+      // .then((data) => {
+      //   setErrorMessage("");
+      //   localStorage.setItem("jwt-token", data.token);
+      //   alert("Acceso exitoso");
+      // })
+      // .catch((error) => {
+      //   setErrorMessage("usuario o contraseña no registrada"); // Mostrar el mensaje de error si hay alguno
+      //   alert("usuario o contraseña no registrada"); // Alerta en caso de error
+      // });
   };
 
   return (
@@ -43,7 +53,9 @@ export const Demo = () => {
                 type="email"
                 placeholder="Ingresar email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {setEmail(e.target.value)
+                  console.log(email)
+                }}
               />
             </Form.Group>
 
