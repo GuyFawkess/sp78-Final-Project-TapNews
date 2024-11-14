@@ -12,8 +12,19 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }, []);
 
+    const hangleUserLogin = async (e, credentials) => {
+        e.preventDefault();
+
+        try {
+
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const constextData = {
-        user
+        user,
+        hangleUserLogin
     }
 
     return <AuthContext.Provider value={constextData}>
