@@ -2,11 +2,14 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
+import PrivateRoutes from "./component/PrivateRoutes";
+import { AuthProvider } from "./store/AuthContext";
 
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import Chat from "./pages/Chat";
+import LoginPage from "./pages/LoginPage";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -26,13 +29,19 @@ const Layout = () => {
       <BrowserRouter basename={basename}>
         <ScrollToTop>
           <Navbar />
-          <Routes>
-            <Route element={<Home />} path="/" />
-            <Route element={<Demo />} path="/demo" />
-            <Route element={<Chat />} path="/chat" />
-            <Route element={<Single />} path="/single/:theid" />
-            <Route element={<h1>Not found!</h1>} />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route element={<Home />} path="/" />
+              <Route element={<Demo />} path="/demo" />
+              <Route element={<LoginPage />} path="/login2" />
+
+              <Route element={<PrivateRoutes />}>
+                <Route element={<Chat />} path="/chat" />
+              </Route>
+              <Route element={<Single />} path="/single/:theid" />
+              <Route element={<h1>Not found!</h1>} />
+            </Routes>
+          </AuthProvider>
           <Footer />
         </ScrollToTop>
       </BrowserRouter>

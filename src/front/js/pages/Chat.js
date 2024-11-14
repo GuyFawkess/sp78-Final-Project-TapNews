@@ -21,8 +21,8 @@ const Chat = () => {
                 setMessages(prevState => [...prevState, response.payload]);
             }
             if (response.events.includes("databases.*.collections.*.documents.*.delete")) {
-                console.log('A MESSAGE WAS DELETED!!!')
-                setMessages(prevState => messages.filter(message => message.$id !== response.payload.$id));
+                console.log('A MESSAGE WAS DELETED!!!');
+                setMessages(prevState => prevState.filter(message => message.$id !== response.payload.$id));
             }
         });
 
