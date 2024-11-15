@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import client, { databases, DATABASE_ID, COLLECTION_ID_MESSAGES } from "/workspaces/sp78-Final-Project-TapNews/src/appwriteConfig.js";
-import { ID } from "appwrite";
+import { useAuth } from "../store/AuthContext";
+import { ID, Role, Permission } from "appwrite";
+import Header from "../component/Header";
 
 import { IoTrashOutline } from "react-icons/io5";
 
 const Chat = () => {
+
+    const { user } = useAuth();
 
     const [messages, setMessages] = useState([]);
     const [messageBody, setMessageBody] = useState('');
@@ -41,18 +45,27 @@ const Chat = () => {
         e.preventDefault();
 
         let payload = {
+            user_id: user.$id,
+            username: user.name,
             body: messageBody
         }
+
+        let permissions = [
+            Permission.write(Role.user(user.$id))
+        ]
+
         let response = await databases.createDocument(
             DATABASE_ID,
             COLLECTION_ID_MESSAGES,
             ID.unique(),
-            payload
+            payload,
+            permissions
         )
         // console.log('response:', response);
 
         // setMessages(prevState => [...prevState, response]);
         setMessageBody('');
+        console.log('MESSAGE CREATED', response);
 
     }
 
@@ -71,19 +84,29 @@ const Chat = () => {
     return (
         <main className="container">
 
+            <Header />
             <div className="room--container">
-
-
-
                 <div>
                     {messages.map((message) => (
                         <div key={message.$id} className="message--wrapper">
                             <div className="message--header">
-                                <small className="message-timestamp">{new Date(message.$createdAt).toLocaleString()}</small>
-                                <IoTrashOutline
-                                    className="delete--btn"
-                                    onClick={() => { deleteMessage(message.$id) }}
-                                />
+                                <p>
+                                    {message?.username ? (
+                                        <span>{message.username}</span>
+                                    ) : (
+                                        <span>Anonymous</span>
+                                    )}
+                                    <small className="message-timestamp">{new Date(message.$createdAt).toLocaleString()}</small>
+                                </p>
+
+                                {message.$permissions.includes(`delete(\"user:${user.$id}\")`) &&
+                                    <IoTrashOutline
+                                        className="delete--btn"
+                                        onClick={() => { deleteMessage(message.$id) }}
+                                    />
+
+                                }
+
                             </div>
 
 

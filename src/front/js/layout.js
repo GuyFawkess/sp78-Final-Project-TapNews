@@ -10,6 +10,7 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import Chat from "./pages/Chat";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -33,6 +34,7 @@ const Layout = () => {
             <Routes>
               <Route element={<Home />} path="/" />
               <Route element={<Demo />} path="/demo" />
+              <Route element={<RegisterPage />} path="/register2" />
               <Route element={<LoginPage />} path="/login2" />
 
               <Route element={<PrivateRoutes />}>
