@@ -14,6 +14,7 @@ import { Feed } from "./pages/Feed";
 import { UserProfile } from "./pages/UserProfile";
 import { FriendsView } from "./pages/Friends";
 import { FriendProfileView } from "./pages/FriendProfileView";
+import  Search  from "/workspaces/sp78-Final-Project-TapNews/src/front/js/pages/search.js";
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -35,6 +36,7 @@ const Layout = () => {
                                 <Route element={<FriendsView />} path="/friends" />
                                 <Route element={<UserProfile/>} path="/profile" />
                                 <Route element={<FriendProfileView />} path="/friends/:friend_id" />
+                                <Route element={<Search />} path="/search" />
                             </Routes>
                         </div>
                     </ScrollToTop>
