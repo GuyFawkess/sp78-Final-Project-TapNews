@@ -2,10 +2,15 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
+import PrivateRoutes from "./component/PrivateRoutes";
+import { AuthProvider } from "./store/AuthContext";
 
 import { SignUp } from "./pages/signup";
 import { LogIn } from "./pages/login";
 import { Single } from "./pages/single";
+import Chat from "./pages/Chat";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import injectContext from "./store/appContext";
 
 import NavbarBottom from "./component/navbar";
@@ -22,11 +27,11 @@ const Layout = () => {
 
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
     return <BackendURL />;
-
     return (
         <div>
             <BrowserRouter basename={basename}>
                     <ScrollToTop>
+                      <AuthProvider>
                         <div style={{overflow:'hidden'}}>
                             <Routes>
                                 <Route element={<Feed />} path="/" />
@@ -35,8 +40,14 @@ const Layout = () => {
                                 <Route element={<FriendsView />} path="/friends" />
                                 <Route element={<UserProfile/>} path="/profile" />
                                 <Route element={<FriendProfileView />} path="/friends/:friend_id" />
+                                <Route element={<RegisterPage />} path="/register2" />
+                                <Route element={<LoginPage />} path="/login2" />
+                                <Route element={<PrivateRoutes />}>
+                                  <Route element={<Chat />} path="/chat" />
+                                </Route>
                             </Routes>
                         </div>
+                      </AuthProvider>
                     </ScrollToTop>
                 <NavbarBottom />
             </BrowserRouter>
