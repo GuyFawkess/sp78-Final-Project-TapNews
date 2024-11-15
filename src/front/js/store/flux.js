@@ -1,7 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
 			favouriteNews: [],
 			profile:[],
 			listuser:[],
@@ -246,18 +245,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"locale": "es"
 						}
 					],
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
 			token: null,
 			users: []
 			
@@ -319,20 +306,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           throw error;
         }
       },
-
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
-				}
-			},
-			
 			addFavouriteNew: (item) => {
 				const store = getStore();
 				const arrayFavoritos = store.favouriteNews
@@ -341,7 +314,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(store.favouriteNews)
 				}
 				else 
-					console.log("Don´t repeat favourite")
+					console.log("Don't repeat favourite")
 			},
 
 			deleteFavouriteNew: (indexid) => {
@@ -458,12 +431,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error al eliminar la amistad:', error);
 				}
 			},
-
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-      getMyTasks: async () => {
+		getMyTasks: async () => {
         // Recupera el token desde la localStorage
         const token = localStorage.getItem("jwt-token");
 
@@ -473,7 +441,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + token, // ⬅⬅⬅ authorization token
+              Authorization: "Bearer " + token, //authorization token
             },
           }
         );

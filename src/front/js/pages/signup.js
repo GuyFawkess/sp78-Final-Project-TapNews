@@ -6,8 +6,8 @@ import { useNavigate, Link } from "react-router-dom";
 import usuario  from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
 
 
-export const Home = () => {
-  const { store, actions } = useContext(Context);
+export const SignUp = () => {
+  const { actions } = useContext(Context);
   const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ export const Home = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!userName || !email || !password || !confirmPassword) {
       alert("Por favor complete todos los campos");
@@ -33,8 +33,12 @@ export const Home = () => {
       alert("Las contraseñas no coinciden");
       return;
     }
-    actions.signup(userName, email, password);
-    navigate("/demo");
+    try {
+      await actions.signup(userName, email, password); // Wait for signup to complete
+      navigate("/login"); // Redirect after successful signup
+    } catch (error) {
+      console.error("Signup failed", error); // Handle any errors that occur during signup
+    }
   };
 
   return (
@@ -83,12 +87,12 @@ export const Home = () => {
             </Form.Group>
 
             <Button className="mt-3" variant="primary" type="submit">
-              Registrese
+              Regístrese
             </Button>
             
           </Form>
         </div>
-        <Link to="/demo" className="link">
+        <Link to="/login" className="link">
                 Acceso a usuarios ya registrados
              </Link>
       </div>

@@ -16,32 +16,6 @@ CORS(api)
 
 from flask_jwt_extended import create_access_token
 
-# @api.route('/signup', methods=['POST'])
-# def create_user():
-#     request_body = request.json
-#     user_query = User.query.filter_by(email = request_body["email"]).first()
-#     if user_query is None:
-#         create_user = User(username = request_body["username"], email = request_body["email"], password = generate_password_hash(request_body["password"])
-#         db.session.add(create_user)
-#         db.session.commit()
-
-#         #creacion del profile
-#         new_profile = Profile(
-#             bio="Este es el perfil de " + request_body["username"],  # Ejemplo de biografía predeterminada
-#             user_id=create_user.id
-#         )
-#         db.session.add(new_profile)
-#         db.session.commit()
-
-#         response_body = {
-#              "msg": "Usuario creado con exito"
-#             }
-#         return jsonify(response_body), 200
-#     else:
-#         response_body = {
-#              "msg": "Usuario existente"
-#             }
-#         return jsonify(response_body), 400
 
 @api.route('/signup', methods=['POST'])
 def create_user():
@@ -55,7 +29,7 @@ def create_user():
         )
         db.session.add(create_user)
         db.session.commit()
-
+        
         # Crear el perfil
         new_profile = Profile(
             description="Este es el perfil de " + request_body["username"],
@@ -77,18 +51,11 @@ def create_user():
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    # user = User(email=email, password=password)
-    # db.session.add(user)
-    # db.session.commit()
     # Consulta la base de datos por el nombre de usuario y la contraseña
     user = User.query.filter_by(email=email).first()
 
     if user is None or not check_password_hash(user.password, password):
         return jsonify({"msg": "Bad username or password"}), 401
-
-    # if user is None:
-    #     # el usuario no se encontró en la base de datos
-    #     return jsonify({"msg": "Bad username or password"}), 401
     
     # Crea un nuevo token con el id de usuario dentro
     access_token = create_access_token(identity=user.id)
@@ -103,14 +70,6 @@ def get_users():
     print(current_user_id)
     return jsonify({"users": result}), 200
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-
-    return jsonify(response_body), 200
 
 @api.route('/user/<int:id>', methods=['GET'])
 def get_user(id):
