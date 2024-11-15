@@ -1,20 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import tapnews from "/workspaces/sp78-Final-Project-TapNews/public/tapnews.jpg";
+import "../../styles/navbar.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter, faMagnifyingGlass, faUser, faUserGroup } from '@fortawesome/free-solid-svg-icons'
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png'
 
-export const Navbar = () => {
-  return (
-    <nav className="navbar bg-body-tertiary bg-primary" style={{ height: "80px" }}>
-      <div className="container d-flex align-items-center" style={{ height: "80px" }}>
-        <a className="navbar-brand" href="#">
-          <img
-            className="top-left-image"
-            src={tapnews}
-            alt="tapnews"
-            style={{ height: "80px", width: "auto" }}
-          />
-        </a>
-      </div>
-    </nav>
+const NavbarBottom = () => {
+	return (
+    <Navbar className="navbar-fixed-bottom">
+      <Container fluid>
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="d-flex justify-content-evenly w-100">
+            <Nav.Link  as={Link}  to="/profile"><FontAwesomeIcon size="2xl" icon={faUser} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+            <Nav.Link  as={Link} to="/friends"><FontAwesomeIcon size="2xl" icon={faUserGroup} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+            <Nav.Link  as={Link} to="/"><img className="logo" src={TapNewsLogo} /></Nav.Link>
+            <Nav.Link  as={Link} to="#national"><FontAwesomeIcon size="2xl" icon={faMagnifyingGlass} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+            <Nav.Link  as={Link} to="#regional"><FontAwesomeIcon size="2xl" icon={faFilter} style={{color: "#FFFFFF",}} className="nav-icon" aria-controls="basic-navbar-nav"/></Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
-};
+}
+
+export default NavbarBottom;

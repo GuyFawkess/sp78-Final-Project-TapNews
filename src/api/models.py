@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import ARRAY
 
 db = SQLAlchemy()
 
@@ -8,7 +9,7 @@ class User(db.Model):
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     username = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
+    password = db.Column(db.String(300), nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
     comments = db.relationship("Comment", back_populates="user")
@@ -33,7 +34,7 @@ class User(db.Model):
 class Profile(db.Model):
     __tablename__ = "profile"
     
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), unique=True, nullable=False)
     img_url = db.Column(db.String, nullable=True)
     description = db.Column(db.String, nullable=True)
@@ -48,18 +49,18 @@ class Profile(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "img url": self.img_url,
+            "img_url": self.img_url,
             "description": self.description,
-            "birth date": self.birthdate.isoformat() if self.created_at else None,
+            "birthdate": self.birthdate.isoformat() if self.birthdate else None,
         }
     
 class News(db.Model):
     __tablename__ = 'news'
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
-    author = db.Column(db.String)
-    genre = db.Column(db.String)
+    similar_news = db.Column(ARRAY(db.String))
+    genre = db.Column(ARRAY(db.String))
     url = db.Column(db.String, nullable=False)
     newspaper = db.Column(db.String, nullable=False)
     published_at = db.Column(db.TIMESTAMP)
@@ -76,11 +77,11 @@ class News(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "author": self.author,
+            "similar_news": self.similar_news,
             "genre": self.genre,
             "url": self.url,
             "newspaper": self.newspaper,
-            "published_at": self.published_at.isoformat() if self.created_at else None,
+            "published_at": self.published_at.isoformat() if self.published_at else None,
             "media_url": self.media_url,
         }
     

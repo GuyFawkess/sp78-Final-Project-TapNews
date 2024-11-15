@@ -1,0 +1,86 @@
+.text-center.username{
+    font-family: 'Quicksand';
+    color: #ffffff; 
+    font-weight: bold;
+
+}
+
+.text-center.description {
+    font-family: 'Quicksand'  ;
+    color: #ffffff;
+}
+
+.mx-auto.m-4.profileimage {
+    width: 16rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff
+}
+
+.editprofile {
+    font-family: 'Quicksand';
+    color: #ffffff;
+    width: 90%;
+    background-color: #0044CC;
+}
+
+.form-bg{
+    background-color: #0044CC;
+}
+
+.label{
+    color:#ffffff;
+}
+
+.modaltitle{
+    color:#002B80;
+}
+
+.text-center{
+    color:#002B80;
+}
+
+.close{
+    background-color: #9b9b9b;
+}
+
+.savechanges{
+    background-color: #0044CC;
+}
+
+.text-center.gridtitle{
+    background-color: #0044CC;
+    color:#ffffff;
+    font-family: 'Quicksand';
+    font-size:larger ;
+    font-weight: bold;
+}
+
+.logo-3{
+    width: 40%;
+    aspect-ratio: 1;
+    margin-top: 400px;
+    margin-left: 30%;
+
+}
+
+.title-logout{
+    color: #991818;
+}
+
+.text-logout{
+    background-color: #991818;
+    color: #ffffff;
+}
+
+.reallogout{
+    background-color: #991818;
+}
+
+.logoutbutton{
+    font-family: 'Quicksand';
+    color: #ffffff;
+    width: 90%;
+    background-color: #991818;
+}

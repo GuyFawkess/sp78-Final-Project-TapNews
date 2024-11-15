@@ -5,17 +5,20 @@ import { BackendURL } from "./component/backendURL";
 import PrivateRoutes from "./component/PrivateRoutes";
 import { AuthProvider } from "./store/AuthContext";
 
-import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
+import { SignUp } from "./pages/signup";
+import { LogIn } from "./pages/login";
 import { Single } from "./pages/single";
 import Chat from "./pages/Chat";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import NavbarBottom from "./component/navbar";
 import { Footer } from "./component/footer";
-
+import { Feed } from "./pages/Feed";
+import { UserProfile } from "./pages/UserProfile";
+import { FriendsView } from "./pages/Friends";
+import { FriendProfileView } from "./pages/FriendProfileView";
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -24,31 +27,32 @@ const Layout = () => {
 
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
     return <BackendURL />;
-
-  return (
-    <div>
-      <BrowserRouter basename={basename}>
-        <ScrollToTop>
-          <Navbar />
-          <AuthProvider>
-            <Routes>
-              <Route element={<Home />} path="/" />
-              <Route element={<Demo />} path="/demo" />
-              <Route element={<RegisterPage />} path="/register2" />
-              <Route element={<LoginPage />} path="/login2" />
-
-              <Route element={<PrivateRoutes />}>
-                <Route element={<Chat />} path="/chat" />
-              </Route>
-              <Route element={<Single />} path="/single/:theid" />
-              <Route element={<h1>Not found!</h1>} />
-            </Routes>
-          </AuthProvider>
-          <Footer />
-        </ScrollToTop>
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <div>
+            <BrowserRouter basename={basename}>
+                    <ScrollToTop>
+                      <AuthProvider>
+                        <div style={{overflow:'hidden'}}>
+                            <Routes>
+                                <Route element={<Feed />} path="/" />
+                                <Route element={<SignUp />} path="/signup" />
+                                <Route element={<LogIn />} path="/login" />
+                                <Route element={<FriendsView />} path="/friends" />
+                                <Route element={<UserProfile/>} path="/profile" />
+                                <Route element={<FriendProfileView />} path="/friends/:friend_id" />
+                                <Route element={<RegisterPage />} path="/register2" />
+                                <Route element={<LoginPage />} path="/login2" />
+                                <Route element={<PrivateRoutes />}>
+                                  <Route element={<Chat />} path="/chat" />
+                                </Route>
+                            </Routes>
+                        </div>
+                      </AuthProvider>
+                    </ScrollToTop>
+                <NavbarBottom />
+            </BrowserRouter>
+        </div>
+    );
 };
 
 export default injectContext(Layout);

@@ -9,6 +9,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+from api.models import db, User, Friendship, Profile, Like, SavedNews, News
 
 # Environment configuration
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -67,6 +68,7 @@ def serve_any_other_file(path):
     return response
 
 # Run the app
+# this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
