@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Context } from "../store/appContext";
 import { useNavigate, Link } from "react-router-dom";
 import usuario  from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
 
-// export const Demo = () => {
-//   const { store, actions } = useContext(Context);
 
-export const Demo = () => {
-  const { store, actions } = useContext(Context);
+export const LogIn = () => {
+  const { actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,7 +20,7 @@ export const Demo = () => {
         try
         {await actions.login(email, password)
         .then(() => {
-            navigate("/single/1")
+            navigate("/")
         })}
         catch (e) {
             setErrorMessage(e.message)
@@ -64,7 +62,7 @@ export const Demo = () => {
             </Button>
           </Form>
         </div>
-        <Link to="/" className="link">
+        <Link to="/signup" className="link">
                 Acceso a Registro
              </Link>
       </div>

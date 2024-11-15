@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
-import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
+import { SignUp } from "./pages/signup";
+import { LogIn } from "./pages/login";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
@@ -30,8 +30,8 @@ const Layout = () => {
                         <div style={{overflow:'hidden'}}>
                             <Routes>
                                 <Route element={<Feed />} path="/" />
-                                <Route element={<Home />} path="/signup" />
-                                <Route element={<Demo />} path="/login" />
+                                <Route element={<SignUp />} path="/signup" />
+                                <Route element={<LogIn />} path="/login" />
                                 <Route element={<FriendsView />} path="/friends" />
                                 <Route element={<UserProfile/>} path="/profile" />
                                 <Route element={<FriendProfileView />} path="/friends/:friend_id" />

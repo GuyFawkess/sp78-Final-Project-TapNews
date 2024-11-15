@@ -34,7 +34,7 @@ class User(db.Model):
 class Profile(db.Model):
     __tablename__ = "profile"
     
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), unique=True, nullable=False)
     img_url = db.Column(db.String, nullable=True)
     description = db.Column(db.String, nullable=True)
