@@ -275,3 +275,45 @@ def get_news_like_count(id):
         return jsonify({"error": "News id doesn't exist"}), 404
     likes = len(news.likes)
     return jsonify({"like_count": likes}), 200
+
+@api.route('/news/<int:id>/comments', methods=['POST'])
+def post_comment(id):
+    data = request.get_json()
+    user_id = data.get('user_id')
+    content = data.get('content')
+    if not user_id or not content:
+        return jsonify({"error": "comment must have a user_id and content"}), 400
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "User doesn't exist"}), 404
+    news = News.query.get(id)
+    if not news:
+        return jsonify({"error": "News don't exist in database"}), 404
+    comment = Comment(user_id=user_id, news_id=id, content=content)
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify(comment.serialize()), 200
+
+@api.route('/news/<int:id>/comments', methods=['GET'])
+def get_news_comments(id):
+    news = News.query.get(id)
+    if not news:
+        return jsonify({"error": "News id doesn't exist"}), 404
+    comments = Comment.query.filter_by(news_id=id).all()
+    comment_list = [comment.serialize() for comment in comments]
+    return jsonify({"comments": comment_list}), 200
+
+@api.route('/news/<int:id>/comments', methods=['DELETE'])
+def delete_comment(id):
+    data = request.get_json()
+    user_id = data.get('user_id')
+    news_id = id
+    content = data.get('content')
+    if not user_id or not content:
+        return jsonify({"error": "User_id and comment content must be provided"}), 400
+    comment = Comment.query.filter_by(user_id=user_id, news_id=news_id, content=content).first()
+    if not comment:
+        return jsonify({"error": "Comment not found"}), 404
+    db.session.delete(comment)
+    db.session.commit()
+    return jsonify({"succes": "Comment was successfully removed"}), 200
