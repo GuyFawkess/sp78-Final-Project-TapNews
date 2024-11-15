@@ -300,12 +300,23 @@ const getState = ({ getStore, getActions, setStore }) => {
       
           // Si todo está bien, guardamos el token y retornamos los datos
           localStorage.setItem("jwt-token", data.token);
+		  localStorage.setItem("user_id", data.user_id); 
+
           return data;
         } catch (error) {
           // En caso de cualquier otro error, lo propagamos
           throw error;
         }
       },
+
+			logout: () => {
+				localStorage.removeItem("jwt-token");
+				localStorage.removeItem("user_id");
+				setStore({ user: null, profile: null, friends: [] });  
+
+				console.log("Logout successful!");
+			},
+
 			addFavouriteNew: (item) => {
 				const store = getStore();
 				const arrayFavoritos = store.favouriteNews

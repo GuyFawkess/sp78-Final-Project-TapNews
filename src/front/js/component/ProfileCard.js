@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { Link, useNavigate } from "react-router-dom";
 import {Button, Modal, Card, ListGroup, Form} from "react-bootstrap";
 import "../../styles/profilecard.css";
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png'
@@ -7,18 +8,28 @@ import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/172932919
 const ProfileCard = () => {
   const {store , actions} = useContext(Context);
   const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const navigate = useNavigate(); 
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
+  const openModal2 = () => setShowModal2(true);
+  const closeModal2= () => setShowModal2(false);
 
+  const userId = localStorage.getItem("user_id");
+
+
+  useEffect(() => {
+    if (userId) {
+      actions.getProfile(userId);
+      actions.getUser(userId);
+      actions.getFriends(userId);
+    } else {
+      // Si no hay userId en el localStorage, redirigir a la página de login
+      navigate("/login");  // Usamos navigate para redirigir
+    }
+  }, [userId, store.user, navigate]);
   
-  useEffect (() => {
-    actions.getProfile(1)
-    actions.getUser(1)
-    actions.getFriends(1)
-},[])
-
-
 if (!store.user || !store.profile || !store.friends || !store.user.username) {
   return (
     <div className="loading">
@@ -42,6 +53,7 @@ if (!store.user || !store.profile || !store.friends || !store.user.username) {
           <ListGroup className="list-group-flush">
             <ListGroup.Item className="text-center">Amistades - {store.friends && store.friends.length ? store.friends.length : ""} </ListGroup.Item>
             <ListGroup.Item className="d-flex justify-content-center"><Button className="editprofile" onClick={() => openModal()}>Editar perfil</Button></ListGroup.Item>
+            <ListGroup.Item className="d-flex justify-content-center"><Button className="logoutbutton" onClick={() => openModal2()}>Cerrar sesión</Button></ListGroup.Item>
             <ListGroup.Item className="text-center gridtitle">Noticias guardadas</ListGroup.Item>
           </ListGroup>
       </Card>
@@ -78,6 +90,24 @@ if (!store.user || !store.profile || !store.friends || !store.user.username) {
             </Button>
           </Modal.Footer>
         </Modal>
+        
+        <Modal show={showModal2} onHide={closeModal2} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title className="title-logout">Cierre de sesión</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-logout">¿Seguro que quieres cerrar sesión?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal2}>
+            Cerrar
+          </Button>
+          <Link to="/login"><Button className="reallogout" onClick={() => { 
+                actions.logout()
+                closeModal2();
+          }}>
+            Cerrar sesión
+          </Button></Link>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
