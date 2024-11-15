@@ -12,6 +12,7 @@ const FriendCard = () => {
   const { store, actions } = useContext(Context);
   const [show, setShow] = useState(false);
   const [selectedFriendId, setSelectedFriendId] = useState(null);  // Para almacenar el ID del amigo seleccionado
+  const userId = localStorage.getItem("user_id");
 
   const handleClose = () => setShow(false);
   const handleShow = (friendId) => {
@@ -20,10 +21,13 @@ const FriendCard = () => {
   };
 
   useEffect(() => {
-    actions.getFriends(1);
+    actions.getFriends(userId);
     actions.getAllUsers();
     actions.getAllProfiles();
   }, []);
+
+
+
 
   if (!store.friends.length || !store.listuser.length) {
     return <div className="loading"><img className="logo-2" src={TapNewsLogo} /></div>;
@@ -76,7 +80,9 @@ const FriendCard = () => {
             Cerrar
           </Button>
           <Button className="delete" onClick={() => { 
-            actions.deleteFriend(1, selectedFriendId); 
+              useEffect(() => {
+                actions.deleteFriend(userId, selectedFriendId);
+              }, []);
             handleClose(); 
           }}>
             Eliminar definitivamente

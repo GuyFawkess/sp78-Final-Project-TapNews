@@ -61,6 +61,10 @@ def create_token():
     access_token = create_access_token(identity=user.id)
     return jsonify({ "token": access_token, "user_id": user.id })
 
+@api.route("/logout", methods=["POST"])
+def logout():
+    return jsonify({"msg": "Logged out complete"}), 200
+
 @api.route ('/User', methods= ['GET'] )
 @jwt_required()
 def get_users():

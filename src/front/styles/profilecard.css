@@ -64,3 +64,23 @@
     margin-left: 30%;
 
 }
+
+.title-logout{
+    color: #991818;
+}
+
+.text-logout{
+    background-color: #991818;
+    color: #ffffff;
+}
+
+.reallogout{
+    background-color: #991818;
+}
+
+.logoutbutton{
+    font-family: 'Quicksand';
+    color: #ffffff;
+    width: 90%;
+    background-color: #991818;
+}
