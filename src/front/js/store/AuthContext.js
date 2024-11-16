@@ -9,12 +9,12 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState(null);
 
 
     useEffect(() => {
-        getUserOnLoad();
+        // getUserOnLoad();
     }, []);
     const getUserOnLoad = async () => {
         try {
@@ -32,25 +32,25 @@ export const AuthProvider = ({ children }) => {
     const handleUserRegister = async (e, credentials) => {
         e.preventDefault();
 
-        if (credentials.password1 !== credentials.password2) {
-            alert("Las contraseñas no coinciden");
-            return;
-        }
+        // if (credentials.password1 !== credentials.password2) {
+        //     alert("Las contraseñas no coinciden");
+        //     return;
+        // }
 
         try {
 
             const response = await account.create(
                 ID.unique(),
                 credentials.email,
-                credentials.password1,
-                credentials.name
-            )
+                credentials.password,
+                credentials.username
+            );
 
-            await account.createEmailPasswordSession(credentials.email, credentials.password1);
-            const accountDetails = await account.get();
-            console.log('LOGGED IN', accountDetails);
-            setUser(accountDetails);
-            navigate("/chat");
+            // await account.createEmailPasswordSession(credentials.email, credentials.password1);
+            // const accountDetails = await account.get();
+            // console.log('LOGGED IN', accountDetails);
+            // setUser(accountDetails);
+            // navigate("/");
 
 
             console.log("REGISTED", response);
