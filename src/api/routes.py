@@ -208,6 +208,15 @@ def remove_like():
     db.session.commit()
     return jsonify({"succes": "Like was correctly removed"}), 200
 
+@api.route('/user/<int:id>/likes', methods=['GET'])
+def get_user_likes(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    likes_list = Like.query.filter_by(user_id=id).all()
+    id_list = [like.news_id for like in likes_list]
+    return jsonify(id_list), 200
+
 @api.route('/saved_news', methods=['POST'])
 def save_news():
     data = request.get_json()
@@ -236,6 +245,20 @@ def remove_saved_news():
     db.session.delete(save)
     db.session.commit()
     return jsonify({"succes": "News was correctly removed"}), 200
+
+@api.route('/user/<int:id>/saved_news', methods=['GET'])
+def get_user_saved_news(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    saved_news_list = SavedNews.query.filter_by(user_id=id).all()
+    if not saved_news_list:
+        return jsonify([]), 200
+    id_list = [news.news_id for news in saved_news_list]
+    news_list = News.query.filter(News.id.in_(id_list)).all()
+    response_body = [news.serialize() for news in news_list]
+    return jsonify(response_body), 200
+
 
 @api.route('/news', methods=['POST'])
 def add_news():

@@ -5,11 +5,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			favouriteNews: [],
-			profile: [],
-			listuser: [],
-			listprofile: [],
-			user: [],
-			friends: [],
+			profile:[],
+			listuser:[],
+			listprofile:[],
+			user:[],
+			friends:[],
+			likes: [],
 			userexample: [
 				{
 					"username": "JaneDoe",
@@ -330,24 +331,143 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				console.log("Logout successful!");
 			},
-
-			addFavouriteNew: (item) => {
-				const store = getStore();
-				const arrayFavoritos = store.favouriteNews
-				if (!arrayFavoritos.includes(item)) {
-					setStore({ favouriteNews: [...store.favouriteNews, item] })
-					console.log(store.favouriteNews)
+        
+			addFavouriteNew: async(item) => {
+				const user_id = localStorage.getItem("user_id")
+				if(!user_id){
+					return
 				}
-				else
-					console.log("Don't repeat favourite")
+				const news_id = item.uuid
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							'user_id': user_id,
+							'news_id': news_id
+						})
+					})
+					if(!resp.ok){
+						throw new Error("Failed to save news")
+					}
+				}
+				catch(error){
+					console.log(error)
+				}
 			},
 
-			deleteFavouriteNew: (indexid) => {
-				const store = getStore();
-				store.favouriteNews = store.favouriteNews.filter((_, index) => index !== indexid);
-				setStore({ favouriteNews: [...store.favouriteNews] })
+			deleteFavouriteNew: async(news_id) => {
+				const user_id = localStorage.getItem('user_id')
+				if(!user_id){
+					throw new Error('User must be logged in to delete a saved news')
+				}
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							'user_id': user_id,
+							'news_id': news_id
+						})
+					})
+					if(!resp.ok){
+						throw new Error('Failed to delete saved news')
+					}
+				}
+				catch(error){
+					console.log(error)
+				}
+			}, 
+
+			getFavouriteNews: async() => {
+				const id = localStorage.getItem("user_id")
+				if(!id){
+					return
+				}
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`)
+					if (!resp.ok){
+						throw new Error("Failed to access user's saved news")
+					}
+					const data = await resp.json()
+					setStore({favouriteNews: data})
+				}
+				catch(error){
+					console.log(error)
+				}
 			},
 
+			getUserLikes: async() => {
+				const id = localStorage.getItem('user_id')
+				if(!id){
+					return
+				}
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/likes`)
+					if (!resp.ok){
+						throw new Error("Failed to access user's likes")
+					}
+					const data = await resp.json()
+					setStore({likes: data})
+				}
+				catch(error){
+					console.log(error)
+				}
+			},
+
+			addLike: async(news_id) => {
+				const user_id = localStorage.getItem('user_id')
+				if(!user_id) return
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/like`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							"user_id": user_id,
+							"news_id": news_id
+						})
+					})
+					if (!resp.ok){
+						throw new Error("Failed to add like")
+					}
+					const store = getStore()
+					setStore({likes: [...store.likes, news_id]})
+				}
+				catch(error){
+					console.log(error)
+				}
+			},
+
+			deleteLike: async(news_id) => {
+				const user_id = localStorage.getItem('user_id')
+				if(!user_id) return
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/like`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							"user_id": user_id,
+							"news_id": news_id
+						})
+					})
+					if (!resp.ok){
+						throw new Error("Failed to delete like")
+					}
+					const store = getStore()
+					setStore({likes: store.likes.filter((id) => id !== news_id)})
+				}
+				catch(error){
+					console.log(error)
+				}
+			},
 			/*	getNews: async() => {
 					try{
 						const response = await fetch (process.env.DOMAIN_API+"/v1/news/top?api_token="+ process.env.API_TOKEN+"locale=es&limit=3")
@@ -369,9 +489,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({ profile: data })
-					console.log(profile)
-				} catch (error) {
+					setStore({profile: data})
+				}catch(error){
 					console.log("Not profile found", error)
 				}
 			},
@@ -383,9 +502,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({ user: data })
-					console.log(user)
-				} catch (error) {
+					setStore({user: data})
+				}catch(error){
 					console.log("Not user found", error)
 				}
 			},
@@ -397,9 +515,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({ friends: data.friends })
-					console.log(friends)
-				} catch (error) {
+					setStore({friends: data.friends})
+				}catch(error){
 					console.log("Not friends found", error)
 				}
 			},
