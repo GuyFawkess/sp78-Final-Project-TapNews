@@ -208,6 +208,15 @@ def remove_like():
     db.session.commit()
     return jsonify({"succes": "Like was correctly removed"}), 200
 
+@api.route('/user/<int:id>/likes', methods=['GET'])
+def get_user_likes(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    likes_list = Like.query.filter_by(user_id=id).all()
+    id_list = [like.news_id for like in likes_list]
+    return jsonify(id_list), 200
+
 @api.route('/saved_news', methods=['POST'])
 def save_news():
     data = request.get_json()

@@ -7,6 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			listprofile:[],
 			user:[],
 			friends:[],
+			likes: [],
 			userexample: [
 				{
 				  "username": "JaneDoe",
@@ -320,7 +321,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			addFavouriteNew: async(item) => {
 				const user_id = localStorage.getItem("user_id")
 				if(!user_id){
-					throw new Error("User must be logged in order to save news")
+					return
 				}
 				const news_id = item.uuid
 				try{
@@ -371,7 +372,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getFavouriteNews: async() => {
 				const id = localStorage.getItem("user_id")
 				if(!id){
-					throw new Error('User must be logged in to fetch saved news')
+					return
 				}
 				try{
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`)
@@ -380,6 +381,74 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json()
 					setStore({favouriteNews: data})
+				}
+				catch(error){
+					console.log(error)
+				}
+			},
+
+			getUserLikes: async() => {
+				const id = localStorage.getItem('user_id')
+				if(!id){
+					return
+				}
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/likes`)
+					if (!resp.ok){
+						throw new Error("Failed to access user's likes")
+					}
+					const data = await resp.json()
+					setStore({likes: data})
+				}
+				catch(error){
+					console.log(error)
+				}
+			},
+
+			addLike: async(news_id) => {
+				const user_id = localStorage.getItem('user_id')
+				if(!user_id) return
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/like`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							"user_id": user_id,
+							"news_id": news_id
+						})
+					})
+					if (!resp.ok){
+						throw new Error("Failed to add like")
+					}
+					const store = getStore()
+					setStore({likes: [...store.likes, news_id]})
+				}
+				catch(error){
+					console.log(error)
+				}
+			},
+
+			deleteLike: async(news_id) => {
+				const user_id = localStorage.getItem('user_id')
+				if(!user_id) return
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/like`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							"user_id": user_id,
+							"news_id": news_id
+						})
+					})
+					if (!resp.ok){
+						throw new Error("Failed to delete like")
+					}
+					const store = getStore()
+					setStore({likes: store.likes.filter((id) => id !== news_id)})
 				}
 				catch(error){
 					console.log(error)
