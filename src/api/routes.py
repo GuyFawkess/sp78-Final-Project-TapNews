@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from api.models import db, User, Profile
 from werkzeug.security import generate_password_hash, check_password_hash
+from random import randint
 
 api = Blueprint('api', __name__)
 
@@ -25,7 +26,8 @@ def create_user():
         create_user = User(
             username=request_body["username"],
             email=request_body["email"],
-            password=generate_password_hash(request_body["password"])
+            password=generate_password_hash(request_body["password"]),
+            id=randint(1,10000000000000000000)
         )
         db.session.add(create_user)
         db.session.commit()
