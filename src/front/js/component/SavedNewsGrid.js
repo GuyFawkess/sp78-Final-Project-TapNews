@@ -11,7 +11,7 @@ const SavedNewsGrid = () => {
     
     useEffect(() => {
         actions.getFavouriteNews()
-    }, [store.favouriteNews])
+    }, [])
 
     return(
     <>

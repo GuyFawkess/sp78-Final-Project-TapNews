@@ -256,14 +256,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			signup: async (username, email, password) => {
 				//ESTA LOGICA ES MIA
-				const user = await account.create(
-					ID.unique(),
-					email,
-					password,
-					username
-				);
+				// const user = await account.create(
+				// 	ID.unique(),
+				// 	email,
+				// 	password,
+				// 	username
+				// );
 
-				const userID = user.$id;
+				// const userID = user.$id;
 				//HASTA AQUI
 				const resp = await fetch(
 					`${process.env.BACKEND_URL}/api/signup`,
@@ -271,7 +271,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
-							user_id: userID, //ESTO ES AÑADIDO TAMBIEN
+							//user_id: userID, //ESTO ES AÑADIDO TAMBIEN
 							username: username,
 							email: email,
 							password: password
@@ -360,8 +360,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteFavouriteNew: async(news_id) => {
 				const user_id = localStorage.getItem('user_id')
+				const actions = getActions()
 				if(!user_id){
-					throw new Error('User must be logged in to delete a saved news')
+					return
 				}
 				try{
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
@@ -377,6 +378,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if(!resp.ok){
 						throw new Error('Failed to delete saved news')
 					}
+					await actions.getFavouriteNews();
 				}
 				catch(error){
 					console.log(error)
