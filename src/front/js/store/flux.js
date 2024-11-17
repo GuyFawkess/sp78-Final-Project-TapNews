@@ -1,3 +1,6 @@
+import { account, databases } from "../../../appwriteConfig";
+import { ID } from "appwrite";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -10,62 +13,62 @@ const getState = ({ getStore, getActions, setStore }) => {
 			likes: [],
 			userexample: [
 				{
-				  "username": "JaneDoe",
-				  "user_id": 1,
-				  "description": "Desarrolladora de software y amante de la inteligencia artificial. Me encanta aprender nuevas tecnologías y enseñar a otros.",
-				  "img_url": "https://avatars.githubusercontent.com/u/32409832?v=4"
+					"username": "JaneDoe",
+					"user_id": 1,
+					"description": "Desarrolladora de software y amante de la inteligencia artificial. Me encanta aprender nuevas tecnologías y enseñar a otros.",
+					"img_url": "https://avatars.githubusercontent.com/u/32409832?v=4"
 				},
 				{
-				  "username": "CarlosCoder",
-				  "user_id": 2,
-				  "description": "Backend Developer. Entusiasta de Python y el aprendizaje automático. Siempre en busca de mejorar mis habilidades.",
-				  "img_url": "https://avatars.githubusercontent.com/u/5765686?v=4"
+					"username": "CarlosCoder",
+					"user_id": 2,
+					"description": "Backend Developer. Entusiasta de Python y el aprendizaje automático. Siempre en busca de mejorar mis habilidades.",
+					"img_url": "https://avatars.githubusercontent.com/u/5765686?v=4"
 				},
 				{
-				  "username": "MariaAI",
-				  "user_id": 3,
-				  "description": "Investigadora en Inteligencia Artificial. Creando soluciones innovadoras con algoritmos avanzados.",
-				  "img_url": "https://avatars.githubusercontent.com/u/5403899?v=4"
+					"username": "MariaAI",
+					"user_id": 3,
+					"description": "Investigadora en Inteligencia Artificial. Creando soluciones innovadoras con algoritmos avanzados.",
+					"img_url": "https://avatars.githubusercontent.com/u/5403899?v=4"
 				},
 				{
-				  "username": "TechTommy",
-				  "user_id": 4,
-				  "description": "Desarrollador Frontend y apasionado por la experiencia de usuario. Siempre experimentando con nuevas librerías y frameworks.",
-				  "img_url": "https://avatars.githubusercontent.com/u/28462170?v=4"
+					"username": "TechTommy",
+					"user_id": 4,
+					"description": "Desarrollador Frontend y apasionado por la experiencia de usuario. Siempre experimentando con nuevas librerías y frameworks.",
+					"img_url": "https://avatars.githubusercontent.com/u/28462170?v=4"
 				},
 				{
-				  "username": "NinaNovice",
-				  "user_id": 5,
-				  "description": "Programadora novata con interés en el desarrollo web. Buscando mejorar mis habilidades todos los días.",
-				  "img_url": "https://avatars.githubusercontent.com/u/50960772?v=4"
+					"username": "NinaNovice",
+					"user_id": 5,
+					"description": "Programadora novata con interés en el desarrollo web. Buscando mejorar mis habilidades todos los días.",
+					"img_url": "https://avatars.githubusercontent.com/u/50960772?v=4"
 				},
 				{
-				  "username": "LuisTech",
-				  "user_id": 6,
-				  "description": "Ingeniero de software con experiencia en aplicaciones móviles. Entusiasta del diseño de interfaces y el desarrollo ágil.",
-				  "img_url": "https://avatars.githubusercontent.com/u/1936746?v=4"
+					"username": "LuisTech",
+					"user_id": 6,
+					"description": "Ingeniero de software con experiencia en aplicaciones móviles. Entusiasta del diseño de interfaces y el desarrollo ágil.",
+					"img_url": "https://avatars.githubusercontent.com/u/1936746?v=4"
 				},
 				{
-				  "username": "SaraData",
-				  "user_id": 7,
-				  "description": "Data Scientist enfocada en Big Data y visualización de datos. Mi objetivo es encontrar patrones que cambien el mundo.",
-				  "img_url": "https://avatars.githubusercontent.com/u/10394380?v=4"
+					"username": "SaraData",
+					"user_id": 7,
+					"description": "Data Scientist enfocada en Big Data y visualización de datos. Mi objetivo es encontrar patrones que cambien el mundo.",
+					"img_url": "https://avatars.githubusercontent.com/u/10394380?v=4"
 				},
 				{
-				  "username": "RoboRico",
-				  "user_id": 8,
-				  "description": "Apasionado por la robótica y la automatización. Actualmente desarrollando proyectos con Raspberry Pi y Arduino.",
-				  "img_url": "https://avatars.githubusercontent.com/u/7587480?v=4"
+					"username": "RoboRico",
+					"user_id": 8,
+					"description": "Apasionado por la robótica y la automatización. Actualmente desarrollando proyectos con Raspberry Pi y Arduino.",
+					"img_url": "https://avatars.githubusercontent.com/u/7587480?v=4"
 				},
 				{
-				  "username": "EmmaUX",
-				  "user_id": 9,
-				  "description": "Diseñadora UX/UI. Mi trabajo es crear interfaces simples y accesibles para todos. Estoy en constante búsqueda de nuevas tendencias de diseño.",
-				  "img_url": "https://avatars.githubusercontent.com/u/146219?v=4"
+					"username": "EmmaUX",
+					"user_id": 9,
+					"description": "Diseñadora UX/UI. Mi trabajo es crear interfaces simples y accesibles para todos. Estoy en constante búsqueda de nuevas tendencias de diseño.",
+					"img_url": "https://avatars.githubusercontent.com/u/146219?v=4"
 				}
-			  ],
+			],
 			topnews: [
-					{
+				{
 					"uuid": "7834e499-15eb-46dd-a1ce-ecb479bbb2a2",
 					"title": "Última Hora de la DANA, en directo | El Gobierno aprueba un nuevo paquete de ayudas",
 					"description": "Hasta 32 personas continúan desaparecidas aún en la Comunidad Valenciana tras el paso de la DANA. Los efectivos de búsqueda se centran ahora en la zona de La Albufera donde aún vehículos y enseres permanecen enterrados.",
@@ -79,8 +82,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"categories": [],
 					"relevance_score": null,
 					"locale": "es"
-					},
-					{
+				},
+				{
 					"uuid": "bab0a2b6-bab1-4e9e-a620-0ce1867c3252",
 					"title": "Comienza en Bakú la COP29 marcada por la ausencia de las grandes potencias",
 					"description": "Casi 200 países de todo el mundo se reúnen en la capital de Azerbaiyán para debatir medidas que aborden la emergencia climática. No estará Biden, ni Putin, ni los presidentes de China o Brasil",
@@ -94,8 +97,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"categories": [],
 					"relevance_score": null,
 					"locale": "es"
-					},
-					{
+				},
+				{
 					"uuid": "92e3af08-d632-4fb3-ad35-184ca92f4c8e",
 					"title": "Cuánto se lleva hacienda por cada premio del Sorteo del ONCE del ONCE",
 					"description": "Consulta aquí cuánto se lleva Hacienda por cada premio del Sorteo 11 del 11 de la ONCE, el sorteo con la fecha más especial.",
@@ -109,8 +112,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"categories": [],
 					"relevance_score": null,
 					"locale": "es"
-					},
-					{
+				},
+				{
 					"uuid": "c8a12f3f-b6b7-4766-bd9e-0c5ba09fd69b",
 					"title": "Bitcoin bate récords con 80.000 dólares, impulsado por la victoria de Trump",
 					"description": "El precio de bitcoin alcanzó un máximo histórico el domingo, continuando su aumento posterior a las elecciones, ya que el presidente electo Donald Trump",
@@ -122,12 +125,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"published_at": "2024-11-11T09:21:45.000000Z",
 					"source": "forbes.es",
 					"categories": [
-					"business"
+						"business"
 					],
 					"relevance_score": null,
 					"locale": "es"
-					},
-					{
+				},
+				{
 					"uuid": "23cff728-4c81-49e9-9b18-cf99f70dfcf7",
 					"title": "El futuro de Griezmann apunta a estar muy lejos del Atlético de Madrid",
 					"description": "Antoine Griezmann podría estar viviendo sus últimas semanas como jugador del Atlético de Madrid",
@@ -139,12 +142,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"published_at": "2024-11-11T09:15:00.000000Z",
 					"source": "fichajes.net",
 					"categories": [
-					"sports"
+						"sports"
 					],
 					"relevance_score": null,
 					"locale": "es"
-					}, 
-					{
+				},
+				{
 					"uuid": "5a0d63ad-a801-4d99-9962-34a2efeb2629",
 					"title": "El Real Madrid le confirma a Ancelotti su primer fichaje de enero",
 					"description": "El equipo merengue va a acudir al mercado de fichajes de enero para reforzar su primera plantilla, Florentino ha confirmado el primer refuerzo",
@@ -156,12 +159,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"published_at": "2024-11-11T15:31:00.000000Z",
 					"source": "fichajes.net",
 					"categories": [
-					"sports"
+						"sports"
 					],
 					"relevance_score": null,
 					"locale": "es"
-					},
-					{
+				},
+				{
 					"uuid": "9bb7ea81-9c14-4c7b-8940-29dcf71e7dc8",
 					"title": "Sumar hace oídos sordos y pospone el cambio de marca",
 					"description": "Sumar ha evitado valorar el contenido del libro de la eurodiputada, Irene Montero, que carga contra Yolanda Díaz.",
@@ -173,12 +176,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"published_at": "2024-11-11T15:13:54.000000Z",
 					"source": "libertaddigital.com",
 					"categories": [
-					"general"
+						"general"
 					],
 					"relevance_score": null,
 					"locale": "es"
-					},
-					{
+				},
+				{
 					"uuid": "674207df-4662-4ced-8483-2bf140f007e3",
 					"title": "Fears for missing 15-year-old girl in Spain: Nicole vanished from major city over two weeks ago",
 					"description": "A NATIONWIDE appeal has been launched to track down a missing 15-year-old girl. Nicole M.S. (pictured above) has been not been seen since October 23,",
@@ -190,134 +193,145 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"published_at": "2024-11-11T15:09:00.000000Z",
 					"source": "theolivepress.es",
 					"categories": [
-					"general"
+						"general"
 					],
 					"relevance_score": null,
 					"locale": "es"
-					},{
-						"uuid": "3ed16af7-5d66-4442-a414-058e28f9ad82",
-						"title": "El precio del avión, al alza: los fletes crecen a doble dígito en octubre",
-						"description": "A pesar de la rápida solución a las huelgas de los estibadores en algunos puertos de Estados Unidos, el precio de los fletes de carga aérea ha seguido…",
-						"keywords": "",
-						"snippet": "En octubre, el precio de los fletes aéreos entre Europa y Norteamérica aumentaron un 11%, según los datos de la plataforma de análisis de demanda marítima ...",
-						"url": "https://www.modaes.com/entorno/el-precio-del-avion-al-alza-los-fletes-crecen-a-doble-digito-en-octubre",
-						"image_url": "https://www.modaes.com/thumb/eyJ0IjoiZCIsInciOjEyMDAsImgiOjY3NSwibSI6MSwidiI6IjEuNi43In0/files/2024/13-recursos/maersk-contenedores-camion-980.jpg",
-						"language": "es",
-						"published_at": "2024-11-12T16:43:31.000000Z",
-						"source": "modaes.es",
-						"categories": [
+				}, {
+					"uuid": "3ed16af7-5d66-4442-a414-058e28f9ad82",
+					"title": "El precio del avión, al alza: los fletes crecen a doble dígito en octubre",
+					"description": "A pesar de la rápida solución a las huelgas de los estibadores en algunos puertos de Estados Unidos, el precio de los fletes de carga aérea ha seguido…",
+					"keywords": "",
+					"snippet": "En octubre, el precio de los fletes aéreos entre Europa y Norteamérica aumentaron un 11%, según los datos de la plataforma de análisis de demanda marítima ...",
+					"url": "https://www.modaes.com/entorno/el-precio-del-avion-al-alza-los-fletes-crecen-a-doble-digito-en-octubre",
+					"image_url": "https://www.modaes.com/thumb/eyJ0IjoiZCIsInciOjEyMDAsImgiOjY3NSwibSI6MSwidiI6IjEuNi43In0/files/2024/13-recursos/maersk-contenedores-camion-980.jpg",
+					"language": "es",
+					"published_at": "2024-11-12T16:43:31.000000Z",
+					"source": "modaes.es",
+					"categories": [
 						"entertainment"
-						],
-						"relevance_score": null,
-						"locale": "es"
-						},
-						{
-						"uuid": "a487713c-50db-4c9c-b2da-12ba11a3db88",
-						"title": "Extreme caution is advised in Malaga over incoming storms: Residents on the Costa del Sol are told to close windows and shutters during deluge tonight",
-						"description": "COSTA del Sol residents are bracing themselves for incoming DANA storms as landlords warn tenants to batten down the hatches. After witnessing the",
-						"keywords": "",
-						"snippet": "COSTA del Sol residents are bracing themselves for incoming DANA storms as landlords warn tenants to batten down the hatches.\n\nAfter witnessing the destruction ...",
-						"url": "https://www.theolivepress.es/spain-news/2024/11/12/extreme-caution-is-advised-in-malaga-over-incoming-storms-residents-on-the-costa-del-sol-are-told-to-close-windows-and-shutters-during-deluge-tonight-as-expats-fear-repeat-of-historic-2016-floods/",
-						"image_url": "https://www.theolivepress.es/wp-content/uploads/2024/11/464783350_8719006728158853_196144836466269578_n.jpg",
-						"language": "en",
-						"published_at": "2024-11-12T16:30:00.000000Z",
-						"source": "theolivepress.es",
-						"categories": [
-						"general"
-						],
-						"relevance_score": null,
-						"locale": "es"
-						},
-						{
-						"uuid": "dd3f414a-30aa-48f3-8f1a-521db565ea8b",
-						"title": "Climate change is behind deadly DANA floods in Valencia, says Spain’s Pedro Sanchez",
-						"description": "PRIME Minister Pedro Sanchez has resoundingly blamed climate change for the DANA weather fronts that caused at least 220 deaths from flooding in Spain-",
-						"keywords": "",
-						"snippet": "PRIME Minister Pedro Sanchez has resoundingly blamed climate change for the DANA weather fronts that caused at least 220 deaths from flooding in Spain- mainly i...",
-						"url": "https://www.theolivepress.es/spain-news/2024/11/12/climate-change-is-behind-deadly-dana-floods-in-valencia-says-spains-pedro-sanchez/",
-						"image_url": "https://www.theolivepress.es/wp-content/uploads/2024/11/Spains-Pedro-Sanchez-blames-climate-change-for-flood-disaster-and-220-deaths-during-COP29-speech-scaled.jpg",
-						"language": "en",
-						"published_at": "2024-11-12T16:30:00.000000Z",
-						"source": "theolivepress.es",
-						"categories": [
-						"general"
-						],
-						"relevance_score": null,
-						"locale": "es"
-						}
 					],
+					"relevance_score": null,
+					"locale": "es"
+				},
+				{
+					"uuid": "a487713c-50db-4c9c-b2da-12ba11a3db88",
+					"title": "Extreme caution is advised in Malaga over incoming storms: Residents on the Costa del Sol are told to close windows and shutters during deluge tonight",
+					"description": "COSTA del Sol residents are bracing themselves for incoming DANA storms as landlords warn tenants to batten down the hatches. After witnessing the",
+					"keywords": "",
+					"snippet": "COSTA del Sol residents are bracing themselves for incoming DANA storms as landlords warn tenants to batten down the hatches.\n\nAfter witnessing the destruction ...",
+					"url": "https://www.theolivepress.es/spain-news/2024/11/12/extreme-caution-is-advised-in-malaga-over-incoming-storms-residents-on-the-costa-del-sol-are-told-to-close-windows-and-shutters-during-deluge-tonight-as-expats-fear-repeat-of-historic-2016-floods/",
+					"image_url": "https://www.theolivepress.es/wp-content/uploads/2024/11/464783350_8719006728158853_196144836466269578_n.jpg",
+					"language": "en",
+					"published_at": "2024-11-12T16:30:00.000000Z",
+					"source": "theolivepress.es",
+					"categories": [
+						"general"
+					],
+					"relevance_score": null,
+					"locale": "es"
+				},
+				{
+					"uuid": "dd3f414a-30aa-48f3-8f1a-521db565ea8b",
+					"title": "Climate change is behind deadly DANA floods in Valencia, says Spain’s Pedro Sanchez",
+					"description": "PRIME Minister Pedro Sanchez has resoundingly blamed climate change for the DANA weather fronts that caused at least 220 deaths from flooding in Spain-",
+					"keywords": "",
+					"snippet": "PRIME Minister Pedro Sanchez has resoundingly blamed climate change for the DANA weather fronts that caused at least 220 deaths from flooding in Spain- mainly i...",
+					"url": "https://www.theolivepress.es/spain-news/2024/11/12/climate-change-is-behind-deadly-dana-floods-in-valencia-says-spains-pedro-sanchez/",
+					"image_url": "https://www.theolivepress.es/wp-content/uploads/2024/11/Spains-Pedro-Sanchez-blames-climate-change-for-flood-disaster-and-220-deaths-during-COP29-speech-scaled.jpg",
+					"language": "en",
+					"published_at": "2024-11-12T16:30:00.000000Z",
+					"source": "theolivepress.es",
+					"categories": [
+						"general"
+					],
+					"relevance_score": null,
+					"locale": "es"
+				}
+			],
 			token: null,
 			users: []
-			
+
 		},
 		actions: {
-      signup: async (username, email, password) => {
-        const resp = await fetch(
-          `${process.env.BACKEND_URL}/api/signup`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              username: username,
-              email: email,
-              password: password,
-            }),
-          }
-        );
-        if (!resp.ok) throw Error("There was a problem in the signup request");
+			signup: async (username, email, password) => {
+				//ESTA LOGICA ES MIA
+				const user = await account.create(
+					ID.unique(),
+					email,
+					password,
+					username
+				);
 
-        if (resp.status === 401) {
-          throw "Invalid credentials";
-        } else if (resp.status === 400) {
-          throw "Invalid email or password format";
-        }
-        const data = await resp.json();
-      },
-      login: async (email, password) => {
-        try {
-          const resp = await fetch(
-            `${process.env.BACKEND_URL}/api/login`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: email, password: password }),
-            }
-          );
-      
-          if (!resp.ok) {
-            // Si la respuesta no es 2xx, lanzamos un error general
-            throw new Error("usuario o contraseña incorrecta");
-          }
-      
-          const data = await resp.json();
-          
-          if (resp.status === 401) {
-            // Si el estado es 401 (credenciales incorrectas), lanzamos un error específico
-            throw new Error("Usuario o contraseña incorrectos");
-          } else if (resp.status === 400) {
-            // Si el estado es 400 (formato incorrecto de email o contraseña)
-            throw new Error("Formato de email o contraseña inválido");
-          }
-      
-          // Si todo está bien, guardamos el token y retornamos los datos
-          localStorage.setItem("jwt-token", data.token);
-		  localStorage.setItem("user_id", data.user_id); 
+				const userID = user.$id;
+				//HASTA AQUI
+				const resp = await fetch(
+					`${process.env.BACKEND_URL}/api/signup`,
+					{
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							user_id: userID, //ESTO ES AÑADIDO TAMBIEN
+							username: username,
+							email: email,
+							password: password
+						}),
+					}
+				);
+				if (!resp.ok) throw Error("There was a problem in the signup request");
 
-          return data;
-        } catch (error) {
-          // En caso de cualquier otro error, lo propagamos
-          throw error;
-        }
-      },
+				if (resp.status === 401) {
+					throw "Invalid credentials";
+				} else if (resp.status === 400) {
+					throw "Invalid email or password format";
+				}
+				const data = await resp.json();
+			},
+			login: async (email, password) => {
+				try {
+					const resp = await fetch(
+						`${process.env.BACKEND_URL}/api/login`,
+						{
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ email: email, password: password }),
+						}
+					);
+
+					if (!resp.ok) {
+						// Si la respuesta no es 2xx, lanzamos un error general
+						throw new Error("usuario o contraseña incorrecta");
+					}
+
+					const data = await resp.json();
+
+					if (resp.status === 401) {
+						// Si el estado es 401 (credenciales incorrectas), lanzamos un error específico
+						throw new Error("Usuario o contraseña incorrectos");
+					} else if (resp.status === 400) {
+						// Si el estado es 400 (formato incorrecto de email o contraseña)
+						throw new Error("Formato de email o contraseña inválido");
+					}
+
+					// Si todo está bien, guardamos el token y retornamos los datos
+					localStorage.setItem("jwt-token", data.token);
+					localStorage.setItem("user_id", data.user_id);
+
+					return data;
+				} catch (error) {
+					// En caso de cualquier otro error, lo propagamos
+					throw error;
+				}
+			},
 
 			logout: () => {
 				localStorage.removeItem("jwt-token");
 				localStorage.removeItem("user_id");
-				setStore({ user: null, profile: null, friends: [] });  
+				setStore({ user: null, profile: null, friends: [] });
 
 				console.log("Logout successful!");
 			},
-
+        
 			addFavouriteNew: async(item) => {
 				const user_id = localStorage.getItem("user_id")
 				if(!user_id){
@@ -454,25 +468,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error)
 				}
 			},
-
-
-		/*	getNews: async() => {
-				try{
-					const response = await fetch (process.env.DOMAIN_API+"/v1/news/top?api_token="+ process.env.API_TOKEN+"locale=es&limit=3")
-					if (!response.ok) {
-						throw new Error("La respuesta no fue existosa");
+			/*	getNews: async() => {
+					try{
+						const response = await fetch (process.env.DOMAIN_API+"/v1/news/top?api_token="+ process.env.API_TOKEN+"locale=es&limit=3")
+						if (!response.ok) {
+							throw new Error("La respuesta no fue existosa");
+						}
+						const data = await response.json()
+						setStore({topnews: data.data})
+						console.log(topnews)
+					}catch(error){
+						console.log("Not found news", error)
 					}
-					const data = await response.json()
-					setStore({topnews: data.data})
-					console.log(topnews)
-				}catch(error){
-					console.log("Not found news", error)
-				}
-			}, */
+				}, */
 
-			getProfile: async(profile_id) => {
-				try{
-					const response = await fetch (`${process.env.BACKEND_URL}/api/profile/${profile_id}`)
+			getProfile: async (profile_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${profile_id}`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
@@ -483,9 +495,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			getUser: async(user_id) => {
-				try{
-					const response = await fetch (`${process.env.BACKEND_URL}/api/user/${user_id}`)
+			getUser: async (user_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
@@ -496,9 +508,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			getFriends: async(user_id) => {
-				try{
-					const response = await fetch (`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
+			getFriends: async (user_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
@@ -509,31 +521,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			getAllUsers: async() => {
-				try{
-					const response = await fetch (`${process.env.BACKEND_URL}/api/users`)
+			getAllUsers: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/users`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({listuser: data})
+					setStore({ listuser: data })
 					console.log(listuser)
-				}catch(error){
+				} catch (error) {
 					console.log("Not users found", error)
 				}
 			},
 
 
-			getAllProfiles: async() => {
-				try{
-					const response = await fetch (`${process.env.BACKEND_URL}/api/profiles`)
+			getAllProfiles: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/profiles`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({listprofile: data})
+					setStore({ listprofile: data })
 					console.log(listprofile)
-				}catch(error){
+				} catch (error) {
 					console.log("Not users found", error)
 				}
 			},
@@ -547,11 +559,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
 						method: 'DELETE',
 						headers: {
-							'Content-Type': 'application/json' 
+							'Content-Type': 'application/json'
 						},
-						body: JSON.stringify(data) 
+						body: JSON.stringify(data)
 					});
-			
+
 					if (!response.ok) {
 						throw new Error('Error al eliminar la amistad');
 					}
@@ -561,32 +573,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error al eliminar la amistad:', error);
 				}
 			},
-		getMyTasks: async () => {
-        // Recupera el token desde la localStorage
-        const token = localStorage.getItem("jwt-token");
+			getMyTasks: async () => {
+				// Recupera el token desde la localStorage
+				const token = localStorage.getItem("jwt-token");
 
-        const resp = await fetch(
-          `${process.env.BACKEND_URL}/api/users`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token, //authorization token
-            },
-          }
-        );
+				const resp = await fetch(
+					`${process.env.BACKEND_URL}/api/users`,
+					{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: "Bearer " + token, //authorization token
+						},
+					}
+				);
 
-        if (!resp.ok) {
-          throw Error("There was a problem in the login request");
-        } else if (resp.status === 403) {
-          throw Error("Missing or invalid token");
-        } else {
-          throw Error("Unknown error");
-        }
-      },
+				if (!resp.ok) {
+					throw Error("There was a problem in the login request");
+				} else if (resp.status === 403) {
+					throw Error("Missing or invalid token");
+				} else {
+					throw Error("Unknown error");
+				}
+			},
 
-    },
-  };
+		},
+	};
 };
 
 export default getState;

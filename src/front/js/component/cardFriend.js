@@ -3,16 +3,22 @@ import { Context } from "../store/appContext";
 import { Card, ListGroup, Modal, Button, Row, Col } from "react-bootstrap";
 import "../../styles/cardfriend.css";
 import { Link } from "react-router-dom";
+import Chat from "../pages/Chat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faComments } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
 
 const FriendCard = () => {
+  const [activeFriend, setActiveFriend] = useState(null);
   const { store, actions } = useContext(Context);
   const [show, setShow] = useState(false);
   const [selectedFriendId, setSelectedFriendId] = useState(null);  // Para almacenar el ID del amigo seleccionado
   const userId = localStorage.getItem("user_id");
+
+  const openChat = (friendId) => {
+    setActiveFriend(friendId);
+  }
 
   const handleClose = () => setShow(false);
   const handleShow = (friendId) => {
@@ -48,7 +54,7 @@ const FriendCard = () => {
   return (
     <>
       {friendsWithProfiles.map((friend, index) => {
-         const key = `${friend.id}-${friend.friend_id}-${index}`
+        const key = `${friend.id}-${friend.friend_id}-${index}`
         return (
           <Card key={key} className="friendcard" style={{ width: '100%', height: '10rem' }}>
             <Row className="row d-flex justify-content-center pt-4">
@@ -62,14 +68,14 @@ const FriendCard = () => {
                 <Link className="mx-auto" to={`/friends/${friend.id}`}>
                   <FontAwesomeIcon className="pb-2" icon={faCircleUser} size="2xl" style={{ color: "#ffffff" }} />
                 </Link>
-                <FontAwesomeIcon className="pb-2" icon={faComments} size="2xl" style={{ color: "#ffffff" }} />
+                <FontAwesomeIcon onClick={() => openChat(friend.id)} className="pb-2" icon={faComments} size="2xl" style={{ color: "#ffffff" }} />
                 <FontAwesomeIcon className="pb-2" onClick={() => handleShow(friend.id)} icon={faCircleXmark} size="2xl" style={{ color: "#ffffff" }} />
               </Col>
             </Row>
           </Card>
         );
       })}
-      
+
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title className="text-title">Borrar amistad</Modal.Title>
@@ -79,16 +85,17 @@ const FriendCard = () => {
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button className="delete" onClick={() => { 
-              useEffect(() => {
-                actions.deleteFriend(userId, selectedFriendId);
-              }, []);
-            handleClose(); 
+          <Button className="delete" onClick={() => {
+            useEffect(() => {
+              actions.deleteFriend(userId, selectedFriendId);
+            }, []);
+            handleClose();
           }}>
             Eliminar definitivamente
           </Button>
         </Modal.Footer>
       </Modal>
+      {activeFriendId && <Chat friendId={activeFriendId} />}
     </>
   );
 };
