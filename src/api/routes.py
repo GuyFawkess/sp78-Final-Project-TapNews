@@ -237,6 +237,20 @@ def remove_saved_news():
     db.session.commit()
     return jsonify({"succes": "News was correctly removed"}), 200
 
+@api.route('/user/<int:id>/saved_news', methods=['GET'])
+def get_user_saved_news(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    saved_news_list = SavedNews.query.filter_by(user_id=id).all()
+    if not saved_news_list:
+        return jsonify([]), 200
+    id_list = [news.news_id for news in saved_news_list]
+    news_list = News.query.filter(News.id.in_(id_list)).all()
+    response_body = [news.serialize() for news in news_list]
+    return jsonify(response_body), 200
+
+
 @api.route('/news', methods=['POST'])
 def add_news():
     data = request.get_json()

@@ -317,22 +317,75 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log("Logout successful!");
 			},
 
-			addFavouriteNew: (item) => {
-				const store = getStore();
-				const arrayFavoritos = store.favouriteNews
-				if (!arrayFavoritos.includes(item)){
-				setStore({ favouriteNews: [...store.favouriteNews, item] })
-				console.log(store.favouriteNews)
+			addFavouriteNew: async(item) => {
+				const user_id = localStorage.getItem("user_id")
+				if(!user_id){
+					throw new Error("User must be logged in order to save news")
 				}
-				else 
-					console.log("Don't repeat favourite")
+				const news_id = item.uuid
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							'user_id': user_id,
+							'news_id': news_id
+						})
+					})
+					if(!resp.ok){
+						throw new Error("Failed to save news")
+					}
+				}
+				catch(error){
+					console.log(error)
+				}
 			},
 
-			deleteFavouriteNew: (indexid) => {
-				const store = getStore();
-				store.favouriteNews = store.favouriteNews.filter((_, index) => index !== indexid);
-				setStore ({ favouriteNews: [...store.favouriteNews]})
+			deleteFavouriteNew: async(news_id) => {
+				const user_id = localStorage.getItem('user_id')
+				if(!user_id){
+					throw new Error('User must be logged in to delete a saved news')
+				}
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							'user_id': user_id,
+							'news_id': news_id
+						})
+					})
+					if(!resp.ok){
+						throw new Error('Failed to delete saved news')
+					}
+				}
+				catch(error){
+					console.log(error)
+				}
 			}, 
+
+			getFavouriteNews: async() => {
+				const id = localStorage.getItem("user_id")
+				if(!id){
+					throw new Error('User must be logged in to fetch saved news')
+				}
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`)
+					if (!resp.ok){
+						throw new Error("Failed to access user's saved news")
+					}
+					const data = await resp.json()
+					setStore({favouriteNews: data})
+				}
+				catch(error){
+					console.log(error)
+				}
+			},
+
 
 		/*	getNews: async() => {
 				try{
@@ -356,7 +409,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await response.json()
 					setStore({profile: data})
-					console.log(profile)
 				}catch(error){
 					console.log("Not profile found", error)
 				}
@@ -370,7 +422,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await response.json()
 					setStore({user: data})
-					console.log(user)
 				}catch(error){
 					console.log("Not user found", error)
 				}
@@ -384,7 +435,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await response.json()
 					setStore({friends: data.friends})
-					console.log(friends)
 				}catch(error){
 					console.log("Not friends found", error)
 				}

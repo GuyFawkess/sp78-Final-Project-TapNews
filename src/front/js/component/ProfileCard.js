@@ -28,7 +28,7 @@ const ProfileCard = () => {
       // Si no hay userId en el localStorage, redirigir a la página de login
       navigate("/login");  // Usamos navigate para redirigir
     }
-  }, [userId, store.user, navigate]);
+  }, [userId, navigate]);
   
 if (!store.user || !store.profile || !store.friends || !store.user.username) {
   return (

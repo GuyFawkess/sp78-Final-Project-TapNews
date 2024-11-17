@@ -56,7 +56,7 @@ class Profile(db.Model):
     
 class News(db.Model):
     __tablename__ = 'news'
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.String(300), primary_key=True)
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
     similar_news = db.Column(ARRAY(db.String))
@@ -89,7 +89,7 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
-    news_id = db.Column(db.BigInteger, db.ForeignKey('news.id'))
+    news_id = db.Column(db.String(300), db.ForeignKey('news.id'))
     content = db.Column(db.String, nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
@@ -134,7 +134,7 @@ class CommentReply(db.Model):
 class Like(db.Model):
     __tablename__ = 'likes' 
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
-    news_id = db.Column(db.BigInteger, db.ForeignKey('news.id'), primary_key=True)
+    news_id = db.Column(db.String(300), db.ForeignKey('news.id'), primary_key=True)
 
     user = db.relationship("User", back_populates="likes")
     news = db.relationship("News", back_populates="likes")
@@ -151,7 +151,7 @@ class Like(db.Model):
 class SavedNews(db.Model):
     __tablename__ = 'saved_news'
     user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
-    news_id = db.Column(db.BigInteger, db.ForeignKey('news.id'), primary_key=True)
+    news_id = db.Column(db.String(300), db.ForeignKey('news.id'), primary_key=True)
     
     user = db.relationship("User", back_populates="saved_news")
     news = db.relationship("News", back_populates="saved_news")

@@ -31,7 +31,7 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                     <ScrollToTop>
-                      <AuthProvider>
+                      {/* <AuthProvider> */}
                         <div style={{overflow:'hidden'}}>
                             <Routes>
                                 <Route element={<Feed />} path="/" />
@@ -40,14 +40,14 @@ const Layout = () => {
                                 <Route element={<FriendsView />} path="/friends" />
                                 <Route element={<UserProfile/>} path="/profile" />
                                 <Route element={<FriendProfileView />} path="/friends/:friend_id" />
-                                <Route element={<RegisterPage />} path="/register2" />
+                                {/* <Route element={<RegisterPage />} path="/register2" />
                                 <Route element={<LoginPage />} path="/login2" />
                                 <Route element={<PrivateRoutes />}>
                                   <Route element={<Chat />} path="/chat" />
-                                </Route>
+                                </Route> */}
                             </Routes>
                         </div>
-                      </AuthProvider>
+                      {/* </AuthProvider> */}
                     </ScrollToTop>
                 <NavbarBottom />
             </BrowserRouter>
