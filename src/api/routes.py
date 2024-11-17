@@ -27,7 +27,7 @@ def create_user():
             username=request_body["username"],
             email=request_body["email"],
             password=generate_password_hash(request_body["password"]),
-            id=randint(1,10000000000000000000)
+            id=randint(1,100000)
         )
         db.session.add(create_user)
         db.session.commit()
@@ -35,7 +35,8 @@ def create_user():
         # Crear el perfil
         new_profile = Profile(
             description="Este es el perfil de " + request_body["username"],
-            user_id=create_user.id
+            user_id=create_user.id,
+            id=create_user.id
         )
         db.session.add(new_profile)
         db.session.commit()
