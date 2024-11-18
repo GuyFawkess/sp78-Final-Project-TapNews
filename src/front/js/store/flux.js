@@ -407,28 +407,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			// getUserFilter: async(filter) => {
-			// 	const actions = getActions()
-			// 	if(filter == "") {
-			// 		actions.getAllUsers()
-			// 	}else{
-			// 		fetch(`${process.env.BACKEND_URL}/api/users?name$={filter}`)
-			// 		.then(response => response.json())
-			// 		.then(data => {
-			// 			const users = data.map((user) => {
-			// 				return {
-			// 					uid: user.id,
-			// 					name: user.username
-			// 				}
-			// 			})
-			// 			setStore({"users": users})
-			// 		})
-			// 		.catch(error => {
-			// 			console.error("Error al obtener usuarios filtrados:", error);
-			// 		});
-			// 	}
-			// },
-
 			getFilterUser: async (filter) => {
 				if (filter === "") {
 				  // Si el filtro está vacío, obtener todos los usuarios

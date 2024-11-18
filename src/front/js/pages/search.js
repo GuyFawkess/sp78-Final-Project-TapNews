@@ -1,72 +1,3 @@
-// import React, { useContext, useEffect, useState } from "react";
-// import { useDebounce } from "use-debounce";
-// import { Context } from "../store/appContext";
-
-// export const Search = () => {
-//   const { store, actions } = useContext(Context);
-
-//   const [searchTerm, setSearchTerm] = useState("");
-//   const [inputValue, setInputValue] = useState("");
-//   const [debounceValue] = useDebounce(inputValue, 500); // Añadimos un retraso de 500ms
-
-//   // Función para manejar cambios en el input
-//   const handleInputChange = (e) => {
-//     const value = e.target.value;
-//     setInputValue(value); // Actualizamos inputValue
-//     setSearchTerm(value); // Actualizamos searchTerm
-//   };
-
-//   // useEffect para realizar la búsqueda con debounce
-//   useEffect(() => {
-//     if (debounceValue) {
-//       console.log("Buscando usuarios:", debounceValue);
-//       actions.getFilterUser(debounceValue);
-//     }
-//   }, [debounceValue, actions]);
-
-//   return (
-//     <div
-//       className="d-flex justify-content-center"
-//       style={{
-//         paddingTop: "20px",
-//         minHeight: "100vh", // Asegura que el fondo cubra toda la altura de la pantalla
-//         background: "linear-gradient(to bottom, #003366, #66ccff)", // Gradiente azul de oscuro a claro
-//       }}
-//     >
-//       <div
-//         className="text-center"
-//         style={{ width: "100%", maxWidth: "500px", paddingLeft: "10px", paddingRight: "10px" }}
-//       >
-//         <h1 className="text-center mb-3 text-light">Búsqueda de Usuarios</h1>
-
-//         {/* Grupo de entrada de Bootstrap con ícono y márgenes uniformes */}
-//         <div className="input-group mb-3">
-//           <input
-//             type="text"
-//             value={searchTerm}
-//             onChange={handleInputChange} // Usamos handleInputChange aquí
-//             placeholder="Buscar..."
-//             className="form-control"
-//           />
-//           <button
-//             className="btn btn-outline-secondary"
-//             onClick={() => actions.getFilterUser(searchTerm)} // Realiza la búsqueda al hacer clic
-//             style={{
-//               borderTopLeftRadius: "0",
-//               borderBottomLeftRadius: "0",
-//               padding: "0.5rem 1rem",
-//             }}
-//           >
-//             <i className="fa-solid fa-magnifying-glass text-light"></i>
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Search;
-
 import React, { useContext, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { Context } from "../store/appContext";
@@ -74,25 +5,49 @@ import { Context } from "../store/appContext";
 export const Search = () => {
   const { store, actions } = useContext(Context);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [debounceValue] = useDebounce(inputValue); // Retraso de 500ms
+  const [debounceValue] = useDebounce(inputValue);
+
+  // useEffect(() => {
+  //   if (typeof actions.getAllUsers === "function") {
+  //     actions.getAllUsers().catch((error) =>
+  //       console.error("Error al obtener todos los usuarios:", error)
+  //     );
+  //   }
+  // }, [actions]);
 
   // Función para manejar cambios en el input
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value); // Actualizamos inputValue
-    setSearchTerm(value); // Actualizamos searchTerm
+    // setSearchTerm(value); // Actualizamos searchTerm
   };
 
   // useEffect para realizar la búsqueda con debounce
+  // useEffect(() => {
+  //   if (debounceValue) {
+  //     console.log("Buscando usuarios:", debounceValue);
+  //     // Llamada a la acción para filtrar los usuarios
+  //     actions.getFilterUser(debounceValue);  // Asegúrate de que esta acción esté correctamente definida
+  //   }
+  // }, [debounceValue, actions]);
+
   useEffect(() => {
+    // Solo hacer la búsqueda si hay un término de búsqueda
     if (debounceValue) {
-      console.log("Buscando usuarios:", debounceValue);
-      // Llamada a la acción para filtrar los usuarios
-      actions.getFilterUser(debounceValue);  // Asegúrate de que esta acción esté correctamente definida
+      actions.getFilterUser(debounceValue)
+        .catch(error => console.error("Error al obtener usuarios filtrados:", error));
+    } else {
+      // Si no hay un término de búsqueda, carga todos los usuarios
+      actions.getAllUsers()
+        .catch(error => console.error("Error al obtener todos los usuarios:", error));
     }
-  }, [debounceValue, actions]);
+  }, []);
+
+  // Determinar qué usuarios mostrar
+  const usersToShow = debounceValue ? store.users : store.listuser;
+
 
   return (
     <div
@@ -113,14 +68,14 @@ export const Search = () => {
         <div className="input-group mb-3">
           <input
             type="text"
-            value={searchTerm}
+            value={inputValue}
             onChange={handleInputChange} // Usamos handleInputChange aquí
             placeholder="Buscar..."
             className="form-control"
           />
           <button
             className="btn btn-outline-secondary"
-            onClick={() => actions.getFilterUser(searchTerm)} // Realiza la búsqueda al hacer clic
+            onClick={() => actions.getFilterUser(debounceValue)} // Realiza la búsqueda al hacer clic
             style={{
               borderTopLeftRadius: "0",
               borderBottomLeftRadius: "0",
@@ -132,10 +87,10 @@ export const Search = () => {
         </div>
 
         {/* Mostrar los resultados debajo del input */}
-        <div className="user-list">
-          {store.users && store.users.length > 0 ? (
+        <div className="user-list text-light">
+          {usersToShow && usersToShow.length > 0 ? (
             <ul>
-              {store.users.map((user, index) => (
+              {usersToShow.map((user, index) => (
                 <li key={index}>{user.name}</li> // Asegúrate de que 'name' sea un atributo de los usuarios
               ))}
             </ul>
@@ -149,3 +104,4 @@ export const Search = () => {
 };
 
 export default Search;
+
