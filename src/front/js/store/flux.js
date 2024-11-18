@@ -5,11 +5,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			favouriteNews: [],
-			profile:[],
-			listuser:[],
-			listprofile:[],
-			user:[],
-			friends:[],
+			profile: [],
+			listuser: [],
+			listprofile: [],
+			user: [],
+			friends: [],
 			likes: [],
 			userexample: [
 				{
@@ -255,23 +255,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			signup: async (username, email, password) => {
-				//ESTA LOGICA ES MIA
-				// const user = await account.create(
-				// 	ID.unique(),
-				// 	email,
-				// 	password,
-				// 	username
-				// );
+				// ESTA LOGICA ES MIA
+				const user = await account.create(
+					ID.unique(),
+					email,
+					password,
+					username
+				);
 
-				// const userID = user.$id;
-				//HASTA AQUI
+				const userID = user.$id;
+				// HASTA AQUI
 				const resp = await fetch(
 					`${process.env.BACKEND_URL}/api/signup`,
 					{
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
-							//user_id: userID, //ESTO ES AÑADIDO TAMBIEN
+							user_id: userID, //ESTO ES AÑADIDO TAMBIEN
 							username: username,
 							email: email,
 							password: password
@@ -331,14 +331,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				console.log("Logout successful!");
 			},
-        
-			addFavouriteNew: async(item) => {
+
+			addFavouriteNew: async (item) => {
 				const user_id = localStorage.getItem("user_id")
-				if(!user_id){
+				if (!user_id) {
 					return
 				}
 				const news_id = item.uuid
-				try{
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
 						method: 'POST',
 						headers: {
@@ -349,22 +349,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'news_id': news_id
 						})
 					})
-					if(!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Failed to save news")
 					}
 				}
-				catch(error){
+				catch (error) {
 					console.log(error)
 				}
 			},
 
-			deleteFavouriteNew: async(news_id) => {
+			deleteFavouriteNew: async (news_id) => {
 				const user_id = localStorage.getItem('user_id')
 				const actions = getActions()
-				if(!user_id){
+				if (!user_id) {
 					return
 				}
-				try{
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
 						method: 'DELETE',
 						headers: {
@@ -375,56 +375,56 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'news_id': news_id
 						})
 					})
-					if(!resp.ok){
+					if (!resp.ok) {
 						throw new Error('Failed to delete saved news')
 					}
 					await actions.getFavouriteNews();
 				}
-				catch(error){
+				catch (error) {
 					console.log(error)
 				}
-			}, 
+			},
 
-			getFavouriteNews: async() => {
+			getFavouriteNews: async () => {
 				const id = localStorage.getItem("user_id")
-				if(!id){
+				if (!id) {
 					return
 				}
-				try{
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`)
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Failed to access user's saved news")
 					}
 					const data = await resp.json()
-					setStore({favouriteNews: data})
+					setStore({ favouriteNews: data })
 				}
-				catch(error){
+				catch (error) {
 					console.log(error)
 				}
 			},
 
-			getUserLikes: async() => {
+			getUserLikes: async () => {
 				const id = localStorage.getItem('user_id')
-				if(!id){
+				if (!id) {
 					return
 				}
-				try{
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/likes`)
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Failed to access user's likes")
 					}
 					const data = await resp.json()
-					setStore({likes: data})
+					setStore({ likes: data })
 				}
-				catch(error){
+				catch (error) {
 					console.log(error)
 				}
 			},
 
-			addLike: async(news_id) => {
+			addLike: async (news_id) => {
 				const user_id = localStorage.getItem('user_id')
-				if(!user_id) return
-				try{
+				if (!user_id) return
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/like`, {
 						method: 'POST',
 						headers: {
@@ -435,21 +435,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"news_id": news_id
 						})
 					})
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Failed to add like")
 					}
 					const store = getStore()
-					setStore({likes: [...store.likes, news_id]})
+					setStore({ likes: [...store.likes, news_id] })
 				}
-				catch(error){
+				catch (error) {
 					console.log(error)
 				}
 			},
 
-			deleteLike: async(news_id) => {
+			deleteLike: async (news_id) => {
 				const user_id = localStorage.getItem('user_id')
-				if(!user_id) return
-				try{
+				if (!user_id) return
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/like`, {
 						method: 'DELETE',
 						headers: {
@@ -460,13 +460,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"news_id": news_id
 						})
 					})
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Failed to delete like")
 					}
 					const store = getStore()
-					setStore({likes: store.likes.filter((id) => id !== news_id)})
+					setStore({ likes: store.likes.filter((id) => id !== news_id) })
 				}
-				catch(error){
+				catch (error) {
 					console.log(error)
 				}
 			},
@@ -491,8 +491,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({profile: data})
-				}catch(error){
+					setStore({ profile: data })
+				} catch (error) {
 					console.log("Not profile found", error)
 				}
 			},
@@ -533,8 +533,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({user: data})
-				}catch(error){
+					setStore({ user: data })
+				} catch (error) {
 					console.log("Not user found", error)
 				}
 			},
@@ -546,8 +546,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({friends: data.friends})
-				}catch(error){
+					setStore({ friends: data.friends })
+				} catch (error) {
 					console.log("Not friends found", error)
 				}
 			},
@@ -607,26 +607,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			addFriend: async (user_id, friend_id) => {
 				try {
-				  const response = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
-					method: 'POST',
-					headers: {
-					  'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({ user_id, friend_id })
-				  });	  
-				  if (response.ok) {	
-					const newFriend = { 'user_id': user_id, 'friend_id': friend_id }; 
-					const store = getStore();
-					setStore({
-					  friends: [...store.friends, newFriend], 
+					const response = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({ user_id, friend_id })
 					});
-				  } else {
-					console.error("No se pudo añadir el amigo");
-				  }
+					if (response.ok) {
+						const newFriend = { 'user_id': user_id, 'friend_id': friend_id };
+						const store = getStore();
+						setStore({
+							friends: [...store.friends, newFriend],
+						});
+					} else {
+						console.error("No se pudo añadir el amigo");
+					}
 				} catch (error) {
-				  console.error("Error al añadir el amigo:", error);
+					console.error("Error al añadir el amigo:", error);
 				}
-			  },
+			},
 
 			getMyTasks: async () => {
 				// Recupera el token desde la localStorage
