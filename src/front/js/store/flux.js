@@ -497,6 +497,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+				  
+			modifyProfile: async (userId, updatedProfile) => {
+					try {
+					
+					  const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${userId}`, {
+						method: "PUT",
+						headers: {
+						  "Content-Type": "application/json",
+						},
+						body: JSON.stringify(updatedProfile),
+					  });
+			  
+					  if (!response.ok) {
+						throw new Error("Error al actualizar el perfil");
+					  }
+			  
+					  const updatedData = await response.json();
+			  
+					  
+					  setStore({
+						profile: updatedData,  
+					  });
+			  
+					  console.log("Perfil actualizado con éxito:", updatedData);
+					} catch (error) {
+					  console.error("Error al modificar el perfil:", error);
+					}
+				  },
+
 			getUser: async (user_id) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}`)

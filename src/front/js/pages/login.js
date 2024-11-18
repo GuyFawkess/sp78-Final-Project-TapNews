@@ -3,10 +3,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { useAuth } from "../store/AuthContext";
 
-
+import "/workspaces/sp78-Final-Project-TapNews/src/front/styles/login.css"
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import usuario from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png"
+import banner from "/workspaces/sp78-Final-Project-TapNews/public/Banner.jpg"
+import footerlogin from "/workspaces/sp78-Final-Project-TapNews/public/footerlogin.jpg"
 
 
 export const LogIn = () => {
@@ -60,16 +61,17 @@ export const LogIn = () => {
   };
 
   return (
-    <div className="text-center container mt-5">
+    <>
+     <img src={banner} style={{ height: "20%", width: "100%" }} />
+    <div className="text-center container mt-3">
       <div className="full-screen-container">
-        <div className="form-container">
+        <div className="form-container mx-auto">
           <Form onSubmit={handleSubmit}>
-            <img src={usuario} style={{ height: "250px", width: "auto" }} />
-            <h1 className="my-5">Acceso de Usuario</h1>
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
+            <Form.Group className="mb-4" controlId="formBasicEmail">
+              <Form.Label className="label-email mb-5">Email</Form.Label>
               <Form.Control
+                className="input-email"
                 type="email"
                 name="email"
                 placeholder="Ingresar email"
@@ -78,9 +80,10 @@ export const LogIn = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Contraseña</Form.Label>
+            <Form.Group className="mb-4" controlId="formBasicPassword">
+              <Form.Label className="label-pass mb-3">Contraseña</Form.Label>
               <Form.Control
+                className="input-pass"
                 type="password"
                 name="password"
                 placeholder="Ingresar Contraseña"
@@ -88,15 +91,17 @@ export const LogIn = () => {
                 onChange={handleInputChange}
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button className=" access mt-5" type="submit">
               Acceder
             </Button>
+            <Link to="/signup" className="link"><Button className="register2 mt-5" type="submit">
+              Registro
+            </Button></Link>
           </Form>
         </div>
-        <Link to="/signup" className="link">
-          Acceso a Registro
-        </Link>
       </div>
     </div>
+    <img src={footerlogin} style={{ height: "25%", width: "100%", position:"absolute",bottom: "0"}} />
+    </>
   );
 };

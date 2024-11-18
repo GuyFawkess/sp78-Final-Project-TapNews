@@ -9,7 +9,6 @@ const FriendProfile = () => {
   const { store, actions } = useContext(Context);
   const { friend_id } = useParams();
   
-  // Estado local para manejar la carga de los datos
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -40,7 +39,6 @@ const FriendProfile = () => {
     return <div>{error}</div>;
   }
 
-  // Verificamos si los datos están disponibles
   const user = store.user || {};
   const profile = store.profile || {};
   const friends = store.friend || [];
