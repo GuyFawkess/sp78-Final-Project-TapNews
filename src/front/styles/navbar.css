@@ -6,6 +6,7 @@
     right:0;
     z-index: 5;
     height: 60px;
+    border-top: 1px solid white
 }
 
 .nav-icon{

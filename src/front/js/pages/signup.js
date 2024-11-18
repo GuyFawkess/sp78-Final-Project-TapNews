@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate, Link } from "react-router-dom";
-import usuario from "/workspaces/sp78-Final-Project-TapNews/public/usuario.png";
-import "../../styles/home.css";
+import Banner from "/workspaces/sp78-Final-Project-TapNews/public/Banner.jpg";
+import footerlogin from "/workspaces/sp78-Final-Project-TapNews/public/footerlogin.jpg"
+import "../../styles/signup.css";
 import { Form, Button } from "react-bootstrap";
 
 export const SignUp = () => {
@@ -69,15 +70,16 @@ export const SignUp = () => {
   };
 
   return (
+    <>
+      <img src={Banner} style={{ height: "15%", width: "100%" }} />
     <div className="text-center mt-3">
       <div className="full-screen-container">
-        <div className="form-container">
-          <img src={usuario} style={{ height: "250px", width: "auto" }} />
-          <h1 className="text-center mb-2 mt-4">Registro de Usuario</h1>
+        <div className="form-container mx-auto">
           <Form onSubmit={handleSignup}>
             <Form.Group className="mb-1" controlId="formBasicUser">
-              <Form.Label>Usuario</Form.Label>
+              <Form.Label className="label-user">Usuario</Form.Label>
               <Form.Control
+              className="input-user"
                 name="username"
                 type="text"
                 placeholder="Ingrese su Usuario"
@@ -86,8 +88,9 @@ export const SignUp = () => {
               />
             </Form.Group>
             <Form.Group className="mb-1" controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
+              <Form.Label className="label-email">Email</Form.Label>
               <Form.Control
+              className="input-email"
                 name="email"
                 type="email"
                 placeholder="Ingrese su Email"
@@ -97,8 +100,9 @@ export const SignUp = () => {
             </Form.Group>
 
             <Form.Group className="mb-1" controlId="formBasicPassword">
-              <Form.Label>Contraseña</Form.Label>
+              <Form.Label className="label-pass">Contraseña</Form.Label>
               <Form.Control
+              className="input-pass"
                 name="password"
                 type="password"
                 placeholder="Contraseña"
@@ -107,8 +111,9 @@ export const SignUp = () => {
               />
             </Form.Group>
             <Form.Group className="mb-1" controlId="formBasicPassword2">
-              <Form.Label>Confirmacion de Contraseña</Form.Label>
+              <Form.Label className="label-passconfirmation">Confirmacion de Contraseña</Form.Label>
               <Form.Control
+                className="input-passconfirmation"
                 name="confirmPassword"
                 type="password"
                 placeholder="Repita su Contraseña"
@@ -117,19 +122,17 @@ export const SignUp = () => {
               />
             </Form.Group>
 
-            <Button className="mt-3" variant="primary" type="submit">
+            <Button className="register mt-5" variant="primary" type="submit">
               Regístrese
             </Button>
+            <Link to="/login" className="link"><Button className="return mt-5" variant="primary" type="submit">
+              Regresar
+            </Button></Link>
           </Form>
         </div>
-
-        <p className="text-white">
-          Tienes una cuenta, inicia sesión{" "}
-          <Link to="/login" className="link">
-            aquí
-          </Link>
-        </p>
       </div>
     </div>
+    <img src={footerlogin} style={{ height: "20%", width: "100%", position:"absolute",bottom: "0"}} />
+    </>
   );
 };
