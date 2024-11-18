@@ -575,6 +575,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error al eliminar la amistad:', error);
 				}
 			},
+
+			addFriend: async (user_id, friend_id) => {
+				try {
+				  const response = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
+					method: 'POST',
+					headers: {
+					  'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ user_id, friend_id })
+				  });	  
+				  if (response.ok) {	
+					const newFriend = { 'user_id': user_id, 'friend_id': friend_id }; 
+					const store = getStore();
+					setStore({
+					  friends: [...store.friends, newFriend], 
+					});
+				  } else {
+					console.error("No se pudo añadir el amigo");
+				  }
+				} catch (error) {
+				  console.error("Error al añadir el amigo:", error);
+				}
+			  },
+
 			getMyTasks: async () => {
 				// Recupera el token desde la localStorage
 				const token = localStorage.getItem("jwt-token");

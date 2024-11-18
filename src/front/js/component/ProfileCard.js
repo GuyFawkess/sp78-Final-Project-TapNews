@@ -43,7 +43,7 @@ if (!store.user || !store.profile || !store.friends || !store.user.username) {
   return (
     <>
       <Card style={{width: '100%', backgroundColor: '#0044CC'}}>
-        <Card.Img className="mx-auto m-4 profileimage" variant="top" src={store.profile.img_url} />
+        <Card.Img className="mx-auto m-4 profileimage" variant="top" src={store.profile.img_url || 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg'} />
           <Card.Body>
             <Card.Title className="text-center username">{store.user.username}</Card.Title>
             <Card.Text className="text-center description">

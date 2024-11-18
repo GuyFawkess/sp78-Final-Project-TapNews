@@ -18,6 +18,7 @@ import { Feed } from "./pages/Feed";
 import { UserProfile } from "./pages/UserProfile";
 import { FriendsView } from "./pages/Friends";
 import { FriendProfileView } from "./pages/FriendProfileView";
+import { UserRandomView } from "./pages/UserRandomView";
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -36,6 +37,7 @@ const Layout = () => {
               <Route element={<LogIn />} path="/login" />
               <Route element={<FriendsView />} path="/friends" />
               <Route element={<UserProfile />} path="/profile" />
+              <Route element={<UserRandomView />} path="/search/:random_id" />
               <Route element={<FriendProfileView />} path="/friends/:friend_id" />
               <Route element={<RegisterPage />} path="/register2" />
               <Route element={<LoginPage />} path="/login2" />

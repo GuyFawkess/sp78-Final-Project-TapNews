@@ -21,7 +21,7 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 # Enable CORS for specific origins
-#CORS(app, resources={r"/api/*": {"origins": ["https://miniature-chainsaw-v6ggvgjg9r5wfpg66-3000.app.github.dev/", "http://localhost:3000"]}})
+CORS(app, resources={r"/*": {"origins": ["https://probable-space-fortnight-pjg7p7rv9rr4394v5-3000.app.github.dev", "http://localhost:3000"]}})  # Configura el origen permitido
 
 
 # Database configuration
