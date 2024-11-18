@@ -10,14 +10,14 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
 
 const FriendCard = () => {
-  const [activeFriend, setActiveFriend] = useState(null);
+  const [activeFriend, setActiveFriend] = useState(null);  // Mantener el estado activo del amigo
   const { store, actions } = useContext(Context);
   const [show, setShow] = useState(false);
   const [selectedFriendId, setSelectedFriendId] = useState(null);  // Para almacenar el ID del amigo seleccionado
   const userId = localStorage.getItem("user_id");
 
   const openChat = (friendId) => {
-    setActiveFriend(friendId);
+    setActiveFriend(friendId);  // Asigna el ID del amigo activo
   }
 
   const handleClose = () => setShow(false);
@@ -30,10 +30,7 @@ const FriendCard = () => {
     actions.getFriends(userId);
     actions.getAllUsers();
     actions.getAllProfiles();
-  }, []);
-
-
-
+  }, [userId]);
 
   if (!store.friends.length || !store.listuser.length) {
     return <div className="loading"><img className="logo-2" src={TapNewsLogo} /></div>;
@@ -86,16 +83,16 @@ const FriendCard = () => {
             Cerrar
           </Button>
           <Button className="delete" onClick={() => {
-            useEffect(() => {
-              actions.deleteFriend(userId, selectedFriendId);
-            }, []);
+            actions.deleteFriend(userId, selectedFriendId); // Llamada a eliminar amistad
             handleClose();
           }}>
             Eliminar definitivamente
           </Button>
         </Modal.Footer>
       </Modal>
-      {activeFriendId && <Chat friendId={activeFriendId} />}
+
+      {/* Renderización del chat si hay un amigo activo */}
+      {activeFriend && <Chat friendId={activeFriend} />}
     </>
   );
 };
