@@ -56,7 +56,7 @@ export const LogIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent the form from submitting and refreshing the page
     handleLogin(e); // Call your first function
-    //handleUserLogin(e, credentials); // Call the second function with event and credentials
+    handleUserLogin(e, credentials); // Call the second function with event and credentials
   };
 
   return (

@@ -27,7 +27,7 @@ def create_user():
             username=request_body["username"],
             email=request_body["email"],
             password=generate_password_hash(request_body["password"]),
-            id=randint(1,100000)
+            id=request_body["user_id"]
         )
         db.session.add(create_user)
         db.session.commit()
