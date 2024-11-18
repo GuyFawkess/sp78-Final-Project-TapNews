@@ -10,19 +10,19 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
 
 const FriendCard = () => {
-  const [activeFriend, setActiveFriend] = useState(null);  // Mantener el estado activo del amigo
+  const [activeFriend, setActiveFriend] = useState(null);  
   const { store, actions } = useContext(Context);
   const [show, setShow] = useState(false);
-  const [selectedFriendId, setSelectedFriendId] = useState(null);  // Para almacenar el ID del amigo seleccionado
+  const [selectedFriendId, setSelectedFriendId] = useState(null);  
   const userId = localStorage.getItem("user_id");
 
   const openChat = (friendId) => {
-    setActiveFriend(friendId);  // Asigna el ID del amigo activo
+    setActiveFriend(friendId);  
   }
 
   const handleClose = () => setShow(false);
   const handleShow = (friendId) => {
-    setSelectedFriendId(friendId);  // Guardamos el ID del amigo que se va a eliminar
+    setSelectedFriendId(friendId); 
     setShow(true);
   };
 
@@ -42,7 +42,7 @@ const FriendCard = () => {
 
     return {
       ...user,
-      profile: profile || {}  // Asegúrate de que no sea null o undefined
+      profile: profile || {}
     };
   });
 
@@ -56,7 +56,7 @@ const FriendCard = () => {
           <Card key={key} className="friendcard" style={{ width: '100%', height: '10rem' }}>
             <Row className="row d-flex justify-content-center pt-4">
               <Col className="col-4">
-                <Card.Img className="friendimage" variant="top" src={friend.profile.img_url || 'default-image-url'} />
+                <Card.Img className="friendimage" variant="top" src={friend.profile.img_url || 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg'} />
               </Col>
               <Col className="col-4">
                 <Card.Title className="frienduser">{friend.username}</Card.Title>
