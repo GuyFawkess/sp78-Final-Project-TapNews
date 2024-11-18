@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 3ffdf30fb116
-Revises: c621f363cafa
-Create Date: 2024-11-17 17:41:59.407834
+Revision ID: 2290cce0872f
+Revises: 
+Create Date: 2024-11-18 23:32:01.991826
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '3ffdf30fb116'
-down_revision = 'c621f363cafa'
+revision = '2290cce0872f'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -31,7 +31,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
-    sa.Column('id', sa.BigInteger(), nullable=False),
+    sa.Column('id', sa.String(length=250), nullable=False),
     sa.Column('username', sa.String(), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
     sa.Column('password', sa.String(length=300), nullable=False),
@@ -42,8 +42,8 @@ def upgrade():
     )
     op.create_table('chats',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
-    sa.Column('user1_id', sa.BigInteger(), nullable=True),
-    sa.Column('user2_id', sa.BigInteger(), nullable=True),
+    sa.Column('user1_id', sa.String(length=250), nullable=True),
+    sa.Column('user2_id', sa.String(length=250), nullable=True),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['user1_id'], ['user.id'], ),
     sa.ForeignKeyConstraint(['user2_id'], ['user.id'], ),
@@ -51,7 +51,7 @@ def upgrade():
     )
     op.create_table('comments',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
-    sa.Column('user_id', sa.BigInteger(), nullable=True),
+    sa.Column('user_id', sa.String(length=250), nullable=True),
     sa.Column('news_id', sa.String(length=300), nullable=True),
     sa.Column('content', sa.String(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=True),
@@ -61,8 +61,8 @@ def upgrade():
     )
     op.create_table('friendships',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
-    sa.Column('user_id', sa.BigInteger(), nullable=True),
-    sa.Column('friend_id', sa.BigInteger(), nullable=True),
+    sa.Column('user_id', sa.String(length=250), nullable=True),
+    sa.Column('friend_id', sa.String(length=250), nullable=True),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['friend_id'], ['user.id'], ),
@@ -70,7 +70,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('likes',
-    sa.Column('user_id', sa.BigInteger(), nullable=False),
+    sa.Column('user_id', sa.String(length=250), nullable=False),
     sa.Column('news_id', sa.String(length=300), nullable=False),
     sa.ForeignKeyConstraint(['news_id'], ['news.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
@@ -78,7 +78,7 @@ def upgrade():
     )
     op.create_table('profile',
     sa.Column('id', sa.BigInteger(), nullable=False),
-    sa.Column('user_id', sa.BigInteger(), nullable=False),
+    sa.Column('user_id', sa.String(length=250), nullable=False),
     sa.Column('img_url', sa.String(), nullable=True),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('birthdate', sa.DateTime(), nullable=True),
@@ -87,7 +87,7 @@ def upgrade():
     sa.UniqueConstraint('user_id')
     )
     op.create_table('saved_news',
-    sa.Column('user_id', sa.BigInteger(), nullable=False),
+    sa.Column('user_id', sa.String(length=250), nullable=False),
     sa.Column('news_id', sa.String(length=300), nullable=False),
     sa.ForeignKeyConstraint(['news_id'], ['news.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
@@ -96,7 +96,7 @@ def upgrade():
     op.create_table('comment_replies',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.Column('comment_id', sa.BigInteger(), nullable=True),
-    sa.Column('user_id', sa.BigInteger(), nullable=True),
+    sa.Column('user_id', sa.String(length=250), nullable=True),
     sa.Column('content', sa.String(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['comment_id'], ['comments.id'], ),
@@ -106,8 +106,8 @@ def upgrade():
     op.create_table('messages',
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.Column('chat_id', sa.BigInteger(), nullable=True),
-    sa.Column('sender_id', sa.BigInteger(), nullable=True),
-    sa.Column('receiver_id', sa.BigInteger(), nullable=True),
+    sa.Column('sender_id', sa.String(length=250), nullable=True),
+    sa.Column('receiver_id', sa.String(length=250), nullable=True),
     sa.Column('content', sa.String(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['chat_id'], ['chats.id'], ),

@@ -6,7 +6,7 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'user'
     
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.String(250), primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String(300), nullable=False)
@@ -35,7 +35,7 @@ class Profile(db.Model):
     __tablename__ = "profile"
     
     id = db.Column(db.BigInteger, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), unique=True, nullable=False)
+    user_id = db.Column(db.String(250), db.ForeignKey('user.id'), unique=True, nullable=False)
     img_url = db.Column(db.String, nullable=True)
     description = db.Column(db.String, nullable=True)
     birthdate = db.Column(db.DateTime, nullable=True)
@@ -88,7 +88,7 @@ class News(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String(250), db.ForeignKey('user.id'))
     news_id = db.Column(db.String(300), db.ForeignKey('news.id'))
     content = db.Column(db.String, nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
@@ -113,7 +113,7 @@ class CommentReply(db.Model):
     __tablename__ = 'comment_replies' 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     comment_id = db.Column(db.BigInteger, db.ForeignKey('comments.id'))
-    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String(250), db.ForeignKey('user.id'))
     content = db.Column(db.String, nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
@@ -133,7 +133,7 @@ class CommentReply(db.Model):
         }
 class Like(db.Model):
     __tablename__ = 'likes' 
-    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
+    user_id = db.Column(db.String(250), db.ForeignKey('user.id'), primary_key=True)
     news_id = db.Column(db.String(300), db.ForeignKey('news.id'), primary_key=True)
 
     user = db.relationship("User", back_populates="likes")
@@ -150,7 +150,7 @@ class Like(db.Model):
 
 class SavedNews(db.Model):
     __tablename__ = 'saved_news'
-    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'), primary_key=True)
+    user_id = db.Column(db.String(250), db.ForeignKey('user.id'), primary_key=True)
     news_id = db.Column(db.String(300), db.ForeignKey('news.id'), primary_key=True)
     
     user = db.relationship("User", back_populates="saved_news")
@@ -170,8 +170,8 @@ class Chat(db.Model):
     __tablename__ = 'chats'
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    user1_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
-    user2_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
+    user1_id = db.Column(db.String(250), db.ForeignKey('user.id'))
+    user2_id = db.Column(db.String(250), db.ForeignKey('user.id'))
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
     def __repr__(self):
@@ -190,8 +190,8 @@ class Message(db.Model):
     
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     chat_id = db.Column(db.BigInteger, db.ForeignKey('chats.id'))
-    sender_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
-    receiver_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
+    sender_id = db.Column(db.String(250), db.ForeignKey('user.id'))
+    receiver_id = db.Column(db.String(250), db.ForeignKey('user.id'))
     content = db.Column(db.String, nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
@@ -214,8 +214,8 @@ class Message(db.Model):
 class Friendship(db.Model):
     __tablename__ = 'friendships'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
-    friend_id = db.Column(db.BigInteger, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String(250), db.ForeignKey('user.id'))
+    friend_id = db.Column(db.String(250), db.ForeignKey('user.id'))
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
