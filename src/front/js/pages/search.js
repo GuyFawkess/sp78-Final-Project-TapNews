@@ -4,49 +4,44 @@ import { Context } from "../store/appContext";
 
 export const Search = () => {
   const { store, actions } = useContext(Context);
+  const [ filteredUsers, setFilteredUsers] = useState([])
 
-  // const [searchTerm, setSearchTerm] = useState("");
+  // const [user, setUser] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [debounceValue] = useDebounce(inputValue);
+  // const [debounceValue] = useDebounce(inputValue, 300);
 
-  // useEffect(() => {
-  //   if (typeof actions.getAllUsers === "function") {
-  //     actions.getAllUsers().catch((error) =>
-  //       console.error("Error al obtener todos los usuarios:", error)
-  //     );
-  //   }
-  // }, [actions]);
+  
 
   // Función para manejar cambios en el input
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value); // Actualizamos inputValue
-    // setSearchTerm(value); // Actualizamos searchTerm
+    // setUser(value); // Actualizamos searchTerm
   };
 
-  // useEffect para realizar la búsqueda con debounce
-  // useEffect(() => {
-  //   if (debounceValue) {
-  //     console.log("Buscando usuarios:", debounceValue);
-  //     // Llamada a la acción para filtrar los usuarios
-  //     actions.getFilterUser(debounceValue);  // Asegúrate de que esta acción esté correctamente definida
-  //   }
-  // }, [debounceValue, actions]);
+   // Carga inicial de todos los usuarios
+   useEffect(() => {
+    // Llamar a getAllUsers al montar el componente
+    actions.getAllUsers().catch((error) =>
+      console.error("Error al obtener todos los usuarios:", error)
+    );
+  }, []);
 
   useEffect(() => {
     // Solo hacer la búsqueda si hay un término de búsqueda
-    if (debounceValue) {
-      actions.getFilterUser(debounceValue)
-        .catch(error => console.error("Error al obtener usuarios filtrados:", error));
+    if (inputValue) {
+      // actions.getFilterUser(inputValue)
+      
+      setFilteredUsers(actions.getFilterUser(inputValue))
     } else {
       // Si no hay un término de búsqueda, carga todos los usuarios
       actions.getAllUsers()
         .catch(error => console.error("Error al obtener todos los usuarios:", error));
     }
-  }, []);
+  }, [inputValue]);
 
   // Determinar qué usuarios mostrar
-  const usersToShow = debounceValue ? store.users : store.listuser;
+  // const usersToShow = inputValue ?    store.users : store.listuser ;
 
 
   return (
@@ -75,7 +70,7 @@ export const Search = () => {
           />
           <button
             className="btn btn-outline-secondary"
-            onClick={() => actions.getFilterUser(debounceValue)} // Realiza la búsqueda al hacer clic
+            onClick={() => actions.getFilterUser(inputValue)} // Realiza la búsqueda al hacer clic
             style={{
               borderTopLeftRadius: "0",
               borderBottomLeftRadius: "0",
@@ -88,10 +83,10 @@ export const Search = () => {
 
         {/* Mostrar los resultados debajo del input */}
         <div className="user-list text-light">
-          {usersToShow && usersToShow.length > 0 ? (
+          {filteredUsers && filteredUsers.length > 0 ? (
             <ul>
-              {usersToShow.map((user, index) => (
-                <li key={index}>{user.name}</li> // Asegúrate de que 'name' sea un atributo de los usuarios
+              {filteredUsers.map((user, index) => (
+                <li key={index}>{user.username}</li> // Asegúrate de que 'name' sea un atributo de los usuarios
               ))}
             </ul>
           ) : (
