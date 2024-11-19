@@ -1,56 +1,50 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import { Context } from "../store/appContext";
 
 export const Search = () => {
   const { store, actions } = useContext(Context);
-  const [ filteredUsers, setFilteredUsers] = useState([])
-
-  // const [user, setUser] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  // const [debounceValue] = useDebounce(inputValue, 300);
+  const navigate = useNavigate(); // Hook para la navegación
 
-  
-
-  // Función para manejar cambios en el input
+  // Manejador de cambios en el input
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setInputValue(value); // Actualizamos inputValue
-    // setUser(value); // Actualizamos searchTerm
+    setInputValue(value);
   };
 
-   // Carga inicial de todos los usuarios
-   useEffect(() => {
-    // Llamar a getAllUsers al montar el componente
+  // Carga inicial de todos los usuarios
+  useEffect(() => {
     actions.getAllUsers().catch((error) =>
       console.error("Error al obtener todos los usuarios:", error)
     );
-  }, []);
+  }, [actions]);
 
+  // Filtra los usuarios cuando inputValue cambia
   useEffect(() => {
-    // Solo hacer la búsqueda si hay un término de búsqueda
     if (inputValue) {
-      // actions.getFilterUser(inputValue)
-      
-      setFilteredUsers(actions.getFilterUser(inputValue))
+      const filtered = actions.getFilterUser(inputValue);
+      if (Array.isArray(filtered)) {
+        setFilteredUsers(filtered);
+      }
     } else {
-      // Si no hay un término de búsqueda, carga todos los usuarios
-      actions.getAllUsers()
-        .catch(error => console.error("Error al obtener todos los usuarios:", error));
+      setFilteredUsers(store.listuser || []);
     }
-  }, [inputValue]);
+  }, [inputValue, actions, store.listuser]);
 
-  // Determinar qué usuarios mostrar
-  // const usersToShow = inputValue ?    store.users : store.listuser ;
-
+  // Maneja el clic en un usuario para redirigir a su perfil
+  const handleUserClick = (userId) => {
+    navigate(`/user/${userId}`); // Redirige a la ruta del perfil del usuario
+  };
 
   return (
     <div
       className="d-flex justify-content-center"
       style={{
         paddingTop: "20px",
-        minHeight: "100vh", // Asegura que el fondo cubra toda la altura de la pantalla
-        background: "linear-gradient(to bottom, #003366, #66ccff)", // Gradiente azul
+        minHeight: "100vh",
+        background: "linear-gradient(to bottom, #003366, #66ccff)",
       }}
     >
       <div
@@ -59,18 +53,18 @@ export const Search = () => {
       >
         <h1 className="text-center mb-3 text-light">Búsqueda de Usuarios</h1>
 
-        {/* Grupo de entrada de Bootstrap con ícono y márgenes uniformes */}
+        {/* Grupo de entrada de Bootstrap */}
         <div className="input-group mb-3">
           <input
             type="text"
             value={inputValue}
-            onChange={handleInputChange} // Usamos handleInputChange aquí
+            onChange={handleInputChange}
             placeholder="Buscar..."
             className="form-control"
           />
           <button
             className="btn btn-secondary"
-            onClick={() => actions.getFilterUser(inputValue)} // Realiza la búsqueda al hacer clic
+            onClick={() => actions.getFilterUser(inputValue)}
             style={{
               borderTopLeftRadius: "0",
               borderBottomLeftRadius: "0",
@@ -85,8 +79,15 @@ export const Search = () => {
         <div className="user-list text-light mt-5">
           {filteredUsers && filteredUsers.length > 0 ? (
             <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
-              {filteredUsers.map((user, index) => (
-                <li key={index} className="fs-1">{user.username}</li> // Asegúrate de que 'name' sea un atributo de los usuarios
+              {filteredUsers.map((user) => (
+                <li
+                  key={user.id} // Asegúrate de que el 'id' sea único y esté disponible
+                  className="fs-1"
+                  onClick={() => handleUserClick(user.id)} // Redirige al perfil del usuario
+                  style={{ cursor: "pointer" }} // Cambia el cursor al pasar sobre el elemento
+                >
+                  {user.username}
+                </li>
               ))}
             </ul>
           ) : (
@@ -99,4 +100,3 @@ export const Search = () => {
 };
 
 export default Search;
-
