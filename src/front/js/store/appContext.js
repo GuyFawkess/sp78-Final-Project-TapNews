@@ -20,8 +20,7 @@ const injectContext = PassedComponent => {
 					})
 			})
 		);
-        //this function adds our hardcoded news list to the database so we can work with it
-        // UNCOMMENT IT THE FIRST TIME YOU RUN THE APP, THEN COMMENT IT AGAIN TO AVOID CONSTANTLY TRYING TO POST THEM AGAIN
+        
 		// useEffect(() => {
 		// 	const news_list = state.store.topnews
         //     const postNews = async () => {

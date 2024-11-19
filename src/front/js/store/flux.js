@@ -470,6 +470,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error)
 				}
 			},
+
+			getSingleNew: async (uuid) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/news/${uuid}`);
+					if (!response.ok) {
+						throw new Error("La respuesta no fue exitosa");
+					}
+			
+					const data = await response.json();
+					setStore({ topnews: data });
+				} catch (error) {
+					console.error("Error fetching news:", error);  
+				}
+			},
+
 			/*	getNews: async() => {
 					try{
 						const response = await fetch (process.env.DOMAIN_API+"/v1/news/top?api_token="+ process.env.API_TOKEN+"locale=es&limit=3")
