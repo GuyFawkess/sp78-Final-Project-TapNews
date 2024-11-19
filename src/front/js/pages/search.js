@@ -66,10 +66,10 @@ export const Search = () => {
             value={inputValue}
             onChange={handleInputChange} // Usamos handleInputChange aquí
             placeholder="Buscar..."
-            className="form-control"
+            className="form-control mt-4"
           />
           <button
-            className="btn btn-outline-secondary"
+            className="btn btn-secondary mt-3"
             onClick={() => actions.getFilterUser(inputValue)} // Realiza la búsqueda al hacer clic
             style={{
               borderTopLeftRadius: "0",
@@ -82,15 +82,15 @@ export const Search = () => {
         </div>
 
         {/* Mostrar los resultados debajo del input */}
-        <div className="user-list text-light">
+        <div className="user-list text-light mt-5">
           {filteredUsers && filteredUsers.length > 0 ? (
-            <ul>
+            <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
               {filteredUsers.map((user, index) => (
-                <li key={index}>{user.username}</li> // Asegúrate de que 'name' sea un atributo de los usuarios
+                <li key={index} className="fs-1">{user.username}</li> // Asegúrate de que 'name' sea un atributo de los usuarios
               ))}
             </ul>
           ) : (
-            <p className="text-light">No se encontraron usuarios.</p>
+            <p className="text-light fs-1 mt-5">No se encontraron usuarios.</p>
           )}
         </div>
       </div>
