@@ -91,7 +91,9 @@ export const Search = () => {
               ))}
             </ul>
           ) : (
+            inputValue && (
             <p className="text-light fs-1 mt-5">No se encontraron usuarios.</p>
+            )
           )}
         </div>
       </div>
