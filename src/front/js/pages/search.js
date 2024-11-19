@@ -66,10 +66,10 @@ export const Search = () => {
             value={inputValue}
             onChange={handleInputChange} // Usamos handleInputChange aquí
             placeholder="Buscar..."
-            className="form-control mt-4"
+            className="form-control"
           />
           <button
-            className="btn btn-secondary mt-3"
+            className="btn btn-secondary"
             onClick={() => actions.getFilterUser(inputValue)} // Realiza la búsqueda al hacer clic
             style={{
               borderTopLeftRadius: "0",
