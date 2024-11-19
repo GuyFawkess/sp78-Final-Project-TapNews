@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        // getUserOnLoad();
+        //getUserOnLoad();
     }, []);
     const getUserOnLoad = async () => {
         try {
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
 
                     const accountDetails = await account.get();
                     setUser(accountDetails);
-                    navigate("/chat");
+                    // navigate("/chat");
                 } catch (sessionError) {
                     console.error("Failed to create a session:", sessionError);
                 }

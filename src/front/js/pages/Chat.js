@@ -12,6 +12,7 @@ const Chat = () => {
 
     const [messages, setMessages] = useState([]);
     const [messageBody, setMessageBody] = useState('');
+
     const messagesEndRef = useRef(null);  // Reference to the bottom of the message container
 
 
@@ -21,7 +22,7 @@ const Chat = () => {
         const unsubscribe = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`, (response) => {
 
             if (response.events.includes("databases.*.collections.*.documents.*.create")) {
-                console.log('A MESSAGE WAS CREATED')
+                console.log('A MESSAGE WAS CREATED', response.payload)
                 setMessages(prevState => [...prevState, response.payload]);
             }
             if (response.events.includes("databases.*.collections.*.documents.*.delete")) {
@@ -45,13 +46,17 @@ const Chat = () => {
         e.preventDefault();
 
         let payload = {
-            user_id: user.$id,
+            senderID: user.$id,
+            recipientID: user.$id,
             username: user.name,
             body: messageBody
         }
 
         let permissions = [
-            Permission.write(Role.user(user.$id))
+            Permission.write(Role.user(user.$id)),
+            Permission.read(Role.user(payload.senderID)),
+            Permission.read(Role.user(payload.recipientID)),
+
         ]
 
         let response = await databases.createDocument(
@@ -70,7 +75,13 @@ const Chat = () => {
     }
 
     const getMessages = async () => {
-        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID_MESSAGES,
+        const response = await databases.listDocuments(
+            DATABASE_ID,
+            COLLECTION_ID_MESSAGES,
+            [
+                `senderID=${user.$id}`,
+                `recipientID=${friendId}`
+            ]
 
         );
         // console.log('response:', response);

@@ -264,6 +264,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				);
 
 				const userID = user.$id;
+				console.log(userID)
 				// HASTA AQUI
 				const resp = await fetch(
 					`${process.env.BACKEND_URL}/api/signup`,
@@ -278,6 +279,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}),
 					}
 				);
+				console.log(resp)
 				if (!resp.ok) throw Error("There was a problem in the signup request");
 
 				if (resp.status === 401) {
@@ -477,11 +479,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error("La respuesta no fue exitosa");
 					}
-			
+
 					const data = await response.json();
 					setStore({ topnews: data });
 				} catch (error) {
-					console.error("Error fetching news:", error);  
+					console.error("Error fetching news:", error);
 				}
 			},
 
@@ -512,34 +514,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-				  
+
 			modifyProfile: async (userId, updatedProfile) => {
-					try {
-					
-					  const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${userId}`, {
+				try {
+
+					const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${userId}`, {
 						method: "PUT",
 						headers: {
-						  "Content-Type": "application/json",
+							"Content-Type": "application/json",
 						},
 						body: JSON.stringify(updatedProfile),
-					  });
-			  
-					  if (!response.ok) {
+					});
+
+					if (!response.ok) {
 						throw new Error("Error al actualizar el perfil");
-					  }
-			  
-					  const updatedData = await response.json();
-			  
-					  
-					  setStore({
-						profile: updatedData,  
-					  });
-			  
-					  console.log("Perfil actualizado con éxito:", updatedData);
-					} catch (error) {
-					  console.error("Error al modificar el perfil:", error);
 					}
-				  },
+
+					const updatedData = await response.json();
+
+
+					setStore({
+						profile: updatedData,
+					});
+
+					console.log("Perfil actualizado con éxito:", updatedData);
+				} catch (error) {
+					console.error("Error al modificar el perfil:", error);
+				}
+			},
 
 			getUser: async (user_id) => {
 				try {
