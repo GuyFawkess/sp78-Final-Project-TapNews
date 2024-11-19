@@ -29,7 +29,7 @@ export const Search = () => {
         setFilteredUsers(filtered);
       }
     } else {
-      setFilteredUsers(store.listuser || []);
+      setFilteredUsers([]);
     }
   }, [inputValue, actions, store.listuser]);
 
