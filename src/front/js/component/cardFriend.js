@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Card, ListGroup, Modal, Button, Row, Col } from "react-bootstrap";
+import { Card, Modal, Button, Row, Col } from "react-bootstrap";
 import "../../styles/cardfriend.css";
 import { Link } from "react-router-dom";
 import Chat from "../pages/Chat";
