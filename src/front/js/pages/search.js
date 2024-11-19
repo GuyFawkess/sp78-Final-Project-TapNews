@@ -78,18 +78,27 @@ export const Search = () => {
         {/* Mostrar los resultados debajo del input */}
         <div className="user-list text-light mt-5">
           {filteredUsers && filteredUsers.length > 0 ? (
-            <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
+            // <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
+            <div className="d-flex flex-column align-items-center gap-2">
               {filteredUsers.map((user) => (
-                <li
+                <button
                   key={user.id} // Asegúrate de que el 'id' sea único y esté disponible
-                  className="fs-1"
+                  className="fs-1 bg-primary rounded-5"
                   onClick={() => handleUserClick(user.id)} // Redirige al perfil del usuario
-                  style={{ cursor: "pointer" }} // Cambia el cursor al pasar sobre el elemento
+                  style={{
+                    backgroundColor: "#4A90E2", // Un azul bonito
+                    color: "white",
+                    borderRadius: "10px",
+                    padding: "0.5rem 1rem",
+                    textAlign: "left",
+                    width: "fit-content",
+                  }}
                 >
                   {user.username}
-                </li>
+                </button>
               ))}
-            </ul>
+            </div>
+            // </ul>
           ) : (
             inputValue && (
             <p className="text-light fs-1 mt-5">No se encontraron usuarios.</p>
