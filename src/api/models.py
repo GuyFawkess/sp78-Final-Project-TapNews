@@ -77,6 +77,7 @@ class News(db.Model):
         return {
             "id": self.id,
             "title": self.title,
+            "content": self.content,
             "similar_news": self.similar_news,
             "genre": self.genre,
             "url": self.url,
