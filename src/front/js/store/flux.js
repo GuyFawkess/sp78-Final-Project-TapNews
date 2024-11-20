@@ -621,9 +621,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					user.username.toLowerCase().includes(filter.toLowerCase())
 				//   console.log(user.username)}
 				  );
-				//   console.log(filter)
-				  console.log(filteredUsers)
-				  
+				//   console.log(filter)				  
 				  return filteredUsers
 				  // Actualiza el store con los usuarios filtrados
 				//   setStore({ users: filteredUsers });
@@ -639,7 +637,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await response.json()
 					setStore({ listprofile: data })
-					console.log(listprofile)
 				} catch (error) {
 					console.log("Not users found", error)
 				}
