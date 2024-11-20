@@ -37,7 +37,7 @@ const NavbarBottom = () => {
             <Nav.Link as={Link} to="/">
               <img className="logo" src={TapNewsLogo} alt="TapNews Logo" />
             </Nav.Link>
-            <Nav.Link as={Link} to="#national">
+            <Nav.Link as={Link} to="/search">
               <FontAwesomeIcon size="2xl" icon={faMagnifyingGlass} style={{ color: "#FFFFFF" }} className="nav-icon" />
             </Nav.Link>
             <Nav.Link as={Link} to="#regional">
