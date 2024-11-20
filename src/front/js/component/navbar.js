@@ -19,7 +19,7 @@ const NavbarBottom = () => {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
+  }, [localStorage]);
 
   return (
     <Navbar className="navbar-fixed-bottom">

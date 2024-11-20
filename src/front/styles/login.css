@@ -43,10 +43,10 @@
 
 .access.mt-5{
     background: linear-gradient(to left top, #0044CC, #011233);
-    margin-inline-end: 10%;
+    
 }
 
 .register2.mt-5{
     background: linear-gradient(to left top,  #0044CC,#a4c2ff);
-
+    margin-inline-end: 10%;
 }

@@ -16,9 +16,6 @@ const FriendCard = () => {
   const [selectedFriendId, setSelectedFriendId] = useState(null);  
   const userId = localStorage.getItem("user_id");
 
-  const openChat = (friendId) => {
-    setActiveFriend(friendId);  
-  }
 
   const handleClose = () => setShow(false);
   const handleShow = (friendId) => {
@@ -92,9 +89,6 @@ const FriendCard = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {/* Renderización del chat si hay un amigo activo */}
-      {activeFriend && <Chat friendId={activeFriend} />}
     </>
   );
 };
