@@ -18,6 +18,7 @@ import { Feed } from "./pages/Feed";
 import { UserProfile } from "./pages/UserProfile";
 import { FriendsView } from "./pages/Friends";
 import { FriendProfileView } from "./pages/FriendProfileView";
+import  Search  from "/workspaces/sp78-Final-Project-TapNews/src/front/js/pages/search.js";
 import { UserRandomView } from "./pages/UserRandomView";
 //create your first component
 const Layout = () => {
@@ -44,6 +45,7 @@ const Layout = () => {
               {/* <Route element={<PrivateRoutes />}> */}
                 <Route element={<Chat />} path="/chat/:friend_id" />
               {/* </Route> */}
+              <Route element={<Search />} path="/search" />
             </Routes>
           </AuthProvider>
         </div>

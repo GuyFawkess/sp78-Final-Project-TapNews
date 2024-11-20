@@ -250,8 +250,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			token: null,
-			users: []
-
+			users: [],
+			filteredUsers: [],
+			searchTerm: ""
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -554,7 +555,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Not user found", error)
 				}
 			},
-
 			getFriends: async (user_id) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
@@ -575,17 +575,65 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({ listuser: data })
-					console.log(listuser)
-				} catch (error) {
+					setStore({listuser: data})
+				}catch(error){
 					console.log("Not users found", error)
 				}
 			},
 
-
-			getAllProfiles: async () => {
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/profiles`)
+			// getFilterUser: async (filter) => {
+				
+			// 	if (filter === "") {
+					
+			// 	  // Si el filtro está vacío, obtener todos los usuarios
+			// 	  const actions = getActions();
+			// 	  actions.getAllUsers();
+			// 	} else {
+			// 	  try {
+			// 		const response = await fetch(`${process.env.BACKEND_URL}/api/users?name=${filter}`);
+			// 		const data = await response.json();
+		
+			// 		// Verifica si la respuesta tiene la estructura esperada
+			// 		if (Array.isArray(data)) {
+			// 		  const users = data.map((user) => ({
+			// 			uid: user.id, // Asegúrate de que estas propiedades sean correctas
+			// 			name: user.username
+			// 		  }));
+		
+			// 		  setStore({ users:users });
+			// 		} else {
+			// 		  throw new Error("La estructura de la respuesta de la API no es la esperada");
+			// 		}
+			// 	  } catch (error) {
+			// 		console.error("Error al obtener usuarios filtrados:", error);
+			// 	  }
+			// 	}
+			//   },
+			getFilterUser: (filter) => {
+				const store = getStore();
+			  
+				if (filter === "") {
+				  // Si el filtro está vacío, muestra todos los usuarios
+				  return store.listuser
+				} else {
+				  // Filtra los usuarios que coincidan con el término de búsqueda
+				  const filteredUsers = store.listuser.filter((user) =>
+					user.username.toLowerCase().includes(filter.toLowerCase())
+				//   console.log(user.username)}
+				  );
+				//   console.log(filter)
+				  console.log(filteredUsers)
+				  
+				  return filteredUsers
+				  // Actualiza el store con los usuarios filtrados
+				//   setStore({ users: filteredUsers });
+				}
+			  },
+			  
+			  
+			getAllProfiles: async() => {
+				try{
+					const response = await fetch (`${process.env.BACKEND_URL}/api/profiles`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
