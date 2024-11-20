@@ -1,0 +1,24 @@
+
+.title-modal{ 
+    font-family: 'Quicksand';
+    color:#0044CC;
+    background-color: white;
+    font-weight: bold;
+}
+
+.text-new{
+   
+    font-family: 'Quicksand';
+    color: #ffffff;
+    background-color: #0044CC;
+    font-weight: bold;
+}
+
+.visitnew{
+    background-color: #0044CC;
+
+}
+
+.title{
+   margin-top: 90%;
+}

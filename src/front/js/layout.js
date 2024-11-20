@@ -20,6 +20,8 @@ import { FriendsView } from "./pages/Friends";
 import { FriendProfileView } from "./pages/FriendProfileView";
 import  Search  from "/workspaces/sp78-Final-Project-TapNews/src/front/js/pages/search.js";
 import { UserRandomView } from "./pages/UserRandomView";
+import { SingleView } from "./pages/SingleNewView";
+
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -40,6 +42,7 @@ const Layout = () => {
               <Route element={<UserProfile />} path="/profile" />
               <Route element={<UserRandomView />} path="/search/:random_id" />
               <Route element={<FriendProfileView />} path="/friends/:friend_id" />
+              <Route element={<SingleView />} path="/news/:uuid" />
               <Route element={<RegisterPage />} path="/register2" />
               <Route element={<LoginPage />} path="/login2" />
               {/* <Route element={<PrivateRoutes />}> */}

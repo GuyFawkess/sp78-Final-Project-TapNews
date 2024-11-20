@@ -24,6 +24,7 @@
     transform: translateY(4px);
 }
 
+
 .like.p-2:active{
     box-shadow: 0 5px #ffffff;
     transform: translateY(4px);
