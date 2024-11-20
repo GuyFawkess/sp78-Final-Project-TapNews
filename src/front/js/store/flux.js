@@ -11,6 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: [],
 			friends: [],
 			likes: [],
+			news:[],
 			userexample: [
 				{
 					"username": "JaneDoe",
@@ -481,7 +482,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					const data = await response.json();
-					setStore({ topnews: data });
+					setStore({ news: data });
 				} catch (error) {
 					console.error("Error fetching news:", error);
 				}
