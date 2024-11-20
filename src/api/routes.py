@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from api.models import db, User, Profile
 from werkzeug.security import generate_password_hash, check_password_hash
+from random import randint
 
 api = Blueprint('api', __name__)
 
@@ -25,7 +26,8 @@ def create_user():
         create_user = User(
             username=request_body["username"],
             email=request_body["email"],
-            password=generate_password_hash(request_body["password"])
+            password=generate_password_hash(request_body["password"]),
+            id=request_body["user_id"]
         )
         db.session.add(create_user)
         db.session.commit()
@@ -33,7 +35,8 @@ def create_user():
         # Crear el perfil
         new_profile = Profile(
             description="Este es el perfil de " + request_body["username"],
-            user_id=create_user.id
+            user_id=create_user.id,
+            id=create_user.id
         )
         db.session.add(new_profile)
         db.session.commit()
@@ -75,7 +78,7 @@ def get_users():
     return jsonify({"users": result}), 200
 
 
-@api.route('/user/<int:id>', methods=['GET'])
+@api.route('/user/<id>', methods=['GET'])
 def get_user(id):
     user = User.query.get(id)
     if not user:
@@ -83,7 +86,7 @@ def get_user(id):
     response_body = user.serialize()
     return jsonify(response_body), 200
 
-@api.route('/user/<int:id>/friends', methods=['GET'])
+@api.route('/user/<id>/friends', methods=['GET'])
 def get_user_friends(id):
     user = User.query.get(id)
     if not user:
@@ -92,7 +95,7 @@ def get_user_friends(id):
     friends = [{"friend_id": friend_id} for friend_id in friends_ids]
     return jsonify({"friends": friends}), 200
 
-@api.route('/profile/<int:id>', methods=['GET'])
+@api.route('/profile/<id>', methods=['GET'])
 def get_profile(id):
     profile = Profile.query.get(id)
     if not profile:
@@ -100,7 +103,7 @@ def get_profile(id):
     response_body = profile.serialize()
     return jsonify(response_body), 200
 
-@api.route('/profile/<int:id>', methods=['PUT'])
+@api.route('/profile/<id>', methods=['PUT'])
 def modify_profile(id):
     data = request.get_json()
     profile = Profile.query.get(id)
@@ -208,6 +211,15 @@ def remove_like():
     db.session.commit()
     return jsonify({"succes": "Like was correctly removed"}), 200
 
+@api.route('/user/<id>/likes', methods=['GET'])
+def get_user_likes(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    likes_list = Like.query.filter_by(user_id=id).all()
+    id_list = [like.news_id for like in likes_list]
+    return jsonify(id_list), 200
+
 @api.route('/saved_news', methods=['POST'])
 def save_news():
     data = request.get_json()
@@ -237,6 +249,20 @@ def remove_saved_news():
     db.session.commit()
     return jsonify({"succes": "News was correctly removed"}), 200
 
+@api.route('/user/<id>/saved_news', methods=['GET'])
+def get_user_saved_news(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    saved_news_list = SavedNews.query.filter_by(user_id=id).all()
+    if not saved_news_list:
+        return jsonify([]), 200
+    id_list = [news.news_id for news in saved_news_list]
+    news_list = News.query.filter(News.id.in_(id_list)).all()
+    response_body = [news.serialize() for news in news_list]
+    return jsonify(response_body), 200
+
+
 @api.route('/news', methods=['POST'])
 def add_news():
     data = request.get_json()
@@ -263,7 +289,7 @@ def get_all_news():
     response_body = [news.serialize() for news in all_news]
     return jsonify(response_body), 200
 
-@api.route('/news/<int:id>', methods=['GET'])
+@api.route('/news/<id>', methods=['GET'])
 def get_single_news(id):
     news = News.query.get(id)
     if not news:
@@ -272,7 +298,7 @@ def get_single_news(id):
     return jsonify(response_body), 200
 
 
-@api.route('/news/<int:id>/likes', methods=['GET'])
+@api.route('/news/<id>/likes', methods=['GET'])
 def get_news_like_count(id):
     news = News.query.get(id)
     if not news:
@@ -280,7 +306,7 @@ def get_news_like_count(id):
     likes = len(news.likes)
     return jsonify({"like_count": likes}), 200
 
-@api.route('/news/<int:id>/comments', methods=['POST'])
+@api.route('/news/<id>/comments', methods=['POST'])
 def post_comment(id):
     data = request.get_json()
     user_id = data.get('user_id')
@@ -298,7 +324,7 @@ def post_comment(id):
     db.session.commit()
     return jsonify(comment.serialize()), 200
 
-@api.route('/news/<int:id>/comments', methods=['GET'])
+@api.route('/news/<id>/comments', methods=['GET'])
 def get_news_comments(id):
     news = News.query.get(id)
     if not news:
@@ -307,7 +333,7 @@ def get_news_comments(id):
     comment_list = [comment.serialize() for comment in comments]
     return jsonify({"comments": comment_list}), 200
 
-@api.route('/news/<int:id>/comments', methods=['DELETE'])
+@api.route('/news/<id>/comments', methods=['DELETE'])
 def delete_comment(id):
     data = request.get_json()
     user_id = data.get('user_id')

@@ -20,6 +20,39 @@ const injectContext = PassedComponent => {
 					})
 			})
 		);
+        
+		// useEffect(() => {
+		// 	const news_list = state.store.topnews
+        //     const postNews = async () => {
+        //         try {
+        //             await Promise.all(
+        //                 news_list.map(news => 
+        //                     fetch(`${process.env.BACKEND_URL}/api/news`, {
+        //                         method: 'POST',
+        //                         headers: {
+        //                             'Content-Type': 'application/json',
+        //                         },
+        //                         body: JSON.stringify(news),
+        //                     })
+        //                     .then(resp => {
+        //                         if (!resp.ok) {
+        //                             throw new Error('Error posting news to the database');
+        //                         }
+        //                         return resp.json();
+        //                     })
+        //                     .then(() => {
+        //                         console.log('Successfully added news to the database');
+        //                     })
+        //                 )
+        //             );
+        //         } catch (error) {
+        //             console.error('Failed to add some news to the database:', error);
+        //         }
+        //     };
+    
+        //     postNews();
+                
+		// }, [])
 
 		// The initial value for the context is not null anymore, but the current state of this component,
 		// the context will now have a getStore, getActions and setStore functions available, because they were declared
