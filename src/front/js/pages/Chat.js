@@ -14,30 +14,36 @@ const Chat = () => {
 
     const [messages, setMessages] = useState([]);
     const [messageBody, setMessageBody] = useState('');
+    const senderID = localStorage.getItem("user_id");
 
     const messagesEndRef = useRef(null);  // Reference to the bottom of the message container
 
 
     useEffect(() => {
-        getMessages();
+        getMessages()
+        const unsubscribe = client.subscribe(
+            `databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`,
+            (response) => {
+                if (response.events.includes("databases.*.collections.*.documents.*.create")) {
+                    const newMessage = response.payload;
 
-        const unsubscribe = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`, (response) => {
+                    // Check if the new message belongs to the current chat
+                    const isRelevantMessage =
+                        (newMessage.senderID === senderID && newMessage.recipientID === friend_id) ||
+                        (newMessage.senderID === friend_id && newMessage.recipientID === senderID);
 
-            if (response.events.includes("databases.*.collections.*.documents.*.create")) {
-                console.log('A MESSAGE WAS CREATED', response.payload)
-                setMessages(prevState => [...prevState, response.payload]);
+                    if (isRelevantMessage) {
+                        setMessages((prevMessages) => [...prevMessages, newMessage]);
+                    }
+                }
             }
-            if (response.events.includes("databases.*.collections.*.documents.*.delete")) {
-                console.log('A MESSAGE WAS DELETED!!!');
-                setMessages(prevState => prevState.filter(message => message.$id !== response.payload.$id));
-            }
-        });
+        );
 
         return () => {
-            unsubscribe();
-        }
+            unsubscribe(); // Clean up the subscription
+        };
+    }, [senderID, friend_id]); // Re-run the subscription only when `senderID` or `friend_id` changes
 
-    }, []);
 
 
     useEffect(() => {
@@ -48,9 +54,9 @@ const Chat = () => {
         e.preventDefault();
         const senderID = localStorage.getItem('user_id');
         if (!senderID) {
-        console.error("Sender ID not found in local storage.");
-        return;
-    }
+            console.error("Sender ID not found in local storage.");
+            return;
+        }
 
         let payload = {
             senderID: senderID,
@@ -71,7 +77,6 @@ const Chat = () => {
             COLLECTION_ID_MESSAGES,
             ID.unique(),
             payload,
-            permissions
         )
         // console.log('response:', response);
 
@@ -83,23 +88,42 @@ const Chat = () => {
     }
 
     const getMessages = async () => {
-        const response = await databases.listDocuments(
-            DATABASE_ID,
-            COLLECTION_ID_MESSAGES,
-            [
-                Query.equal("senderID", localStorage.getItem("user_id")),
-                Query.equal("recipientID", friend_id)
-            ]
 
-        );
-        // console.log('response:', response);
-        setMessages(response.documents);
-    }
+        if (!senderID || !friend_id) {
+            console.error("Sender ID or friend ID is missing.");
+            return;
+        }
 
-    const deleteMessage = async (message_id) => {
-        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, message_id);
-        // setMessages(prevState => messages.filter(message => message.$id !== message_id));
-    }
+        try {
+            const response = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTION_ID_MESSAGES,
+                [
+                    Query.or([
+                        Query.and([
+                            Query.equal("senderID", senderID),
+                            Query.equal("recipientID", friend_id)
+                        ]),
+                        Query.and([
+                            Query.equal("senderID", friend_id),
+                            Query.equal("recipientID", senderID)
+                        ])
+                    ])
+                ]
+            );
+
+            setMessages(response.documents);
+        } catch (error) {
+            console.error("Error fetching messages:", error);
+        }
+    };
+
+
+
+    // const deleteMessage = async (message_id) => {
+    //     await databases.deleteDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, message_id);
+    //     // setMessages(prevState => messages.filter(message => message.$id !== message_id));
+    // }
     return (
         <main className="container">
 
@@ -118,13 +142,7 @@ const Chat = () => {
                                     <small className="message-timestamp">{new Date(message.$createdAt).toLocaleString()}</small>
                                 </p>
 
-                                {message.$permissions.includes(`delete(\"user:${user.$id}\")`) &&
-                                    <IoTrashOutline
-                                        className="delete--btn"
-                                        onClick={() => { deleteMessage(message.$id) }}
-                                    />
 
-                                }
 
                             </div>
 
