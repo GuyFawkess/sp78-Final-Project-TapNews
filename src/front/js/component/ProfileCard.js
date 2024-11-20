@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Modal, Card, ListGroup, Form } from "react-bootstrap";
 import "../../styles/profilecard.css";
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
+import { useAuth }  from  '../store/AuthContext.js'
 
 const ProfileCard = () => {
   const { store, actions } = useContext(Context);
@@ -13,6 +14,7 @@ const ProfileCard = () => {
   const [imageUrl, setImageUrl] = useState(store.profile?.img_url || "");
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
+  const {handleUserLogout} = useAuth()
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -35,6 +37,12 @@ const ProfileCard = () => {
         <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
       </div>
     );
+  }
+
+  const handleLogout = () => {
+    actions.logout();
+    handleUserLogout();
+    closeModal2();
   }
 
   const handleSaveChanges = async () => {
@@ -113,10 +121,7 @@ const ProfileCard = () => {
         <Modal.Footer>
           <Button variant="secondary" onClick={closeModal2}>Cerrar</Button>
           <Link to="/login">
-            <Button className="reallogout" onClick={() => { 
-              actions.logout();
-              closeModal2();
-            }}>
+            <Button className="reallogout" onClick={handleLogout}>
               Cerrar sesión
             </Button>
           </Link>

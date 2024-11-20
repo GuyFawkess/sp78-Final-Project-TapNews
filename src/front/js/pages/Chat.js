@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import client, { databases, DATABASE_ID, COLLECTION_ID_MESSAGES } from "/workspaces/sp78-Final-Project-TapNews/src/appwriteConfig.js";
 import { useAuth } from "../store/AuthContext";
-import { ID, Role, Permission } from "appwrite";
+import { useParams } from "react-router-dom";
+import { ID, Role, Permission, Query } from "appwrite";
 import Header from "../component/Header";
 
 import { IoTrashOutline } from "react-icons/io5";
@@ -9,6 +10,7 @@ import { IoTrashOutline } from "react-icons/io5";
 const Chat = () => {
 
     const { user } = useAuth();
+    const { friend_id } = useParams();
 
     const [messages, setMessages] = useState([]);
     const [messageBody, setMessageBody] = useState('');
@@ -44,16 +46,21 @@ const Chat = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const senderID = localStorage.getItem('user_id');
+        if (!senderID) {
+        console.error("Sender ID not found in local storage.");
+        return;
+    }
 
         let payload = {
-            senderID: user.$id,
-            recipientID: user.$id,
+            senderID: senderID,
+            recipientID: friend_id,
             username: user.name,
             body: messageBody
         }
 
         let permissions = [
-            Permission.write(Role.user(user.$id)),
+            Permission.write(Role.user(payload.senderID)),
             Permission.read(Role.user(payload.senderID)),
             Permission.read(Role.user(payload.recipientID)),
 
@@ -70,6 +77,7 @@ const Chat = () => {
 
         // setMessages(prevState => [...prevState, response]);
         setMessageBody('');
+        console.log(user)
         console.log('MESSAGE CREATED', response);
 
     }
@@ -79,8 +87,8 @@ const Chat = () => {
             DATABASE_ID,
             COLLECTION_ID_MESSAGES,
             [
-                `senderID=${user.$id}`,
-                `recipientID=${friendId}`
+                Query.equal("senderID", localStorage.getItem("user_id")),
+                Query.equal("recipientID", friend_id)
             ]
 
         );

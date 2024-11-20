@@ -37,8 +37,8 @@ const FriendCard = () => {
   }
 
   const friendsWithProfiles = store.friends.map(friend => {
-    const user = store.listuser.find(user => Number(user.id) === Number(friend.friend_id));
-    const profile = store.listprofile.find(profile => Number(profile.user_id) === Number(friend.friend_id));
+    const user = store.listuser.find(user => (user.id) === (friend.friend_id));
+    const profile = store.listprofile.find(profile => (profile.user_id) === (friend.friend_id));
 
     return {
       ...user,
@@ -51,7 +51,7 @@ const FriendCard = () => {
   return (
     <>
       {friendsWithProfiles.map((friend, index) => {
-        const key = `${friend.id}-${friend.friend_id}-${index}`
+        const key = `${friend.id}-${index}`
         return (
           <Card key={key} className="friendcard" style={{ width: '100%', height: '10rem' }}>
             <Row className="row d-flex justify-content-center pt-4">
@@ -65,7 +65,9 @@ const FriendCard = () => {
                 <Link className="mx-auto" to={`/friends/${friend.id}`}>
                   <FontAwesomeIcon className="pb-2" icon={faCircleUser} size="2xl" style={{ color: "#ffffff" }} />
                 </Link>
-                <FontAwesomeIcon onClick={() => openChat(friend.id)} className="pb-2" icon={faComments} size="2xl" style={{ color: "#ffffff" }} />
+                <Link className="mx-auto" to={`/chat/${friend.id}`}>
+                <FontAwesomeIcon className="pb-2" icon={faComments} size="2xl" style={{ color: "#ffffff" }} />
+                </Link>
                 <FontAwesomeIcon className="pb-2" onClick={() => handleShow(friend.id)} icon={faCircleXmark} size="2xl" style={{ color: "#ffffff" }} />
               </Col>
             </Row>

@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
 
             // If user is already logged in, set the user and navigate
             setUser(existingSession);
-            navigate("/chat");
+            //navigate("/chat/:friend_id");
         } catch (error) {
             if (error.code === 401) {
                 // If no session exists, create a new one
