@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 
 export const Search = () => {
   const { store, actions } = useContext(Context);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [filteredUsersWithProfiles, setFilteredUsersWithProfiles] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate(); // Hook para la navegación
 
@@ -19,23 +19,33 @@ export const Search = () => {
     actions.getAllUsers().catch((error) =>
       console.error("Error al obtener todos los usuarios:", error)
     );
+    actions.getAllProfiles().catch((error) =>
+      console.error("Error al obtener los perfiles:", error)
+    );
   }, [actions]);
 
   // Filtra los usuarios cuando inputValue cambia
   useEffect(() => {
     if (inputValue) {
-      const filtered = actions.getFilterUser(inputValue);
-      if (Array.isArray(filtered)) {
-        setFilteredUsers(filtered);
+      const filteredUsers = actions.getFilterUser(inputValue);
+      if (Array.isArray(filteredUsers)) {
+        const usersWithProfiles = filteredUsers.map((user) => {
+          const profile = store.listprofile.find(profile => profile.user_id === user.id);
+          return {
+            ...user,
+            profile: profile || {}  // Combina el usuario con su perfil, si existe
+          };
+        });
+        setFilteredUsersWithProfiles(usersWithProfiles);
       }
     } else {
-      setFilteredUsers([]);
+      setFilteredUsersWithProfiles([]);
     }
-  }, [inputValue, actions, store.listuser]);
+  }, [inputValue, actions, store.listuser, store.listprofile]);
 
   // Maneja el clic en un usuario para redirigir a su perfil
   const handleUserClick = (userId) => {
-    navigate(`/user/${userId}`); // Redirige a la ruta del perfil del usuario
+    navigate(`/search/${userId}`); // Redirige a la ruta del perfil del usuario
   };
 
   return (
@@ -77,10 +87,9 @@ export const Search = () => {
 
         {/* Mostrar los resultados debajo del input */}
         <div className="user-list text-light mt-5">
-          {filteredUsers && filteredUsers.length > 0 ? (
-            // <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
+          {filteredUsersWithProfiles && filteredUsersWithProfiles.length > 0 ? (
             <div className="d-flex flex-column align-items-center gap-2">
-              {filteredUsers.map((user) => (
+              {filteredUsersWithProfiles.map((user) => (
                 <button
                   key={user.id} // Asegúrate de que el 'id' sea único y esté disponible
                   className="fs-1 bg-primary rounded-5"
@@ -92,13 +101,21 @@ export const Search = () => {
                     padding: "0.5rem 1rem",
                     textAlign: "left",
                     width: "fit-content",
+                    display: "flex",
+                    alignItems: "center",  // Alinea el texto y la imagen de perfil
+                    gap: "10px", // Espacio entre la imagen y el nombre
                   }}
                 >
-                  {user.username}
+                  {/* Imagen de perfil del usuario */}
+                  <img
+                    src={user.profile.img_url || "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg"} // Usa la URL de la imagen de perfil
+                    alt={`${user.username}'s profile`}
+                    style={{ width: "40px", height: "40px", borderRadius: "50%" }}  // Estilo de la imagen circular
+                  />
+                  <span>{user.username}</span>
                 </button>
               ))}
             </div>
-            // </ul>
           ) : (
             inputValue && (
             <p className="text-light fs-1 mt-5">No se encontraron usuarios.</p>
