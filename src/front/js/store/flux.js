@@ -264,7 +264,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				);
 
 				const userID = user.$id;
-				console.log(userID)
 				// HASTA AQUI
 				const resp = await fetch(
 					`${process.env.BACKEND_URL}/api/signup`,

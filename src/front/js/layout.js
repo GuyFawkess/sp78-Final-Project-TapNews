@@ -41,9 +41,9 @@ const Layout = () => {
               <Route element={<FriendProfileView />} path="/friends/:friend_id" />
               <Route element={<RegisterPage />} path="/register2" />
               <Route element={<LoginPage />} path="/login2" />
-              <Route element={<PrivateRoutes />}>
-                <Route element={<Chat />} path="/chat" />
-              </Route>
+              {/* <Route element={<PrivateRoutes />}> */}
+                <Route element={<Chat />} path="/chat/:friend_id" />
+              {/* </Route> */}
             </Routes>
           </AuthProvider>
         </div>
