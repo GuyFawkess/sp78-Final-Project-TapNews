@@ -4,6 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import Banner from "/workspaces/sp78-Final-Project-TapNews/public/Banner.jpg";
 import footerlogin from "/workspaces/sp78-Final-Project-TapNews/public/footerlogin.jpg"
 import "../../styles/signup.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faShareFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Form, Button } from "react-bootstrap";
 
 export const SignUp = () => {
@@ -121,13 +123,12 @@ export const SignUp = () => {
                 onChange={handleInputChange}
               />
             </Form.Group>
-
-            <Button className="register mt-5" variant="primary" type="submit">
-              Regístrese
-            </Button>
             <Link to="/login" className="link"><Button className="return mt-5" variant="primary" type="submit">
-              Regresar
+              Acceso
             </Button></Link>
+            <Button className="register mt-5" variant="primary" type="submit">
+              Crear cuenta
+            </Button>
           </Form>
         </div>
       </div>

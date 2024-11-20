@@ -55,7 +55,7 @@ const FriendProfile = () => {
           </Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
-          <ListGroup.Item className="text-center">Amistades - {store.friends.length}</ListGroup.Item>
+          <ListGroup.Item className="text-center">Amistades - {friends.length}</ListGroup.Item>
           <ListGroup.Item className="text-center gridtitle">Noticias guardadas</ListGroup.Item>
         </ListGroup>
       </Card>

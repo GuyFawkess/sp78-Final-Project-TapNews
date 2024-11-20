@@ -69,7 +69,7 @@ const ProfileCard = () => {
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroup.Item className="text-center">
-            Amistades - {store.friends && store.friends.length ? store.friends.length : ""}
+            Amistades - {store.friends && store.friends.length ? store.friends.length : "0"}
           </ListGroup.Item>
           <ListGroup.Item className="d-flex justify-content-center">
             <Button className="editprofile" onClick={openModal}>Editar perfil</Button>

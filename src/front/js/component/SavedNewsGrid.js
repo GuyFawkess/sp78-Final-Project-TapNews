@@ -11,24 +11,23 @@ const SavedNewsGrid = () => {
     const {store , actions} = useContext(Context);
     
     useEffect(() => {
-        actions.getFavouriteNews()
-    }, [])
+        actions.getFavouriteNews();
+    }, []);
 
-    return(
-    <>
+    return (
         <div className="gridbox">
-            <Row className="d-flex justify-content-center"style={{marginBlockEnd:'60px'}}>
-                    {store.favouriteNews.map((singleFavorite, index) => {
-                        return(
-                           <Card className="col-4" key={index} style={{backgroundImage: `url(${singleFavorite.media_url})`}}>
-                                <FontAwesomeIcon onClick={() => actions.deleteFavouriteNew(singleFavorite.id)} className="trash" icon={faTrash} style={{color: "#ffffff",}} />
-                                <Link to={`/news/${singleFavorite.id}`}><FontAwesomeIcon className="filenew" icon={faFile} style={{color: "#ffffff",}} /></Link> 
-                            </Card>
-                        )})}
-                </Row>
+            <Row className="d-flex justify-content-center" style={{marginBlockEnd: '60px'}}>
+                {store.favouriteNews.map((singleFavorite, index) => (
+                    <Card className="col-4" key={index} style={{backgroundImage: `url(${singleFavorite.media_url})`}}>
+                        <FontAwesomeIcon onClick={() => actions.deleteFavouriteNew(singleFavorite.id)} className="trash" icon={faTrash} style={{color: "#ffffff"}} />
+                        <Link to={`/news/${singleFavorite.id}`}>
+                            <FontAwesomeIcon className="filenew" icon={faFile} style={{color: "#ffffff"}} />
+                        </Link> 
+                    </Card>
+                ))}
+            </Row>
         </div>
-    </>
-    )
+    );
 }
 
 export {SavedNewsGrid}

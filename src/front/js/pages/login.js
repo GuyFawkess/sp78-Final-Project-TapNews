@@ -90,12 +90,12 @@ export const LogIn = () => {
                 onChange={handleInputChange}
               />
             </Form.Group>
-            <Button className=" access mt-5" type="submit">
-              Acceder
-            </Button>
             <Link to="/signup" className="link"><Button className="register2 mt-5" type="submit">
               Registro
             </Button></Link>
+            <Button className=" access mt-5" type="submit">
+              Acceder
+            </Button>
           </Form>
         </div>
       </div>
