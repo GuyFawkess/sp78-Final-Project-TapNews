@@ -3,14 +3,12 @@ import { Context } from "../store/appContext";
 import { Card, Modal, Button, Row, Col } from "react-bootstrap";
 import "../../styles/cardfriend.css";
 import { Link } from "react-router-dom";
-import Chat from "../pages/Chat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faComments } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
 
 const FriendCard = () => {
-  const [activeFriend, setActiveFriend] = useState(null);  
   const { store, actions } = useContext(Context);
   const [show, setShow] = useState(false);
   const [selectedFriendId, setSelectedFriendId] = useState(null);  
@@ -43,7 +41,6 @@ const FriendCard = () => {
     };
   });
 
-  console.log("Amigos con sus perfiles:", friendsWithProfiles);
 
   return (
     <>

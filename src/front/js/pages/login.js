@@ -9,13 +9,13 @@ import Form from "react-bootstrap/Form";
 import banner from "/workspaces/sp78-Final-Project-TapNews/public/Banner.jpg"
 import footerlogin from "/workspaces/sp78-Final-Project-TapNews/public/footerlogin.jpg"
 
-
 export const LogIn = () => {
-  const { user, handleUserLogin } = useAuth();
+  const { user, handleUserLogin, handleUserLogout } = useAuth();
   const { actions } = useContext(Context);
 
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate()
+
 
   // METI LA INFO DE EMAIL Y PASS EN UN OBJETO
   const [credentials, setCredentials] = useState({

@@ -4,25 +4,35 @@ import Card from 'react-bootstrap/Card';
 import "../../styles/card.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark, faHeart, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from "../store/AuthContext";
+
+
 
 function CardNew() {
   const [description, setDescription] = useState(false);
   const { store, actions } = useContext(Context);
+  const { handleUserLogout } = useAuth();
 
   const visibility_description = () => {
     setDescription(!description); 
   };
 
+  // useEffect(() => {
+  //   handleUserLogout()
+  // }, [])
+
   const userId = localStorage.getItem('user_id');
   const user_likes = store.likes;
-  //const user_favorites = store.favouriteNews;  
+  const user_favorites = store.favouriteNews.map(news => news.id)
+
+ 
 
   const likeStyle = (id) => {
     return user_likes.includes(id) ? {color: "#FF0000"} : {color: "#FFFFFF"};
   }
 
   const bookmarkStyle = (id) => {
-    return store.favouriteNews.some(fav => fav.id === id) ? {color: "#FF0000"} : {color: "#FFFFFF"};
+    return user_favorites.includes(id) ? {color: "#FF0000"} : {color: "#FFFFFF"};
   }
 
   useEffect(() => {
@@ -42,8 +52,7 @@ function CardNew() {
 
 
   const handleBookmark = (id) => {
-    const isSaved = store.favouriteNews.some(fav => fav.id === id);
-    if (!isSaved) {
+    if (!user_favorites.includes(id)) {
       actions.addFavouriteNew({ uuid: id });  
     } else {
       actions.deleteFavouriteNew(id); 

@@ -355,6 +355,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!resp.ok) {
 						throw new Error("Failed to save news")
 					}
+					const store = getStore()
+					setStore({ favouriteNews: [...store.favouriteNews, news_id] })
+					await getActions().getFavouriteNews()
+					
 				}
 				catch (error) {
 					console.log(error)
