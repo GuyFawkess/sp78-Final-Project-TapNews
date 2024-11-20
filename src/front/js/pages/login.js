@@ -34,7 +34,6 @@ export const LogIn = () => {
     let value = e.target.value;
 
     setCredentials({ ...credentials, [name]: value });//ponemos name en corchetes bc is a dynamic variable, it means that the name will use as the email and the password
-    console.log(credentials)
   }
   const handleLogin = async (e) => {
     e.preventDefault();

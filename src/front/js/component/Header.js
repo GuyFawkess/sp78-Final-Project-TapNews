@@ -11,7 +11,8 @@ const Header = () => {
                     <LogOut onClick={handleUserLogout} className="header--link" />
                 </>
             ) : (
-                <button>Login</button>
+                // <button>Login</button>
+                <></>
             )}
         </div>
     );
