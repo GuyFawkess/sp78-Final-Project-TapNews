@@ -11,18 +11,23 @@ import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/172932919
 const FriendCard = () => {
   const { store, actions } = useContext(Context);
   const [show, setShow] = useState(false);
-  const [selectedFriendId, setSelectedFriendId] = useState(null);  
+  const [selectedFriendId, setSelectedFriendId] = useState(null);
   const userId = localStorage.getItem("user_id");
 
 
   const handleClose = () => setShow(false);
   const handleShow = (friendId) => {
-    setSelectedFriendId(friendId); 
+    setSelectedFriendId(friendId);
     setShow(true);
   };
 
+
   useEffect(() => {
     actions.getFriends(userId);
+
+  }, [userId, actions]);
+
+  useEffect(() => {
     actions.getAllUsers();
     actions.getAllProfiles();
   }, [userId]);
@@ -60,7 +65,7 @@ const FriendCard = () => {
                   <FontAwesomeIcon className="pb-2" icon={faCircleUser} size="2xl" style={{ color: "#ffffff" }} />
                 </Link>
                 <Link className="mx-auto" to={`/chat/${friend.id}`}>
-                <FontAwesomeIcon className="pb-2" icon={faComments} size="2xl" style={{ color: "#ffffff" }} />
+                  <FontAwesomeIcon className="pb-2" icon={faComments} size="2xl" style={{ color: "#ffffff" }} />
                 </Link>
                 <FontAwesomeIcon className="pb-2" onClick={() => handleShow(friend.id)} icon={faCircleXmark} size="2xl" style={{ color: "#ffffff" }} />
               </Col>
