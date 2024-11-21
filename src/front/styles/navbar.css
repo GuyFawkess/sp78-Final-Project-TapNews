@@ -1,15 +1,15 @@
-.navbar-fixed-bottom{
+.navbar-fixed-bottom {
     background-color: #0044CC;
     position: fixed;
     bottom: 0;
-    left:0;
-    right:0;
+    left: 0;
+    right: 0;
     z-index: 5;
     height: 60px;
     border-top: 1px solid white
 }
 
-.nav-icon{
+.nav-icon {
     padding-top: 20%;
 }
 

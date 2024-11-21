@@ -2,13 +2,13 @@
 
 
 :root {
-    --mainBgColor: rgba(20, 20, 31, 11);
-    --secondaryBgColor: rgba(27, 27, 39, 1);
-    --borderColor1: rgba(40, 41, 57, 1);
-    --borderColor2: rgba(79, 86, 105, 1);
+    --mainBgColor: #065bf0;
+    --secondaryBgColor: #008af3;
+    --borderColor1: #009da0;
+    --borderColor2: 0079ff;
     --textColorMain: #fff;
     --textColorSecondary: rgb(226, 227, 232);
-    --themeColorMain: rgba(219, 26, 90, 1);
+    --themeColorMain: #009da0;
     --themeColorSecondary: #386fd2;
 }
 
@@ -67,15 +67,19 @@ input[type="password"],
 input[type="email"], */
 textarea {
     background: var(--mainBgColor);
+    color: white;
     border: none;
     border-bottom: 1px solid var(--borderColor1);
     padding: 1rem;
     border-radius: 3px;
     width: 100%;
-    color: var(--color-light);
     outline: none;
     font-size: 18px;
     text-shadow: none !important;
+}
+
+textarea::placeholder {
+    color: rgb(196, 196, 201)
 }
 
 /* Button Styling */
@@ -109,8 +113,10 @@ textarea {
 /* Header Styling */
 
 #header--wrapper {
+    position: fixed;
     background-color: var(--mainBgColor);
     padding: 1em;
+    width: max-content;
     display: flex;
     justify-content: space-between;
     border-radius: 10px 10px 0 0;
@@ -158,6 +164,7 @@ textarea {
 }
 
 .message--header {
+
     display: flex;
     justify-content: space-between;
     align-items: center;
