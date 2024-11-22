@@ -29,7 +29,7 @@ const UserRandomProfile = () => {
     };
 
     loadData();
-  }, [random_id]); 
+  }, []); 
 
 
   const user = store.user || {};

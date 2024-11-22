@@ -6,6 +6,14 @@
     font-weight: bold;
 }
 
+
+.titlesinglenew{
+    font-family: 'Quicksand';
+    color: #ffffff;
+    font-size:larger;
+    margin-top: 140%;
+}
+
 .text-new{
    
     font-family: 'Quicksand';
@@ -16,9 +24,16 @@
 
 .visitnew{
     background-color: #0044CC;
-
 }
 
-.title2{
-   margin-top: 90%;
+.showmore{
+    background-color: #0044CC;
+    margin-top: 5%;
+}
+
+.newspaper{
+    font-family: 'Quicksand';
+    color: #ffffff;
+    font-weight: bold;
+    fotz-size: large ;
 }

@@ -6,7 +6,7 @@ import "../../styles/profilecard.css";
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
 import { useAuth }  from  '../store/AuthContext.js'
 import {Storage, ID} from "appwrite";
-import client, { STORAGE_ID } from "/workspaces/sp78-Final-Project-TapNews/src/appwriteConfig.js";
+import client, { PROYECT_ID, STORAGE_ID} from "/workspaces/sp78-Final-Project-TapNews/src/appwriteConfig.js";
 const ProfileCard = () => {
  
   const storage = new Storage(client);
@@ -33,27 +33,51 @@ const ProfileCard = () => {
     } else {
       navigate("/login"); 
     }
-  }, [userId, actions, navigate]);
+  }, [userId, navigate]);
+
+ 
+  useEffect(() => {
+    if (store.profile && store.profile.img_url) {
+      setImageUrl(store.profile.img_url); 
+    }
+  }, [store.profile]);
 
   useEffect(() => {
     const fileInput = document.getElementById('uploader');
-    
+
     if (fileInput) {
-      const handleFileChange = (event) => {
+      const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
-          const promise = storage.createFile(
-            STORAGE_ID, 
-            ID.unique(),  
-            file  
-          );
+          try {
+            const response = await storage.createFile(
+              STORAGE_ID, 
+              ID.unique(),  
+              file  
+            );
 
-          promise.then(function (response) {
             console.log('Archivo subido con éxito:', response);
-            setImageUrl(response.$id); 
-          }, function (error) {
-            console.log('Error al subir el archivo:', error);
-          });
+
+            if (response && response.$id) {
+              const fileId = response.$id;
+              console.log("File ID:", fileId);
+
+              const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/${STORAGE_ID}/files/${fileId}/view?project=${PROYECT_ID}`;
+
+              setImageUrl(imageUrl);
+
+              console.log('URL del archivo:', imageUrl);
+              const updatedProfile = {
+                description,
+                image_url: imageUrl,
+              };
+              await actions.modifyProfile(userId, updatedProfile);
+            } else {
+              console.error('Error: El archivo subido no tiene un ID válido:', response);
+            }
+          } catch (error) {
+            console.error('Error al subir el archivo o al obtener la URL:', error);
+          }
         } else {
           console.log("No file selected.");
         }
@@ -65,8 +89,9 @@ const ProfileCard = () => {
         fileInput.removeEventListener('change', handleFileChange);
       };
     }
-  }, [storage]); 
+  }, [storage]);
 
+  
   const handleLogout = () => {
     actions.logout();
     handleUserLogout();
@@ -76,10 +101,10 @@ const ProfileCard = () => {
   const handleSaveChanges = async () => {
     const updatedProfile = {
       description,
-      image_url: imageUrl,
+      image_url: imageUrl, 
     };
     await actions.modifyProfile(userId, updatedProfile);
-    setShowModal(false);
+    setShowModal(false); 
   };
 
   if (!store.user || !store.profile || !store.friends || !store.user.username) {
@@ -96,7 +121,7 @@ const ProfileCard = () => {
         <Card.Img
           className="mx-auto m-4 profileimage"
           variant="top"
-          src={store.profile.img_url || 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg'}
+          src={imageUrl || 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg'}
         />
         <Card.Body>
           <Card.Title className="text-center username">{store.user.username}</Card.Title>

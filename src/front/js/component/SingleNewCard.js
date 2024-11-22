@@ -19,7 +19,8 @@ const SingleNew = () => {
         <>
             <Card className=" Card-bg" style={{backgroundImage: `url(${store.news.media_url})`, width: '100%', height: '55rem', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
               <Card.Body style={{backdropFilter:'brightness(40%)', width: '100%', height: '55rem'}} className="mycardbody">
-                <Card.Title className="title2">{store.news.title}</Card.Title>
+              <Card.Text className="newspaper">Fuente: {store.news.newspaper}</Card.Text>
+                <Card.Title className="titlesinglenew">{store.news.title}</Card.Title>
                 <Card.Text className="description">
                   {store.news.content}
                 </Card.Text>
