@@ -1,9 +1,8 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Context } from "../store/appContext";
-import { SavedNewsGrid } from "../component/SavedNewsGrid";  // Importar SavedNewsGrid
+import { Context } from "../store/appContext"; 
 import { Card, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
+import TapNewsLogo from '../../../../public/tapnews.jpg';
 
 const FriendProfile = () => {
   const { store, actions } = useContext(Context);
