@@ -10,6 +10,7 @@ import {
   faHeart,
   faComment,
   faShare,
+  faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
 
@@ -179,7 +180,7 @@ function CardNew() {
             overflow: "hidden",
           }}
         >
-          <Modal.Header closeButton style={{
+          <Modal.Header closeButton className="bg-secondary text-light" style={{
         flexShrink: 0, // Evita que cambie de tamaño
       }}>
             <Modal.Title></Modal.Title>
@@ -194,13 +195,13 @@ function CardNew() {
           )}
           </Modal.Header>
           <Modal.Body
-            className="modal-body-scrollable-bool"
+            className="modal-body-scrollable-bool text-center bg-secondary text-light"
             style={{
               flex: 1, // Permite que el cuerpo tome todo el espacio disponible
               overflowY: "auto", // Habilita el desplazamiento vertical
               padding: "1rem",
             }}
-          >Comentarios
+          ><p className="pb-1">Comentarios:</p>
             {currentCommentNews && (
               <>
                 {/* <h5>{currentCommentNews.title}</h5> */}
@@ -216,7 +217,7 @@ function CardNew() {
               </>
             )}
           </Modal.Body>
-          <Modal.Footer
+          <Modal.Footer className="bg-secondary text-light"
             style={{
               flexShrink: 0, // Evita que el pie cambie de tamaño
               borderTop: "1px solid #dee2e6",
@@ -251,7 +252,8 @@ function CardNew() {
             transform: "translateY(-50%)", // Centra verticalmente el botón
             padding: "0.5rem 1rem",
           }}>
-              <i class="fa-solid fa-paper-plane-top fa-sm"></i>
+              <FontAwesomeIcon
+              icon={faPlay}/>
             </Button>
             </div>
           </Modal.Footer>
