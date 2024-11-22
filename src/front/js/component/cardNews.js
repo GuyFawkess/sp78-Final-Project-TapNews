@@ -173,7 +173,7 @@ function CardNew() {
       {/* modal para comentarios */}
 
       <Modal show={showModal} onHide={handleCloseModal}>
-      <h1 className="text-center mt-2">Comentarios:</h1>
+        <h1 className="text-center mt-2">Comentarios:</h1>
         <div
           style={{
             display: "flex",
@@ -182,43 +182,48 @@ function CardNew() {
             overflow: "hidden",
           }}
         >
-          <Button variant="secondary" className="me-3 bg-primary" onClick={handleCloseModal} style={{
-      position: 'absolute',
-      right: '5px', // Ajusta la distancia del borde derecho
-      top: '5px', // Ajusta la distancia desde la parte superior
-      padding: "0.5rem",
-      height: "40px"     
-    }}>
-      <FontAwesomeIcon
-      icon={faXmark}/>
-    </Button>
-          <Modal.Header  className="bg-secondary text-light d-flex align-items-center justify-content-between mt-2" style={{
-        flexShrink: 0, // Evita que cambie de tamaño
-        
-      }} >
+          <Button
+            variant="secondary"
+            className="me-3 bg-primary"
+            onClick={handleCloseModal}
+            style={{
+              position: "absolute",
+              right: "5px", // Ajusta la distancia del borde derecho
+              top: "5px", // Ajusta la distancia desde la parte superior
+              padding: "0.5rem",
+              height: "40px",
+            }}
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </Button>
+          <Modal.Header
+            className="bg-secondary text-light d-flex align-items-center justify-content-between mt-2"
+            style={{
+              flexShrink: 0, // Evita que cambie de tamaño
+            }}
+          >
             <Modal.Title></Modal.Title>
             {currentCommentNews ? (
-            <div>
-              <h5>{currentCommentNews.title}</h5>
-              {/* <p>{currentCommentNews.description}</p> */}
-
-            </div>
-          ) : (
-            <p>Cargando datos...</p>
-          )}
+              <div>
+                <h5>{currentCommentNews.title}</h5>
+              </div>
+            ) : (
+              <p>Cargando datos...</p>
+            )}
           </Modal.Header>
           <Modal.Body
-            className="modal-body-scrollable-bool text-center bg-secondary text-light"
+            className="modal-body-scrollable-bool bg-secondary text-light"
             style={{
               flex: 1, // Permite que el cuerpo tome todo el espacio disponible
               overflowY: "auto", // Habilita el desplazamiento vertical
               padding: "1rem",
+              paddingRight: "2rem",
             }}
-          ><p className="pb-1"></p>
+          >
+            <p className="pb-1"></p>
             {currentCommentNews && (
               <>
-                {/* <h5>{currentCommentNews.title}</h5> */}
-                <div>
+                <div className="comment container">
                   {(comments[currentCommentNews.uuid] || []).map(
                     (comment, idx) => (
                       <p key={idx} className="comment-item">
@@ -230,7 +235,8 @@ function CardNew() {
               </>
             )}
           </Modal.Body>
-          <Modal.Footer className="bg-secondary text-light"
+          <Modal.Footer
+            className="bg-secondary text-light"
             style={{
               flexShrink: 0, // Evita que el pie cambie de tamaño
               borderTop: "1px solid #dee2e6",
@@ -238,34 +244,37 @@ function CardNew() {
             }}
           >
             <div
-        style={{
-          position: "relative",
-          width: "100%", // Asegura que el contenedor ocupe todo el ancho del footer
-        }}
-      >
-            <textarea
-              className="form-control"
-              placeholder="Escribe tu comentario..."
-              rows="3"
-              value={comment} // Vincula el valor del `textarea` al estado `comment`
-              onChange={(e) => setComment(e.target.value)} // Actualiza el estado al escribir
               style={{
-                width: "100%",
-                paddingRight: "4rem", // Espacio reservado para el botón
-                boxSizing: "border-box", // Asegura que el padding no desborde
+                position: "relative",
+                width: "100%", // Asegura que el contenedor ocupe todo el ancho del footer
               }}
-            ></textarea>
-            
-            <Button variant="primary" onClick={handleSendComment}  style={{
-            position: "absolute",
-            top: "50%",
-            right: "10px",
-            transform: "translateY(-50%)", // Centra verticalmente el botón
-            padding: "0.5rem 1rem",
-          }}>
-              <FontAwesomeIcon
-              icon={faPlay}/>
-            </Button>
+            >
+              <textarea
+                className="form-control"
+                placeholder="Escribe tu comentario..."
+                rows="3"
+                value={comment} // Vincula el valor del `textarea` al estado `comment`
+                onChange={(e) => setComment(e.target.value)} // Actualiza el estado al escribir
+                style={{
+                  width: "100%",
+                  paddingRight: "4rem", // Espacio reservado para el botón
+                  boxSizing: "border-box", // Asegura que el padding no desborde
+                }}
+              ></textarea>
+
+              <Button
+                variant="primary"
+                onClick={handleSendComment}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "10px",
+                  transform: "translateY(-50%)", // Centra verticalmente el botón
+                  padding: "0.5rem 1rem",
+                }}
+              >
+                <FontAwesomeIcon icon={faPlay} />
+              </Button>
             </div>
           </Modal.Footer>
         </div>
