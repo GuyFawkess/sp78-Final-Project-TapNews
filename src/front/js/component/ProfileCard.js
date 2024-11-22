@@ -3,10 +3,10 @@ import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Modal, Card, ListGroup, Form } from "react-bootstrap";
 import "../../styles/profilecard.css";
-import TapNewsLogo from '../../../../public/tapnews.jpg'
-import { useAuth }  from  '../store/AuthContext.js'
+import TapNewsLogo from '../../../../public/tapnews.jpg';
+import { useAuth }  from  '../store/AuthContext.js';
 import {Storage, ID} from "appwrite";
-import client, { PROYECT_ID, STORAGE_ID} from "/workspaces/sp78-Final-Project-TapNews/src/appwriteConfig.js";
+import client, { PROYECT_ID, STORAGE_ID} from '../../../../src/appwriteConfig.js';
 const ProfileCard = () => {
  
   const storage = new Storage(client);

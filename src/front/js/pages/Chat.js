@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import client, { databases, DATABASE_ID, COLLECTION_ID_MESSAGES } from "/workspaces/sp78-Final-Project-TapNews/src/appwriteConfig.js";
+import client, { databases, DATABASE_ID, COLLECTION_ID_MESSAGES } from '../../../../src/appwriteConfig.js';
 import { useAuth } from "../store/AuthContext";
 import { useParams } from "react-router-dom";
 import { ID, Role, Permission, Query } from "appwrite";
 import Header from "../component/Header";
-
-import { IoTrashOutline } from "react-icons/io5";
 
 const Chat = () => {
 

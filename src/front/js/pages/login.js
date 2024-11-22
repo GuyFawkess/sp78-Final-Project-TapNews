@@ -2,12 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { useAuth } from "../store/AuthContext";
-
-import "/workspaces/sp78-Final-Project-TapNews/src/front/styles/login.css"
+import "../../styles/login.css"
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import banner from "/workspaces/sp78-Final-Project-TapNews/public/Banner.jpg"
-import footerlogin from "/workspaces/sp78-Final-Project-TapNews/public/footerlogin.jpg"
+import banner from "../../../../public/Banner.jpg"
+import footerlogin from "../../../../public/footerlogin.jpg"
 
 export const LogIn = () => {
   const { user, handleUserLogin, handleUserLogout } = useAuth();
