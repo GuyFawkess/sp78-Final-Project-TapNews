@@ -11,6 +11,7 @@ import {
   faComment,
   faShare,
   faPlay,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
 
@@ -172,6 +173,7 @@ function CardNew() {
       {/* modal para comentarios */}
 
       <Modal show={showModal} onHide={handleCloseModal}>
+      <h1 className="text-center mt-2">Comentarios:</h1>
         <div
           style={{
             display: "flex",
@@ -180,9 +182,20 @@ function CardNew() {
             overflow: "hidden",
           }}
         >
-          <Modal.Header closeButton className="bg-secondary text-light" style={{
+          <Button variant="secondary" className="me-3 bg-primary" onClick={handleCloseModal} style={{
+      position: 'absolute',
+      right: '5px', // Ajusta la distancia del borde derecho
+      top: '5px', // Ajusta la distancia desde la parte superior
+      padding: "0.5rem",
+      height: "40px"     
+    }}>
+      <FontAwesomeIcon
+      icon={faXmark}/>
+    </Button>
+          <Modal.Header  className="bg-secondary text-light d-flex align-items-center justify-content-between mt-2" style={{
         flexShrink: 0, // Evita que cambie de tamaño
-      }}>
+        
+      }} >
             <Modal.Title></Modal.Title>
             {currentCommentNews ? (
             <div>
@@ -201,7 +214,7 @@ function CardNew() {
               overflowY: "auto", // Habilita el desplazamiento vertical
               padding: "1rem",
             }}
-          ><p className="pb-1">Comentarios:</p>
+          ><p className="pb-1"></p>
             {currentCommentNews && (
               <>
                 {/* <h5>{currentCommentNews.title}</h5> */}
@@ -242,9 +255,7 @@ function CardNew() {
                 boxSizing: "border-box", // Asegura que el padding no desborde
               }}
             ></textarea>
-            {/* <Button variant="secondary" onClick={handleCloseModal}>
-              Cerrar
-            </Button> */}
+            
             <Button variant="primary" onClick={handleSendComment}  style={{
             position: "absolute",
             top: "50%",
