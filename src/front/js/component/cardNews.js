@@ -16,6 +16,9 @@ function CardNew() {
   const [currentCommentNews, setCurrentCommentNews] = useState(null)
   const { store, actions } = useContext(Context);
   const { handleUserLogout } = useAuth();
+  const [comment, setComment] = useState(""); // Estado para el comentario actual
+  const [comments, setComments] = useState({}); // Estado para almacenar los comentarios por noticia
+
 
   const visibility_description = () => {
     setDescription(!description); 
@@ -74,6 +77,20 @@ function CardNew() {
     setShowModal(false);
     setCurrentCommentNews(null);
   };
+  
+  const handleSendComment = () => {
+    if (comment.trim() === "") return; // Evitar agregar comentarios vacíos
+
+    setComments((prev) => ({
+      ...prev,
+      [currentCommentNews.uuid]: [
+        ...(prev[currentCommentNews.uuid] || []), // Toma los comentarios previos de la noticia
+        comment, // Agrega el nuevo comentario
+      ],
+    }));
+
+    setComment(""); // Limpia el campo de entrada
+  };
 
   return (
     <>
@@ -96,30 +113,49 @@ function CardNew() {
       
       {/* modal para comentarios */}
       <Modal show={showModal} onHide={handleCloseModal}>
+        <div style={{height:"700px"}}>
         <Modal.Header closeButton>
           <Modal.Title>Comentarios</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {currentCommentNews ? (
+          {/* {currentCommentNews ? (
             <div>
               <h5>{currentCommentNews.title}</h5>
-              <p>{currentCommentNews.description}</p>
-              <textarea
+              {/* <p>{currentCommentNews.description}</p> */}
+              
+            {/* </div>
+          ) : (
+            <p>Cargando datos...</p>
+          )} */} 
+        </Modal.Header>
+        <Modal.Body className="modal-body-scrollable-bool">
+        {currentCommentNews && (
+    <>
+      {/* <h5>{currentCommentNews.title}</h5> */}
+      <div>
+        {(comments[currentCommentNews.uuid] || []).map((comment, idx) => (
+          <p key={idx} className="comment-item">
+            {comment}
+          </p>
+        ))}
+      </div>
+    </>
+  )}
+          
+        </Modal.Body>
+        <Modal.Footer>
+        <textarea
                 className="form-control"
                 placeholder="Escribe tu comentario..."
                 rows="3"
+                value={comment} // Vincula el valor del `textarea` al estado `comment`
+                onChange={(e) => setComment(e.target.value)} // Actualiza el estado al escribir
+
               ></textarea>
-            </div>
-          ) : (
-            <p>Cargando datos...</p>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cerrar
           </Button>
-          <Button variant="primary">Enviar comentario</Button>
+          <Button variant="primary" onClick={handleSendComment}>Enviar comentario</Button>
         </Modal.Footer>
+        </div>
       </Modal>
     </>
   );
