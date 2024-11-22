@@ -11,17 +11,22 @@ import { useAuth } from "../store/AuthContext";
 function CardNew() {
   const [description, setDescription] = useState(false);
   const { store, actions } = useContext(Context);
-  const { handleUserLogout } = useAuth();
+  const userId = localStorage.getItem('user_id');
+  const { handleUserLogout, user } = useAuth();
 
   const visibility_description = () => {
     setDescription(!description); 
   };
 
-  // useEffect(() => {
-  //   handleUserLogout()
-  // }, [])
+  useEffect(() => {
+    const checkAndLogout = async () => {
+      if (!userId && user) {
+        await handleUserLogout();
+      }
+    }
+    checkAndLogout();
+  }, [user])
 
-  const userId = localStorage.getItem('user_id');
   const user_likes = store.likes;
   const user_favorites = store.favouriteNews.map(news => news.id)
 

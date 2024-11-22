@@ -5,8 +5,12 @@ import { Button, Modal, Card, ListGroup, Form } from "react-bootstrap";
 import "../../styles/profilecard.css";
 import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
 import { useAuth }  from  '../store/AuthContext.js'
-
+import {Storage, ID} from "appwrite";
+import client, { STORAGE_ID } from "/workspaces/sp78-Final-Project-TapNews/src/appwriteConfig.js";
 const ProfileCard = () => {
+ 
+  const storage = new Storage(client);
+
   const { store, actions } = useContext(Context);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -14,7 +18,7 @@ const ProfileCard = () => {
   const [imageUrl, setImageUrl] = useState(store.profile?.img_url || "");
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
-  const {handleUserLogout} = useAuth()
+  const { handleUserLogout } = useAuth();
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -29,24 +33,47 @@ const ProfileCard = () => {
     } else {
       navigate("/login"); 
     }
-  }, []);
+  }, [userId, actions, navigate]);
 
-  if (!store.user || !store.profile || !store.friends || !store.user.username) {
-    return (
-      <div className="loading">
-        <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fileInput = document.getElementById('uploader');
+    
+    if (fileInput) {
+      const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const promise = storage.createFile(
+            STORAGE_ID, 
+            ID.unique(),  
+            file  
+          );
+
+          promise.then(function (response) {
+            console.log('Archivo subido con éxito:', response);
+            setImageUrl(response.$id); 
+          }, function (error) {
+            console.log('Error al subir el archivo:', error);
+          });
+        } else {
+          console.log("No file selected.");
+        }
+      };
+
+      fileInput.addEventListener('change', handleFileChange);
+
+      return () => {
+        fileInput.removeEventListener('change', handleFileChange);
+      };
+    }
+  }, [storage]); 
 
   const handleLogout = () => {
     actions.logout();
     handleUserLogout();
     closeModal2();
-  }
+  };
 
   const handleSaveChanges = async () => {
-
     const updatedProfile = {
       description,
       image_url: imageUrl,
@@ -54,6 +81,14 @@ const ProfileCard = () => {
     await actions.modifyProfile(userId, updatedProfile);
     setShowModal(false);
   };
+
+  if (!store.user || !store.profile || !store.friends || !store.user.username) {
+    return (
+     <div style={{position: 'absolute', top: '0', bottom:'0', right:'0', left: '0'}} className="loading">
+        <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -89,12 +124,7 @@ const ProfileCard = () => {
           <Form>
             <Form.Group className="mb-3" controlId="imageUrl">
               <Form.Label className="label">Imagen de perfil</Form.Label>
-              <Form.Control
-                type="url"
-                placeholder="URL de la imagen"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-              />
+              <input type="file" id="uploader" accept="image/*" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="description">
               <Form.Label className="label">Descripción</Form.Label>

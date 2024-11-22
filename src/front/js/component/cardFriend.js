@@ -28,7 +28,11 @@ const FriendCard = () => {
   }, [userId]);
 
   if (!store.friends.length || !store.listuser.length) {
-    return <div className="loading"><img className="logo-2" src={TapNewsLogo} /></div>;
+    return (<div style={{position: 'absolute', top: '0', bottom:'0', right:'0', left: '0'}} className="loading">
+      <img className="logo-2" src={TapNewsLogo} />
+      <hr className="separate"></hr>
+      <h5 className="textnofriend">Aún no has agregado amistades</h5>
+      </div>);
   }
 
   const friendsWithProfiles = store.friends.map(friend => {

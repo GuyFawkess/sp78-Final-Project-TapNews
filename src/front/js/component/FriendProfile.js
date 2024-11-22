@@ -31,7 +31,7 @@ const FriendProfile = () => {
   }, []); 
 
   if (loading) {
-    return  (<div className="loading">
+    return  (<div style={{position: 'absolute', top: '0', bottom:'0', right:'0', left: '0'}} className="loading">
       <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
           </div>);
   }
@@ -43,7 +43,6 @@ const FriendProfile = () => {
   const user = store.user || {};
   const profile = store.profile || {};
   const friends = store.friend || [];
-  console.log(store.user)
   return (
     <>
       <Card style={{ width: '100%', backgroundColor: '#0044CC' }}>

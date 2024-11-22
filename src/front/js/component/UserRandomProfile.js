@@ -45,7 +45,7 @@ const UserRandomProfile = () => {
 
   if (loading) {
     return (
-      <div className="loading">
+      <div style={{position: 'absolute', top: '0', bottom:'0', right:'0', left: '0'}} className="loading">
         <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
       </div>
     );
