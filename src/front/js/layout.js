@@ -21,7 +21,7 @@ import { FriendProfileView } from "./pages/FriendProfileView";
 import  {Search} from "./pages/search.js";
 import { UserRandomView } from "./pages/UserRandomView";
 import { SingleView } from "./pages/SingleNewView";
-
+//
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
