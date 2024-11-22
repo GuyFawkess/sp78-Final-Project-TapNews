@@ -18,10 +18,10 @@ import { Feed } from "./pages/Feed";
 import { UserProfile } from "./pages/UserProfile";
 import { FriendsView } from "./pages/Friends";
 import { FriendProfileView } from "./pages/FriendProfileView";
-import  Search  from "/workspaces/sp78-Final-Project-TapNews/src/front/js/pages/search.js";
+import  {Search} from "./pages/search.js";
 import { UserRandomView } from "./pages/UserRandomView";
 import { SingleView } from "./pages/SingleNewView";
-
+//
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
