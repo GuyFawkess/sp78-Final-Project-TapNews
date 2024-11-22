@@ -3,7 +3,7 @@ import { Client, Databases, Account } from 'appwrite';
 export const PROYECT_ID = process.env.PROYECT_ID;
 export const DATABASE_ID = process.env.DATABASE_ID;
 export const COLLECTION_ID_MESSAGES = process.env.COLLECTION_ID_MESSAGES;
-
+export const STORAGE_ID = process.env.STORAGE_ID;
 
 const client = new Client();
 client
