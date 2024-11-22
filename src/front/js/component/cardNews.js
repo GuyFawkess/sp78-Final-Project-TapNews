@@ -223,6 +223,12 @@ function CardNew() {
               padding: "1rem",
             }}
           >
+            <div
+        style={{
+          position: "relative",
+          width: "100%", // Asegura que el contenedor ocupe todo el ancho del footer
+        }}
+      >
             <textarea
               className="form-control"
               placeholder="Escribe tu comentario..."
@@ -230,16 +236,24 @@ function CardNew() {
               value={comment} // Vincula el valor del `textarea` al estado `comment`
               onChange={(e) => setComment(e.target.value)} // Actualiza el estado al escribir
               style={{
-                flex: 1,
-                marginRight: "0.5rem",
+                width: "100%",
+                paddingRight: "4rem", // Espacio reservado para el botón
+                boxSizing: "border-box", // Asegura que el padding no desborde
               }}
             ></textarea>
-            <Button variant="secondary" onClick={handleCloseModal}>
+            {/* <Button variant="secondary" onClick={handleCloseModal}>
               Cerrar
+            </Button> */}
+            <Button variant="primary" onClick={handleSendComment}  style={{
+            position: "absolute",
+            top: "50%",
+            right: "10px",
+            transform: "translateY(-50%)", // Centra verticalmente el botón
+            padding: "0.5rem 1rem",
+          }}>
+              <i class="fa-solid fa-paper-plane-top fa-sm"></i>
             </Button>
-            <Button variant="primary" onClick={handleSendComment}>
-              Enviar comentario
-            </Button>
+            </div>
           </Modal.Footer>
         </div>
       </Modal>
