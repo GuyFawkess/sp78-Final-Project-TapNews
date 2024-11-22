@@ -130,32 +130,42 @@ const Chat = () => {
             <Header />
             <div className="room--container">
                 <div>
-                    {messages.map((message) => (
-                        <div key={message.$id} className="message--wrapper">
-                            <div className="message--header">
-                                <p>
-                                    {message?.username ? (
-                                        <span>{message.username}</span>
-                                    ) : (
-                                        <span>Anonymous</span>
-                                    )}
-                                    <small className="message-timestamp">{new Date(message.$createdAt).toLocaleString()}</small>
-                                </p>
+                    {messages.map((message) => {
+                        console.log("SENDER", message.senderID); // Log para verificar el senderID de cada mensaje
+                        console.log("USER_id", senderID);       // Log para verificar el ID del usuario actual
 
+                        // Determinar si el mensaje fue enviado por el usuario actual
+                        const isSentByUser = message.senderID === senderID;
 
+                        return (
+                            <div
+                                key={message.$id}
+                                className={`message--wrapper ${isSentByUser ? "message--sent" : "message--received"}`}
+                            >
+                                <div className="message--header">
+                                    <p>
+                                        {message?.username ? (
+                                            <span>{message.username}</span>
+                                        ) : (
+                                            <span>Anonymous</span>
+                                        )}
+                                        <small className="message-timestamp">
+                                            {new Date(message.$createdAt).toLocaleString()}
+                                        </small>
+                                    </p>
+                                </div>
 
+                                <div className="message--body">
+                                    <span>{message.body}</span>
+                                </div>
                             </div>
+                        );
+                    })}
 
-
-                            <div className="message--body">
-                                <span>{message.body}</span>
-                            </div>
-                        </div>
-                    ))}
                     <div ref={messagesEndRef} /> {/* Empty div to mark the end of the messages */}
                 </div>
                 <form id="message--form" onSubmit={handleSubmit} className="message--form">
-                    <div>
+                    <div className="textAreaHolder">
                         <textarea
                             required
                             maxLength={1000}
