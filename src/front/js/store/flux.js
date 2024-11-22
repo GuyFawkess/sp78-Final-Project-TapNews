@@ -337,23 +337,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			getFavouriteNews: async () => {
-				const id = localStorage.getItem("user_id")
+			getFavouriteNews: async (userId) => {
+				const id = userId || localStorage.getItem("user_id");
 				if (!id) {
-					return
+				  return;
 				}
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`)
-					if (!resp.ok) {
-						throw new Error("Failed to access user's saved news")
-					}
-					const data = await resp.json()
-					setStore({ favouriteNews: data })
+				  const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`);
+				  if (!resp.ok) {
+					throw new Error("Failed to access user's saved news");
+				  }
+				  const data = await resp.json();
+				  setStore({ favouriteNews: data });
+				} catch (error) {
+				  console.log(error);
 				}
-				catch (error) {
-					console.log(error)
-				}
-			},
+			  },
+			  
 
 			getUserLikes: async () => {
 				const id = localStorage.getItem('user_id')
@@ -486,7 +486,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({
 						profile: updatedData,
 					});
-
+					
 					console.log("Perfil actualizado con éxito:", updatedData);
 				} catch (error) {
 					console.error("Error al modificar el perfil:", error);

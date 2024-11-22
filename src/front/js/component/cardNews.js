@@ -16,11 +16,11 @@ function CardNew() {
   const visibility_description = () => {
     setDescription(!description);
   };
+
   const userId=localStorage.getItem('user_id')
   const user_likes = store.likes;
   const user_favorites = store.favouriteNews.map(news => news.id)
 
-  // Checkeo para log out en caso de estar conectado en appwrite pero no en apiLocal
 
   useEffect(() => {
     const checkAndLogout = async () => {
@@ -68,6 +68,7 @@ function CardNew() {
 
   return (
     <>
+    <div className="timeline" style={{marginBlockEnd: '10%'}}>
       {store.topnews.map((singleNew, index) => (
         <Card className="Card-bg" key={index} style={{ backgroundImage: `url(${singleNew.image_url})`, width: '100%', height: '55rem', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
           <div className="actions d-flex flex-column" style={{ backdropFilter: description ? 'brightness(30%)' : 'brightness(60%)' }}>
@@ -84,6 +85,7 @@ function CardNew() {
           </Card.Body>
         </Card>
       ))}
+      </div>
     </>
   );
 }
