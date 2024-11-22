@@ -11,12 +11,12 @@ import { useAuth } from "../store/AuthContext";
 function CardNew() {
   const [description, setDescription] = useState(false);
   const { store, actions } = useContext(Context);
-
+  const { handleUserLogout, user } = useAuth();
 
   const visibility_description = () => {
     setDescription(!description);
   };
-
+  const userId=localStorage.getItem('user_id')
   const user_likes = store.likes;
   const user_favorites = store.favouriteNews.map(news => news.id)
 
