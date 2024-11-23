@@ -34,8 +34,6 @@ const ProfileCard = () => {
       navigate("/login"); 
     }
   }, [userId, navigate]);
-
- 
   useEffect(() => {
     if (store.profile && store.profile.img_url) {
       setImageUrl(store.profile.img_url); 
