@@ -161,16 +161,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}				
 			},
 
-			getComments: async () => {
-				const id = localStorage.getItem('user_id')
-				if (!id) {
-					return
-				}
+			getComments: async (news_id) => {
 				try{
-					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${user_id}/comments`)
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`)
 					if (!resp.ok) {
 						throw new Error("Failed to access comments")
 					}
+					const data = await resp.json()
+					return data
 				}
 				catch (error) {
 					console.log(error)
