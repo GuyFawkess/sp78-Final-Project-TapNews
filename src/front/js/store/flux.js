@@ -315,7 +315,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			addComments: async(user_id, content) => {
+			addComments: async(news_id, content) => {
 				const user_id = localStorage.getItem("user_id")
 				try {
 					const response = await fetch(`/api/news/${news_id}/comments`, {
@@ -323,7 +323,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: {
 							"Content-Type": "application/json",
 						},
-						body: JSON.stringify({ user_id, content }),
+						body: JSON.stringify({ "user_id": user_id, "content": content }),
 					});
 			
 					if (!response.ok) {
