@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faComments } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import TapNewsLogo from '../../../../public/tapnewslogo.png';
+import TapNewsLogo from '../../../../public/1729329195515-removebg-preview.png';
 
 const FriendCard = () => {
   const { store, actions } = useContext(Context);
@@ -24,8 +24,9 @@ const FriendCard = () => {
 
   useEffect(() => {
     actions.getFriends(userId);
+    console.log(store.friends)
+  }, [userId]);
 
-  }, [userId, actions]);
 
   useEffect(() => {
     actions.getAllUsers();

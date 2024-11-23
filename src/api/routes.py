@@ -92,8 +92,13 @@ def get_user_friends(id):
     if not user:
         return jsonify({"error": "User id doesn't exist"}), 404
     friends_ids = [friendship.friend_id for friendship in user.friendships if friendship.is_active]
-    friends = [{"friend_id": friend_id} for friend_id in friends_ids]
+    friend_of = Friendship.query.filter_by(friend_id=user.id).all()
+    friend_of_ids = [friendship.user_id for friendship in friend_of]
+    mutual_friends = list(set(friends_ids) & set(friend_of_ids))
+    friends = [{"friend_id": friend_id} for friend_id in mutual_friends]
     return jsonify({"friends": friends}), 200
+
+@api.route('/user/<string:id>/friends/pending', methods=['GET'])
 
 @api.route('/profile/<string:id>', methods=['GET'])
 def get_profile(id):
@@ -330,7 +335,18 @@ def get_news_comments(id):
     if not news:
         return jsonify({"error": "News id doesn't exist"}), 404
     comments = Comment.query.filter_by(news_id=id).all()
-    comment_list = [comment.serialize() for comment in comments]
+    user_ids = [comment.user_id for comment in comments]
+    users = {user.id: user for user in User.query.filter(User.id.in_(user_ids)).all()}
+    profiles = {profile.user_id: profile for profile in Profile.query.filter(Profile.user_id.in_(user_ids)).all()}
+    comment_list = [{"id": comment.id,
+            "user_id": comment.user_id,
+            "news_id": comment.news_id,
+            "content": comment.content,
+            "created_at": comment.created_at.isoformat() if comment.created_at else None,
+            "username": users.get(comment.user_id).username,
+            "img_url": profiles.get(comment.user_id).img_url
+            } 
+            for comment in comments]
     return jsonify({"comments": comment_list}), 200
 
 @api.route('/news/<string:id>/comments', methods=['DELETE'])
