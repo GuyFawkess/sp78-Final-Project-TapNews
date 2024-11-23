@@ -274,7 +274,7 @@ def add_news():
     id = data.get('uuid')
     existing_news = News.query.filter_by(id=id).first()
     if existing_news:
-        return jsonify({"error": "News is already in database"}), 400
+        return jsonify({"not processed": "News is already in database"}), 200
     title = data.get('title')
     content = data.get('snippet')
     genre = data.get('categories')
