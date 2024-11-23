@@ -73,11 +73,10 @@ textarea::placeholder {
     flex-wrap: wrap;
     flex-direction: column;
     gap: 0.2em;
-    margin: .8em;
+    height: min-content;
 }
 
 .message--header {
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -95,14 +94,14 @@ textarea::placeholder {
 
 }
 
-.message--body--owner {
-    border: 1px solid rgba(219, 26, 90, 1);
-    background-color: var(--secondaryBgColor);
+.message--body--sender {
+    background-color: #1e3ee2;
 }
+
 
 .message-timestamp {
     margin-left: 1em;
-    color: rgb(164, 161, 161);
+    color: rgb(214, 207, 207);
 }
 
 
@@ -162,7 +161,7 @@ textarea::placeholder {
 
 .message--sent {
     align-self: flex-end;
-    text-align: right !important;
+    text-align: right;
 
     /* Align messages sent by the user to the right */
 }
