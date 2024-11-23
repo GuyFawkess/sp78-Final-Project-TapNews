@@ -1,14 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Context } from "../store/appContext";
-import { Button, Modal, Card, ListGroup, Form } from "react-bootstrap";
-import "../../styles/profilecard.css";
+import { Context } from "../store/appContext"; 
+import { Card, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png'
-
+import TapNewsLogo from '../../../../public/tapnews.jpg';
 
 const FriendProfile = () => {
   const { store, actions } = useContext(Context);
-  const { friend_id } = useParams();
+  const { friend_id } = useParams();  // Obtener el friend_id desde la URL
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,24 +15,28 @@ const FriendProfile = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        await actions.getUser(friend_id); 
-        await actions.getProfile(friend_id); 
-        await actions.getFriends(friend_id); 
-        setLoading(false); 
+        await actions.getUser(friend_id);  
+        await actions.getProfile(friend_id);  
+        await actions.getFriends(friend_id);  
+        await actions.getFavouriteNews(friend_id); 
+        setLoading(false);
       } catch (err) {
-        setError("Hubo un error al cargar los datos."); 
+        setError("Hubo un error al cargar los datos.");
         setLoading(false);
       }
     };
 
     loadData();
-  }, []); 
+  }, [friend_id]);
 
   if (loading) {
-    return  (<div className="loading">
-      <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
-          </div>);
-  }
+    if (!store.user || !store.profile || !store.friends || !store.favouriteNews) {
+    return (
+      <div style={{position: 'absolute', top: '0', bottom:'0', right:'0', left: '0'}} className="loading">
+        <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
+      </div>
+    );
+  }}
 
   if (error) {
     return <div>{error}</div>;
@@ -43,7 +45,7 @@ const FriendProfile = () => {
   const user = store.user || {};
   const profile = store.profile || {};
   const friends = store.friend || [];
-  console.log(store.user)
+
   return (
     <>
       <Card style={{ width: '100%', backgroundColor: '#0044CC' }}>
@@ -56,11 +58,14 @@ const FriendProfile = () => {
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroup.Item className="text-center">Amistades - {friends.length}</ListGroup.Item>
-          <ListGroup.Item className="text-center gridtitle">Noticias guardadas</ListGroup.Item>
         </ListGroup>
       </Card>
+      
+      <div className="saved-news">
+        <h3 className="text-center">Noticias guardadas de {user.username}</h3>
+      </div>
     </>
   );
-}
+};
 
 export { FriendProfile };

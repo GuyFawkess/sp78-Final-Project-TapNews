@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import "../../styles/profilecard.css";
 import { useParams } from "react-router-dom";
-import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
+import TapNewsLogo from '../../../../public/tapnews.jpg';
 
 const UserRandomProfile = () => {
   const { store, actions } = useContext(Context);
@@ -29,7 +29,7 @@ const UserRandomProfile = () => {
     };
 
     loadData();
-  }, [random_id]); 
+  }, []); 
 
 
   const user = store.user || {};
@@ -45,7 +45,7 @@ const UserRandomProfile = () => {
 
   if (loading) {
     return (
-      <div className="loading">
+      <div style={{position: 'absolute', top: '0', bottom:'0', right:'0', left: '0'}} className="loading">
         <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
       </div>
     );

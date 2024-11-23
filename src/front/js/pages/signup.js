@@ -1,11 +1,9 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate, Link } from "react-router-dom";
-import Banner from "/workspaces/sp78-Final-Project-TapNews/public/Banner.jpg";
-import footerlogin from "/workspaces/sp78-Final-Project-TapNews/public/footerlogin.jpg"
+import Banner from "../../../../public/Banner.jpg";
+import footerlogin from "../../../../public/footerlogin.jpg";
 import "../../styles/signup.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faShareFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Form, Button } from "react-bootstrap";
 
 export const SignUp = () => {

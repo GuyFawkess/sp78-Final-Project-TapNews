@@ -22,13 +22,12 @@
 
 .loading{
     background-color: #0044CC;
-    height: 1200px;
 }
 
 .logo-2{
     width: 40%;
     aspect-ratio: 1;
-    margin-top: 400px;
+    margin-top: 50%;
     margin-left: 30%;
 }
 
@@ -43,4 +42,18 @@
 
 .delete{
     background-color: #0044CC;
+}
+
+.textnofriend{
+    margin-block-start: 10% ;
+    color:#ffffff;
+    font-family: 'Quicksand';
+    text-align: center;
+}
+
+.separate{
+    color:#ffffff;
+    width:80%;
+    margin: auto;
+    margin-block-start: 8%;
 }
