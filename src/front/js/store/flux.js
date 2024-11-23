@@ -198,7 +198,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"locale": "es"
 				}
 			],
-			searchTerm: ""
+			token: null,
+			users: [],
+			filteredUsers: [],
+			searchTerm: "",
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -280,6 +283,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log("Logout successful!");
 			},
 
+			
+
 			addFavouriteNew: async (item) => {
 				const user_id = localStorage.getItem("user_id")
 				if (!user_id) {
@@ -308,6 +313,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 				catch (error) {
 					console.log(error)
 				}
+			},
+
+			addComments: async(user_id, content) => {
+				const user_id = localStorage.getItem("user_id")
+				try {
+					const response = await fetch(`/api/news/${news_id}/comments`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ user_id, content }),
+					});
+			
+					if (!response.ok) {
+						console.error("Error al agregar comentario:", response.statusText);
+						return false;
+					}
+			
+					console.log("Comentario agregado con éxito");
+					return true;
+				} catch (error) {
+					console.error("Error en la solicitud de agregar comentario:", error);
+					return false;
+				}				
 			},
 
 			deleteFavouriteNew: async (news_id) => {

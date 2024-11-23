@@ -29,3 +29,11 @@
     box-shadow: 0 5px #ffffff;
     transform: translateY(4px);
 }
+
+ .comment-item{
+    margin-inline-end: 10%;
+ } 
+
+ .comment.container{
+    word-wrap: break-word;
+ }
