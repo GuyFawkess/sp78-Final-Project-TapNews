@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import TapNewsLogo from '../../../../public/tapnewslogo.png';
 import "../../styles/card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,19 +15,19 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
-
 function CardNew() {
   const [description, setDescription] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [currentCommentNews, setCurrentCommentNews] = useState(null);
   const { store, actions } = useContext(Context);
-  const [comment, setComment] = useState(""); // Estado para el comentario actual
-  const [comments, setComments] = useState({}); // Estado para almacenar los comentarios por noticia
+  const [comment, setComment] = useState(""); 
+  const [comments, setComments] = useState({});
   const { handleUserLogout, user } = useAuth();
 
   const visibility_description = () => {
     setDescription(!description);
   };
+
   const userId = localStorage.getItem("user_id");
   const user_likes = store.likes;
   const user_favorites = store.favouriteNews.map((news) => news.id);
@@ -38,7 +39,7 @@ function CardNew() {
       }
     }
     checkAndLogout();
-  }, [user])
+  }, [user]);
 
   const likeStyle = (id) => {
     return user_likes.includes(id) ? { color: "#FF0000" } : { color: "#FFFFFF" };
@@ -54,6 +55,10 @@ function CardNew() {
       actions.getFavouriteNews();
     }
   }, [userId]);
+
+  useEffect(() => {
+      actions.getNews();
+  }, []);
 
   const handleLike = (id) => {
     if (!user_likes.includes(id)) {
@@ -71,161 +76,201 @@ function CardNew() {
     }
   };
 
-  // Abre el modal y establece la noticia seleccionada
   const handleCommentClick = (news) => {
-    setCurrentCommentNews(news); // Guarda la noticia actual
-    setShowModal(true); // Muestra el modal
+    setCurrentCommentNews(news);
+    setShowModal(true);
   };
 
-  // Cierra el modal
   const handleCloseModal = () => {
     setShowModal(false);
     setCurrentCommentNews(null);
   };
 
   const handleSendComment = () => {
-    if (comment.trim() === "") return; // Evitar agregar comentarios vacíos
+    if (comment.trim() === "") return;
 
     setComments((prev) => ({
       ...prev,
       [currentCommentNews.uuid]: [
-        ...(prev[currentCommentNews.uuid] || []), // Toma los comentarios previos de la noticia
-        comment, // Agrega el nuevo comentario
+        ...(prev[currentCommentNews.uuid] || []),
+        comment,
       ],
     }));
 
-    setComment(""); // Limpia el campo de entrada
+    setComment("");
   };
+
+  if (!store.topnews || store.topnews.length === 0) {
+    return (
+      <div style={{ position: 'absolute', top: '0', bottom: '0', right: '0', left: '0' }} className="loading">
+        <img className="logo-4" src={TapNewsLogo} alt="Loading..." />
+      </div>
+    );
+  }
 
   return (
     <>
-    <div className="timeline" style={{marginBlockEnd: '10%'}}>
-      {store.topnews.map((singleNew, index) => (
-        <Card className="Card-bg" key={index} style={{ backgroundImage: `url(${singleNew.image_url})`, width: '100%', height: '55rem', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-          <div className="actions d-flex flex-column" style={{ backdropFilter: description ? 'brightness(30%)' : 'brightness(60%)' }}>
-            <FontAwesomeIcon onClick={() => handleLike(singleNew.uuid)} size="2xl" icon={faHeart} style={likeStyle(singleNew.uuid)} className="like p-2" />
-            <FontAwesomeIcon onClick={() => handleBookmark(singleNew.uuid)} size="2xl" icon={faBookmark} style={bookmarkStyle(singleNew.uuid)} className="save p-2" />
-            <FontAwesomeIcon size="2xl" icon={faComment} style={{ color: "#FFFFFF" }} className="comment p-2" />
-            <FontAwesomeIcon size="2xl" icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
-          </div>
-          <Card.Body style={{ backdropFilter: description ? 'brightness(40%)' : 'brightness(70%)', marginTop: description ? '150%' : '170%' }} className="mycardbody">
-            <Card.Title className="title" onClick={visibility_description}>{singleNew.title}</Card.Title>
-            <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden' }}>
-              {singleNew.description}
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      ))}
-
-      {/* modal para comentarios */}
-
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <h1 className="text-center mt-2">Comentarios:</h1>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "70vh", // Altura máxima del modal (70% del viewport)
-            overflow: "hidden",
-          }}
-        >
-          <Button
-            variant="secondary"
-            className="me-3 bg-primary"
-            onClick={handleCloseModal}
+      <div className="timeline" style={{ marginBlockEnd: '10%' }}>
+        {store.topnews.map((singleNew, index) => (
+          <Card
+            className="Card-bg"
+            key={index}
             style={{
-              position: "absolute",
-              right: "5px", // Ajusta la distancia del borde derecho
-              top: "5px", // Ajusta la distancia desde la parte superior
-              padding: "0.5rem",
-              height: "40px",
-            }}
-          >
-            <FontAwesomeIcon icon={faXmark} />
-          </Button>
-          <Modal.Header
-            className="bg-secondary text-light d-flex align-items-center justify-content-between mt-2"
-            style={{
-              flexShrink: 0, // Evita que cambie de tamaño
-            }}
-          >
-            <Modal.Title></Modal.Title>
-            {currentCommentNews ? (
-              <div>
-                <h5>{currentCommentNews.title}</h5>
-              </div>
-            ) : (
-              <p>Cargando datos...</p>
-            )}
-          </Modal.Header>
-          <Modal.Body
-            className="modal-body-scrollable-bool bg-secondary text-light"
-            style={{
-              flex: 1, // Permite que el cuerpo tome todo el espacio disponible
-              overflowY: "auto", // Habilita el desplazamiento vertical
-              padding: "1rem",
-              paddingRight: "2rem",
-            }}
-          >
-            <p className="pb-1"></p>
-            {currentCommentNews && (
-              <>
-                <div className="comment container">
-                  {(comments[currentCommentNews.uuid] || []).map(
-                    (comment, idx) => (
-                      <p key={idx} className="comment-item">
-                        {comment}
-                      </p>
-                    )
-                  )}
-                </div>
-              </>
-            )}
-          </Modal.Body>
-          <Modal.Footer
-            className="bg-secondary text-light"
-            style={{
-              flexShrink: 0, // Evita que el pie cambie de tamaño
-              borderTop: "1px solid #dee2e6",
-              padding: "1rem",
+              backgroundImage: `url(${singleNew.image_url})`,
+              width: '100%',
+              height: '55rem',
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
             }}
           >
             <div
+              className="actions d-flex flex-column"
+              style={{ backdropFilter: description ? 'brightness(30%)' : 'brightness(60%)' }}
+            >
+              <FontAwesomeIcon
+                onClick={() => handleLike(singleNew.uuid)}
+                size="2xl"
+                icon={faHeart}
+                style={likeStyle(singleNew.uuid)}
+                className="like p-2"
+              />
+              <FontAwesomeIcon
+                onClick={() => handleBookmark(singleNew.uuid)}
+                size="2xl"
+                icon={faBookmark}
+                style={bookmarkStyle(singleNew.uuid)}
+                className="save p-2"
+              />
+              <FontAwesomeIcon
+                size="2xl"
+                icon={faComment}
+                style={{ color: "#FFFFFF" }}
+                className="comment p-2"
+                onClick={() => handleCommentClick(singleNew)}
+              />
+              <FontAwesomeIcon size="2xl" icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
+            </div>
+            <Card.Body
               style={{
-                position: "relative",
-                width: "100%", // Asegura que el contenedor ocupe todo el ancho del footer
+                backdropFilter: description ? 'brightness(40%)' : 'brightness(70%)',
+                marginTop: description ? '150%' : '170%',
+              }}
+              className="mycardbody"
+            >
+              <Card.Title className="title" onClick={visibility_description}>
+                {singleNew.title}
+              </Card.Title>
+              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden' }}>
+                {singleNew.description}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        ))}
+
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <h1 className="text-center mt-2">Comentarios:</h1>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              height: "70vh",
+              overflow: "hidden",
+            }}
+          >
+            <Button
+              variant="secondary"
+              className="me-3 bg-primary"
+              onClick={handleCloseModal}
+              style={{
+                position: "absolute",
+                right: "5px",
+                top: "5px",
+                padding: "0.5rem",
+                height: "40px",
               }}
             >
-              <textarea
-                className="form-control"
-                placeholder="Escribe tu comentario..."
-                rows="3"
-                value={comment} // Vincula el valor del `textarea` al estado `comment`
-                onChange={(e) => setComment(e.target.value)} // Actualiza el estado al escribir
+              <FontAwesomeIcon icon={faXmark} />
+            </Button>
+            <Modal.Header
+              className="bg-secondary text-light d-flex align-items-center justify-content-between mt-2"
+              style={{
+                flexShrink: 0,
+              }}
+            >
+              <Modal.Title></Modal.Title>
+              {currentCommentNews ? (
+                <div>
+                  <h5>{currentCommentNews.title}</h5>
+                </div>
+              ) : (
+                <p>Cargando datos...</p>
+              )}
+            </Modal.Header>
+            <Modal.Body
+              className="modal-body-scrollable-bool bg-secondary text-light"
+              style={{
+                flex: 1,
+                overflowY: "auto",
+                padding: "1rem",
+                paddingRight: "2rem",
+              }}
+            >
+              <p className="pb-1"></p>
+              {currentCommentNews && (
+                <div className="comment container">
+                  {(comments[currentCommentNews.uuid] || []).map((comment, idx) => (
+                    <p key={idx} className="comment-item">
+                      {comment}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </Modal.Body>
+            <Modal.Footer
+              className="bg-secondary text-light"
+              style={{
+                flexShrink: 0,
+                borderTop: "1px solid #dee2e6",
+                padding: "1rem",
+              }}
+            >
+              <div
                 style={{
+                  position: "relative",
                   width: "100%",
-                  paddingRight: "4rem", // Espacio reservado para el botón
-                  boxSizing: "border-box", // Asegura que el padding no desborde
-                }}
-              ></textarea>
-
-              <Button
-                variant="primary"
-                onClick={handleSendComment}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "10px",
-                  transform: "translateY(-50%)", // Centra verticalmente el botón
-                  padding: "0.5rem 1rem",
                 }}
               >
-                <FontAwesomeIcon icon={faPlay} />
-              </Button>
-            </div>
-          </Modal.Footer>
-        </div>
-      </Modal>
+                <textarea
+                  className="form-control"
+                  placeholder="Escribe tu comentario..."
+                  rows="3"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  style={{
+                    width: "100%",
+                    paddingRight: "4rem",
+                    boxSizing: "border-box",
+                  }}
+                ></textarea>
+
+                <Button
+                  variant="primary"
+                  onClick={handleSendComment}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: "10px",
+                    transform: "translateY(-50%)",
+                    padding: "0.5rem 1rem",
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlay} />
+                </Button>
+              </div>
+            </Modal.Footer>
+          </div>
+        </Modal>
       </div>
     </>
   );

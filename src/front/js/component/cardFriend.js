@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faComments } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import TapNewsLogo from '../../../../public/tapnews.jpg';
+import TapNewsLogo from '../../../../public/tapnewslogo.png';
 
 const FriendCard = () => {
   const { store, actions } = useContext(Context);
