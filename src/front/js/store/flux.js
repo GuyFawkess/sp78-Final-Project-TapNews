@@ -161,6 +161,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}				
 			},
 
+			getComments: async () => {
+				const id = localStorage.getItem('user_id')
+				if (!id) {
+					return
+				}
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${user_id}/comments`)
+					if (!resp.ok) {
+						throw new Error("Failed to access comments")
+					}
+				}
+				catch (error) {
+					console.log(error)
+				}
+			},
+
 			deleteFavouriteNew: async (news_id) => {
 				const user_id = localStorage.getItem('user_id')
 				const actions = getActions()
