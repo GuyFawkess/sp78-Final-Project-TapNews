@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, createBrowserRouter, RouterProvider } from "react-router-dom";
 import { BackendURL } from "./component/backendURL";
 import PrivateRoutes from "./component/PrivateRoutes";
 import { AuthProvider } from "./store/AuthContext";
@@ -18,7 +18,7 @@ import { Feed } from "./pages/Feed";
 import { UserProfile } from "./pages/UserProfile";
 import { FriendsView } from "./pages/Friends";
 import { FriendProfileView } from "./pages/FriendProfileView";
-import  {Search} from "./pages/search.js";
+import { Search } from "./pages/search.js";
 import { UserRandomView } from "./pages/UserRandomView";
 import { SingleView } from "./pages/SingleNewView";
 //
@@ -46,7 +46,7 @@ const Layout = () => {
               <Route element={<RegisterPage />} path="/register2" />
               <Route element={<LoginPage />} path="/login2" />
               {/* <Route element={<PrivateRoutes />}> */}
-                <Route element={<Chat />} path="/chat/:friend_id" />
+              <Route element={<Chat />} path="/chat/:friend_id" />
               {/* </Route> */}
               <Route element={<Search />} path="/search" />
             </Routes>

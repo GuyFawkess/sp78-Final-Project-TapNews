@@ -127,10 +127,10 @@ const Chat = () => {
 
             <Header />
             <div className="room--container">
-                <div>
+                <div className="message--wrapper ">
                     {messages.map((message) => {
-                        console.log("SENDER", message.senderID); // Log para verificar el senderID de cada mensaje
-                        console.log("USER_id", senderID);       // Log para verificar el ID del usuario actual
+                        // console.log("SENDER", message.senderID); // Log para verificar el senderID de cada mensaje
+                        // console.log("USER_id", senderID);       // Log para verificar el ID del usuario actual
 
                         // Determinar si el mensaje fue enviado por el usuario actual
                         const isSentByUser = message.senderID === senderID;
@@ -138,7 +138,7 @@ const Chat = () => {
                         return (
                             <div
                                 key={message.$id}
-                                className={`message--wrapper ${isSentByUser ? "message--sent" : "message--received"}`}
+                                className={`${isSentByUser ? "message--sent" : "message--received"}`}
                             >
                                 <div className="message--header">
                                     <p>
@@ -148,12 +148,16 @@ const Chat = () => {
                                             <span>Anonymous</span>
                                         )}
                                         <small className="message-timestamp">
-                                            {new Date(message.$createdAt).toLocaleString()}
+                                            {new Date(message.$createdAt).toLocaleString([], {
+                                                weekday: 'short',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
                                         </small>
                                     </p>
                                 </div>
 
-                                <div className="message--body">
+                                <div className={`${isSentByUser ? "message--body--sender message--body" : "message--body"}`}>
                                     <span>{message.body}</span>
                                 </div>
                             </div>

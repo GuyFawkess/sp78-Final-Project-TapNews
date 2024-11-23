@@ -18,14 +18,22 @@ export const AuthProvider = ({ children }) => {
     }, []);
     const getUserOnLoad = async () => {
         try {
+            const session = await account.getSession("current") //check if session existe
+            console.log("Session found: ", session)
+
             const accountDetails = await account.get();
             console.log('LOGGED IN', accountDetails);
             setUser(accountDetails);
 
         } catch (error) {
-            console.warn("Error during login check:", error);
+            if (error.code === 401) {
+                console.warn("Sesion activa no encontrada, quizas session no iniciada")
+            } else {
+                console.warn("Error during login check:", error);
+            }
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
 
@@ -93,8 +101,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     const handleUserLogout = async () => {
-        await account.deleteSession('current');
-        setUser(null);
+        try {
+            await account.deleteSession('current');
+            localStorage.removeItem("user_id")
+            setUser(null);
+
+        } catch (error) {
+            console.error("Logout error", error)
+        }
     };
 
     const constextData = {
