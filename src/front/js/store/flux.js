@@ -201,7 +201,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"locale": "es"
 				}
 			],
-			searchTerm: ""
+			token: null,
+			users: [],
+			filteredUsers: [],
+			searchTerm: "",
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -283,6 +286,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log("Logout successful!");
 			},
 
+			
+
 			addFavouriteNew: async (item) => {
 				const user_id = localStorage.getItem("user_id")
 				if (!user_id) {
@@ -313,6 +318,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			addComments: async(news_id, content) => {
+				const user_id = localStorage.getItem("user_id")
+				try {
+					const response = await fetch(`/api/news/${news_id}/comments`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ "user_id": user_id, "content": content }),
+					});
+			
+					if (!response.ok) {
+						console.error("Error al agregar comentario:", response.statusText);
+						return false;
+					}
+			
+					console.log("Comentario agregado con éxito");
+					return true;
+				} catch (error) {
+					console.error("Error en la solicitud de agregar comentario:", error);
+					return false;
+				}				
+			},
+
 			deleteFavouriteNew: async (news_id) => {
 				const user_id = localStorage.getItem('user_id')
 				const actions = getActions()
@@ -340,23 +369,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			getFavouriteNews: async () => {
-				const id = localStorage.getItem("user_id")
+			getFavouriteNews: async (userId) => {
+				const id = userId || localStorage.getItem("user_id");
 				if (!id) {
-					return
+				  return;
 				}
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`)
-					if (!resp.ok) {
-						throw new Error("Failed to access user's saved news")
-					}
-					const data = await resp.json()
-					setStore({ favouriteNews: data })
+				  const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`);
+				  if (!resp.ok) {
+					throw new Error("Failed to access user's saved news");
+				  }
+				  const data = await resp.json();
+				  setStore({ favouriteNews: data });
+				} catch (error) {
+				  console.log(error);
 				}
-				catch (error) {
-					console.log(error)
-				}
-			},
+			  },
+			  
 
 			getUserLikes: async () => {
 				const id = localStorage.getItem('user_id')
@@ -501,7 +530,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({
 						profile: updatedData,
 					});
-
+					
 					console.log("Perfil actualizado con éxito:", updatedData);
 				} catch (error) {
 					console.error("Error al modificar el perfil:", error);
@@ -571,6 +600,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Not users found", error)
 				}
 			},
+
 			getFilterUser: (filter) => {
 				const store = getStore();
 			  

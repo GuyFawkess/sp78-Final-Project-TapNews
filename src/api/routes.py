@@ -335,7 +335,18 @@ def get_news_comments(id):
     if not news:
         return jsonify({"error": "News id doesn't exist"}), 404
     comments = Comment.query.filter_by(news_id=id).all()
-    comment_list = [comment.serialize() for comment in comments]
+    user_ids = [comment.user_id for comment in comments]
+    users = {user.id: user for user in User.query.filter(User.id.in_(user_ids)).all()}
+    profiles = {profile.user_id: profile for profile in Profile.query.filter(Profile.user_id.in_(user_ids)).all()}
+    comment_list = [{"id": comment.id,
+            "user_id": comment.user_id,
+            "news_id": comment.news_id,
+            "content": comment.content,
+            "created_at": comment.created_at.isoformat() if comment.created_at else None,
+            "username": users.get(comment.user_id).username,
+            "img_url": profiles.get(comment.user_id).img_url
+            } 
+            for comment in comments]
     return jsonify({"comments": comment_list}), 200
 
 @api.route('/news/<string:id>/comments', methods=['DELETE'])

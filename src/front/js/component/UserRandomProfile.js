@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import "../../styles/profilecard.css";
 import { useParams } from "react-router-dom";
-import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
+import TapNewsLogo from '../../../../public/tapnews.jpg';
 
 const UserRandomProfile = () => {
   const { store, actions } = useContext(Context);
@@ -34,7 +34,6 @@ const UserRandomProfile = () => {
 
     loadData();
   }, []); 
-
   useEffect(() => {
     if (friends.length > 0) {
       setIsFriend(friends.some(friend => friend.id === random_id));

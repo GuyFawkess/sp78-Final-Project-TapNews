@@ -6,7 +6,7 @@ import { faFilter, faMagnifyingGlass, faUser, faUserGroup } from '@fortawesome/f
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import TapNewsLogo from '/workspaces/sp78-Final-Project-TapNews/public/1729329195515-removebg-preview.png';
+import TapNewsLogo from '../../../../public/1729329195515-removebg-preview.png';
 
 const NavbarBottom = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
