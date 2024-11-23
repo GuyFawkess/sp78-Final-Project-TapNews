@@ -9,6 +9,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			listuser: [],
 			listprofile: [],
 			user: [],
+			randomUser: [],
+			randomProfile: [],
+			randomFriends: [],
 			friends: [],
 			likes: [],
 			news:[],
@@ -463,6 +466,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Not profile found", error)
 				}
 			},
+			getRandomProfile: async (profile_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${profile_id}`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({ randomProfile: data })
+				} catch (error) {
+					console.log("Not profile found", error)
+				}
+			},
 
 
 			modifyProfile: async (userId, updatedProfile) => {
@@ -505,6 +520,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Not user found", error)
 				}
 			},
+			getRandomUser: async (user_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({ randomUser: data })
+				} catch (error) {
+					console.log("Not user found", error)
+				}
+			},
 			getFriends: async (user_id) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
@@ -512,7 +539,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
+					console.log(data)
 					setStore({ friends: data.friends })
+				} catch (error) {
+					console.log("Not friends found", error)
+				}
+			},
+			getRandomFriends:
+			async (user_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
+					if (!response.ok) {
+						throw new Error("La respuesta no fue existosa");
+					}
+					const data = await response.json()
+					setStore({ randomFriends: data.friends })
 				} catch (error) {
 					console.log("Not friends found", error)
 				}
@@ -530,35 +571,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Not users found", error)
 				}
 			},
-
-			// getFilterUser: async (filter) => {
-				
-			// 	if (filter === "") {
-					
-			// 	  // Si el filtro está vacío, obtener todos los usuarios
-			// 	  const actions = getActions();
-			// 	  actions.getAllUsers();
-			// 	} else {
-			// 	  try {
-			// 		const response = await fetch(`${process.env.BACKEND_URL}/api/users?name=${filter}`);
-			// 		const data = await response.json();
-		
-			// 		// Verifica si la respuesta tiene la estructura esperada
-			// 		if (Array.isArray(data)) {
-			// 		  const users = data.map((user) => ({
-			// 			uid: user.id, // Asegúrate de que estas propiedades sean correctas
-			// 			name: user.username
-			// 		  }));
-		
-			// 		  setStore({ users:users });
-			// 		} else {
-			// 		  throw new Error("La estructura de la respuesta de la API no es la esperada");
-			// 		}
-			// 	  } catch (error) {
-			// 		console.error("Error al obtener usuarios filtrados:", error);
-			// 	  }
-			// 	}
-			//   },
 			getFilterUser: (filter) => {
 				const store = getStore();
 			  

@@ -13,15 +13,19 @@ const UserRandomProfile = () => {
   const [error, setError] = useState(null);
   const [isFriend, setIsFriend] = useState(false); 
 
+  const user = store.randomUser
+  const profile = store.randomProfile
+  const friends = store.randomFriends  
   
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        await actions.getUser(random_id); 
-        await actions.getProfile(random_id); 
-        await actions.getFriends(random_id); 
+        await actions.getRandomUser(random_id); 
+        await actions.getRandomProfile(random_id); 
+        await actions.getRandomFriends(random_id); 
         setLoading(false);
+        console.log(friends)
       } catch (err) {
         setError("Hubo un error al cargar los datos.");
         setLoading(false);
@@ -29,19 +33,13 @@ const UserRandomProfile = () => {
     };
 
     loadData();
-  }, [random_id]); 
-
-
-  const user = store.user || {};
-  const profile = store.profile || {};
-  const friends = store.friends || []; 
-  
+  }, []); 
 
   useEffect(() => {
     if (friends.length > 0) {
       setIsFriend(friends.some(friend => friend.id === random_id));
     }
-  }, [friends, random_id]);
+  }, []);
 
   if (loading) {
     return (
@@ -58,6 +56,7 @@ const UserRandomProfile = () => {
   const handleAddFriend = async () => {
     try {
       await actions.addFriend(userId, random_id); 
+      await actions.getRandomFriends(random_id);
       setIsFriend(true); 
     } catch (err) {
       setError("Hubo un error al añadir el amigo.");

@@ -92,8 +92,13 @@ def get_user_friends(id):
     if not user:
         return jsonify({"error": "User id doesn't exist"}), 404
     friends_ids = [friendship.friend_id for friendship in user.friendships if friendship.is_active]
-    friends = [{"friend_id": friend_id} for friend_id in friends_ids]
+    friend_of = Friendship.query.filter_by(friend_id=user.id).all()
+    friend_of_ids = [friendship.user_id for friendship in friend_of]
+    mutual_friends = list(set(friends_ids) & set(friend_of_ids))
+    friends = [{"friend_id": friend_id} for friend_id in mutual_friends]
     return jsonify({"friends": friends}), 200
+
+@api.route('/user/<string:id>/friends/pending', methods=['GET'])
 
 @api.route('/profile/<string:id>', methods=['GET'])
 def get_profile(id):

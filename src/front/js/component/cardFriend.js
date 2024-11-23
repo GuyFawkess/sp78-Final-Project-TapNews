@@ -24,8 +24,9 @@ const FriendCard = () => {
 
   useEffect(() => {
     actions.getFriends(userId);
+    console.log(store.friends)
+  }, [userId]);
 
-  }, [userId, actions]);
 
   useEffect(() => {
     actions.getAllUsers();

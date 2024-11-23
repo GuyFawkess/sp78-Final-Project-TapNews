@@ -33,7 +33,7 @@ const ProfileCard = () => {
     } else {
       navigate("/login"); 
     }
-  }, [userId, actions, navigate]);
+  }, [userId, navigate]);
 
   useEffect(() => {
     const fileInput = document.getElementById('uploader');
