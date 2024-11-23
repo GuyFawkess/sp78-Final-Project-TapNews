@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext"; 
 import { Card, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import TapNewsLogo from '../../../../public/tapnews.jpg';
+import TapNewsLogo from '../../../../public/tapnewslogo.png';
 
 const FriendProfile = () => {
   const { store, actions } = useContext(Context);

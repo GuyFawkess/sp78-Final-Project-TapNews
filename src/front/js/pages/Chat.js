@@ -123,7 +123,7 @@ const Chat = () => {
     //     // setMessages(prevState => messages.filter(message => message.$id !== message_id));
     // }
     return (
-        <main className="container">
+        <main className="chat-container">
 
             <Header />
             <div className="room--container">
@@ -177,7 +177,7 @@ const Chat = () => {
                         />
                     </div>
                     <div className="send-btn--wrapper">
-                        <button className="btn btn-secondary" type="submit">Send</button>
+                        <button className="btnchat btn-secondary" type="submit">Send</button>
                     </div>
                 </form>
             </div>
