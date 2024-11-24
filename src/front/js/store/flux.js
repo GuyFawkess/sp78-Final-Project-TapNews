@@ -15,11 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			friends: [],
 			likes: [],
 			news:[],
-			token: null,
-			users: [],
-			filteredUsers: [],
 			files:[],
-			topnews: [],
+			topnews: [], 
 			token: null,
 			users: [],
 			filteredUsers: [],
@@ -453,7 +450,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("Error trayendo amistades pendientes del usuario")
 					}
 					const data = await resp.json()
-					setStore({pendingFriends: data.incoming_friends})
+					setStore({incomingFriends: data.incoming_friends})
 				}
 				catch(error) {
 					console.log(error)
