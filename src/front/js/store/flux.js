@@ -136,29 +136,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			addComments: async(news_id, content) => {
-				const user_id = localStorage.getItem("user_id")
+
+			addComments: async (news_id, content) => {
+				const user_id = localStorage.getItem("user_id"); // Asegúrate de que el user_id esté aquí
 				try {
-					const response = await fetch(`/api/news/${user_id}/comments`, {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({ "user_id": user_id, "content": content }),
-					});
-			
-					if (!response.ok) {
-						console.error("Error al agregar comentario:", response.statusText);
-						return false;
-					}
-			
-					console.log("Comentario agregado con éxito");
-					return true;
-				} catch (error) {
-					console.error("Error en la solicitud de agregar comentario:", error);
+				  // Verifica si el user_id y content están correctamente definidos
+				  console.log('Enviando comentario:', { user_id, news_id, content });
+			  
+				  const response = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`, {
+					method: "POST",
+					headers: {
+					  "Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+					  "user_id": user_id,
+					  "content": content,
+					}),
+				  });
+			  
+				  // Verifica la respuesta
+				  if (!response.ok) {
+					console.error("Error al agregar comentario:", response.statusText);
 					return false;
-				}				
-			},
+				  }
+			  
+				  // Si la solicitud es exitosa, loguea la respuesta
+				  const responseData = await response.json();
+				  console.log('Respuesta del backend:', responseData);
+			  
+				  return true;
+				} catch (error) {
+				  console.error("Error en la solicitud de agregar comentario:", error);
+				  return false;
+				}
+			  },
+			  
 
 			getComments: async (news_id) => {
 				try{

@@ -85,9 +85,21 @@ const CardNew= () => {
     }
   };
 
-  const handleCommentClick = (news) => {
+  const handleCommentClick = async (news) => {
     setCurrentCommentNews(news);
     setShowModal(true);
+    // Obtener comentarios del backend si no están en el estado local
+    if (!comments[news.uuid]) {
+      try {
+          const fetchedComments = await actions.getComments(news.uuid);
+          setComments((prev) => ({
+              ...prev,
+              [news.uuid]: fetchedComments || [],
+          }));
+      } catch (error) {
+          console.error("Error al cargar comentarios:", error);
+      }
+  }
   };
 
   const handleCloseModal = () => {
@@ -95,20 +107,38 @@ const CardNew= () => {
     setCurrentCommentNews(null);
   };
 
-  const handleSendComment = () => {
-    if (comment.trim() === "") return;
-
-    setComments((prev) => ({
-      ...prev,
-      [currentCommentNews.uuid]: [
-        ...(prev[currentCommentNews.uuid] || []),
-        comment,
-      ],
-    }));
-
-    setComment("");
+  const handleSendComment = async () => {
+    // Verificar si el comentario no está vacío
+    if (comment === "") return; // No enviar comentarios vacíos
+  
+    const newsId = currentCommentNews.uuid;
+    const userId = localStorage.getItem("user_id");
+  
+    console.log("Comentario enviado:", comment); // Verifica si el comentario está siendo recogido
+  
+    // Llama a la acción para enviar el comentario al backend.
+    const success = await actions.addComments(newsId, comment);
+  
+    if (success) {
+      // Si el comentario se agrega correctamente, actualiza los comentarios localmente
+      setComments((prev) => {
+        console.log("Comentarios previos:", prev);
+        return {
+          ...prev,
+          [newsId]: [
+            ...(prev[newsId] || []),
+            { content: comment, user_id: userId }, // Agregar el comentario al estado
+          ],
+        };
+      });
+  
+      setComment(""); // Limpiar el campo de texto después de enviar el comentario
+    } else {
+      console.error("No se pudo agregar el comentario.");
+    }
   };
-
+  
+  
   if (!store.topnews || store.topnews.length === 0) {
     return (
       <div style={{ position: 'absolute', top: '0', bottom: '0', right: '0', left: '0' }} className="loading">
@@ -231,7 +261,8 @@ const CardNew= () => {
                 <div className="comment container">
                   {(comments[currentCommentNews.uuid] || []).map((comment, idx) => (
                     <p key={idx} className="comment-item">
-                      {comment}
+                      {/* {comment} */}
+                      <strong>Usuario {comment.user_id}:</strong> {comment.content}
                     </p>
                   ))}
                 </div>
