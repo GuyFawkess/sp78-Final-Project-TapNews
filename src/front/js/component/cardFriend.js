@@ -42,8 +42,8 @@ const FriendCard = () => {
   }
 
   const friendsWithProfiles = store.friends.map(friend => {
-    const user = store.listuser.find(user => (user.id) === (friend.friend_id));
-    const profile = store.listprofile.find(profile => (profile.user_id) === (friend.friend_id));
+    const user = store.listuser.find(user => (user.id) === (friend));
+    const profile = store.listprofile.find(profile => (profile.user_id) === (friend));
 
     return {
       ...user,
