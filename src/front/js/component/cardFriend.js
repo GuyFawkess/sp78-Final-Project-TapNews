@@ -89,7 +89,7 @@ const FriendCard = () => {
             Cerrar
           </Button>
           <Button className="delete" onClick={() => {
-            actions.deleteFriend(userId, selectedFriendId); // Llamada a eliminar amistad
+            actions.deleteFriend(userId, selectedFriendId); 
             handleClose();
           }}>
             Eliminar definitivamente

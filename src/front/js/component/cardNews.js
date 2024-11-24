@@ -135,7 +135,7 @@ const CardNew= () => {
           >
             <div
               className="actions d-flex flex-column"
-              style={{ backdropFilter: description ? 'brightness(30%)' : 'brightness(60%)' }}
+              style={{ background: description ? 'rgba(0, 43, 128, 1)' : 'rgba(0, 43, 128, 0.8)' }}
             >
               <FontAwesomeIcon
                 onClick={() => handleLike(singleNew.uuid)}
@@ -162,15 +162,16 @@ const CardNew= () => {
             </div>
             <Card.Body
               style={{
-                backdropFilter: description ? 'brightness(40%)' : 'brightness(70%)',
+                backgroundColor: '#002B80',
                 marginTop: description ? '150%' : '170%',
+                mask:'linear-gradient( black 40%, transparent)',
               }}
               className="mycardbody"
             >
-              <Card.Title className="title" onClick={visibility_description}>
+              <Card.Title className="title" style={{color: ''}} onClick={visibility_description}>
                 {singleNew.title}
               </Card.Title>
-              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden' }}>
+              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: ''}}>
                 {singleNew.description}
               </Card.Text>
             </Card.Body>
