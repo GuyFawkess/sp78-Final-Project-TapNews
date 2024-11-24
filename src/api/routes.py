@@ -77,7 +77,6 @@ def get_users():
     print(current_user_id)
     return jsonify({"users": result}), 200
 
-
 @api.route('/user/<string:id>', methods=['GET'])
 def get_user(id):
     user = User.query.get(id)
@@ -99,6 +98,24 @@ def get_user_friends(id):
     return jsonify({"friends": friends}), 200
 
 @api.route('/user/<string:id>/friends/pending', methods=['GET'])
+def get_user_pending_frienships(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User id doesn't exist"}), 404
+    all_friends = [friendship.friend_id for friendship in user.friendships if friendship.is_active]
+    friend_of_ids = [friendship.user_id for friendship in Friendship.query.filter_by(friend_id=user.id).all()]
+    pending_friends = list(set(all_friends) - set(friend_of_ids))
+    return jsonify ({"pending_friends": pending_friends}), 200
+
+@api.route('user/<string:id>/friends/incoming', methods=['GET'])
+def get_user_incoming_friendships(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User id doesn't exist"}), 404
+    user_friends = [friendship.friend_id for friendship in user.friendships if friendship.is_active]
+    friend_of_ids = [friendship.user_id for friendship in Friendship.query.filter_by(friend_id=user.id).all()]
+    incoming_friends = list(set(friend_of_ids) - set(user_friends))
+    return jsonify({"incoming_friends": incoming_friends}), 200
 
 @api.route('/profile/<string:id>', methods=['GET'])
 def get_profile(id):
@@ -126,7 +143,6 @@ def modify_profile(id):
     db.session.commit()
     return jsonify(profile.serialize()), 200
  
-
 @api.route('/users', methods=['GET'])
 def get_all_users():
     users = User.query.all()
@@ -267,7 +283,6 @@ def get_user_saved_news(id):
     response_body = [news.serialize() for news in news_list]
     return jsonify(response_body), 200
 
-
 @api.route('/news', methods=['POST'])
 def add_news():
     data = request.get_json()
@@ -301,7 +316,6 @@ def get_single_news(id):
         return jsonify({"error": "News id doesn't exist"}), 404
     response_body = news.serialize()
     return jsonify(response_body), 200
-
 
 @api.route('/news/<string:id>/likes', methods=['GET'])
 def get_news_like_count(id):
