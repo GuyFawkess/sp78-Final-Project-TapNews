@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import "../../styles/profilecard.css";
 import { useParams } from "react-router-dom";
-import TapNewsLogo from '../../../../public/tapnews.jpg';
+import TapNewsLogo from '../../../../public/tapnewslogo.png';
 
 const UserRandomProfile = () => {
   const { store, actions } = useContext(Context);
