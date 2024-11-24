@@ -1,0 +1,40 @@
+.friend-image {
+    width: 65%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff;
+    margin-inline-start: 20%;
+}
+
+.friend-card {
+    background-color: #0044CC;
+    border-bottom: 2px solid #ffffff;
+}
+
+.friend-username {
+    font-family: 'Quicksand';
+    color: #ffffff;
+    font-size: large;
+    font-weight: bold;
+    margin-block-start: 20%;
+}
+
+.loading-container {
+    background-color: #0044CC;
+}
+
+.loading-logo {
+    width: 40%;
+    aspect-ratio: 1;
+    margin-top: 50%;
+    margin-left: 30%;
+}
+
+
+.loading-separator {
+    color: #ffffff;
+    width: 80%;
+    margin: auto;
+    margin-block-start: 8%;
+}

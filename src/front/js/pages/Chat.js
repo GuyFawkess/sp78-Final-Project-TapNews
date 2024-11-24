@@ -4,18 +4,26 @@ import { useAuth } from "../store/AuthContext";
 import { useParams } from "react-router-dom";
 import { ID, Role, Permission, Query } from "appwrite";
 import Header from "../component/Header";
+import { useLocation } from 'react-router-dom';
 
 const Chat = () => {
 
     const { user } = useAuth();
     const { friend_id } = useParams();
-
     const [messages, setMessages] = useState([]);
     const [messageBody, setMessageBody] = useState('');
     const senderID = localStorage.getItem("user_id");
+    const messagesEndRef = useRef(null);  
+    const location = useLocation();  
 
-    const messagesEndRef = useRef(null);  // Reference to the bottom of the message container
-
+    useEffect(() => {
+        if (location.state && location.state.url) {
+          console.log("URL recibida en el chat:", location.state.url); 
+          setMessageBody(location.state.url); 
+        } else {
+          console.log("No se recibió URL en el state");
+        }
+      }, [location]); 
 
     useEffect(() => {
         getMessages()

@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import TapNewsLogo from '../../../../public/tapnewslogo.png';
 import "../../styles/card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ShareFriend } from "./shareFriend";
 import {
   faBookmark,
   faHeart,
@@ -15,9 +16,12 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
-function CardNew() {
+
+const CardNew= () => {
   const [description, setDescription] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [show2, setShow2] = useState(false); 
+  const [urlshare,setUrlShare] = useState("") 
   const [currentCommentNews, setCurrentCommentNews] = useState(null);
   const { store, actions } = useContext(Context);
   const [comment, setComment] = useState(""); 
@@ -67,7 +71,12 @@ function CardNew() {
       actions.deleteLike(id);
     }
   };
+  const handleCloseShow2 = () => setShow2(false);  
 
+  const handleShowShow2 = (url) => {
+    setUrlShare(url)
+    setShow2(true);}    
+  
   const handleBookmark = (id) => {
     if (!user_favorites.includes(id)) {
       actions.addFavouriteNew({ uuid: id });
@@ -149,7 +158,7 @@ function CardNew() {
                 className="comment p-2"
                 onClick={() => handleCommentClick(singleNew)}
               />
-              <FontAwesomeIcon size="2xl" icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
+              <FontAwesomeIcon size="2xl" onClick={() => handleShowShow2(singleNew.url)} icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
             </div>
             <Card.Body
               style={{
@@ -270,6 +279,20 @@ function CardNew() {
               </div>
             </Modal.Footer>
           </div>
+        </Modal>
+
+        <Modal className="modalshare" show={show2} onHide={handleCloseShow2}>
+          <Modal.Header className="">
+            <Modal.Title>Compartir noticia</Modal.Title>
+          </Modal.Header>
+          <Modal.Body  className="scrollable">
+          <ShareFriend url={urlshare}></ShareFriend>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseShow2}>
+              Cerrar 
+            </Button>
+          </Modal.Footer>
         </Modal>
       </div>
     </>
