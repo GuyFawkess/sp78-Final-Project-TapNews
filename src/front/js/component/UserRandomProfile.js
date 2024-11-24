@@ -13,7 +13,6 @@ const UserRandomProfile = () => {
   const [error, setError] = useState(null);
   const [isFriend, setIsFriend] = useState(false);
   const [isPending, setIsPending] = useState(false);
-  const [loading2, setLoading2] = useState(true)
 
  
   useEffect(() => {
