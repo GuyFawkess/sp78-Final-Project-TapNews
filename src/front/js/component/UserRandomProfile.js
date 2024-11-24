@@ -11,21 +11,22 @@ const UserRandomProfile = () => {
   const userId = localStorage.getItem("user_id");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isFriend, setIsFriend] = useState(false); 
+  const [isFriend, setIsFriend] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [loading2, setLoading2] = useState(true)
 
-  const user = store.randomUser
-  const profile = store.randomProfile
-  const friends = store.randomFriends  
-  
+ 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         await actions.getRandomUser(random_id); 
         await actions.getRandomProfile(random_id); 
-        await actions.getRandomFriends(random_id); 
+        await actions.getRandomFriends(random_id);
+        await actions.getRandomFriends(userId)
+        await actions.getUserPendingFriends(userId);
+        await actions.getFriends(userId)
         setLoading(false);
-        console.log(friends)
       } catch (err) {
         setError("Hubo un error al cargar los datos.");
         setLoading(false);
@@ -33,12 +34,25 @@ const UserRandomProfile = () => {
     };
 
     loadData();
-  }, []); 
+  }, [random_id]); 
+
   useEffect(() => {
-    if (friends.length > 0) {
-      setIsFriend(friends.some(friend => friend.id === random_id));
+    if (store.friends.includes(random_id)) {
+      setIsFriend(true);
+      setIsPending(false);  
+    } else if (store.pendingFriends.includes(random_id)) {
+      setIsPending(true);
+      setIsFriend(false);  
+    } else {
+      setIsFriend(false);
+      setIsPending(false);
     }
-  }, []);
+  }, [store.friends, store.pendingFriends, random_id, handleAddFriend]);
+
+  const user = store.randomUser
+  const profile = store.randomProfile
+  const friends = store.randomFriends  
+
 
   if (loading) {
     return (
@@ -56,7 +70,8 @@ const UserRandomProfile = () => {
     try {
       await actions.addFriend(userId, random_id); 
       await actions.getRandomFriends(random_id);
-      setIsFriend(true); 
+      await actions.getUserPendingFriends(userId);
+      await actions.getFriends(userId)
     } catch (err) {
       setError("Hubo un error al añadir el amigo.");
     }
@@ -77,7 +92,7 @@ const UserRandomProfile = () => {
           <Card.Text className="text-center description">
             {profile.description || 'Descripción no disponible'}
           </Card.Text>
-          {!isFriend ? (
+          {!isFriend && !isPending ? (
             <Button 
               variant="primary" 
               className="w-100"
@@ -91,7 +106,7 @@ const UserRandomProfile = () => {
               className="w-100" 
               disabled
             >
-              Ya eres amigo
+              {isPending ? "Solicitud pendiente" : "Ya sois amigos"}
             </Button>
           )}
         </Card.Body>

@@ -24,6 +24,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			users: [],
 			filteredUsers: [],
 			searchTerm: "",
+			pendingFriends: [],
+			incomingFriends: []
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -411,7 +413,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					console.log(data)
 					setStore({ friends: data.friends })
 				} catch (error) {
 					console.log("Not friends found", error)
@@ -428,6 +429,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ randomFriends: data.friends })
 				} catch (error) {
 					console.log("Not friends found", error)
+				}
+			},
+
+			getUserPendingFriends: async(user_id) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends/pending`)
+					if (!resp.ok){
+						throw new Error("Error trayendo amistades pendientes del usuario")
+					}
+					const data = await resp.json()
+					setStore({pendingFriends: data.pending_friends})
+				}
+				catch(error) {
+					console.log(error)
+				}
+			},
+
+			getUserIncomingFriends: async(user_id) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends/incoming`)
+					if (!resp.ok){
+						throw new Error("Error trayendo amistades pendientes del usuario")
+					}
+					const data = await resp.json()
+					setStore({pendingFriends: data.incoming_friends})
+				}
+				catch(error) {
+					console.log(error)
 				}
 			},
 
