@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     const handleUserLogout = async () => {
         try {
             await account.deleteSession('current');
-            localStorage.removeItem("user_id")
+            //localStorage.removeItem("user_id")
             setUser(null);
 
         } catch (error) {
