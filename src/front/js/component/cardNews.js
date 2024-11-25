@@ -65,6 +65,7 @@ const CardNew= () => {
   }, []);
 
   const handleLike = (id) => {
+    console.log(id)
     if (!user_likes.includes(id)) {
       actions.addLike(id);
     } else {

@@ -22,7 +22,7 @@ export const Search = () => {
     actions.getAllProfiles().catch((error) =>
       console.error("Error al obtener los perfiles:", error)
     );
-  }, [actions]);
+  }, []);
 
   // Filtra los usuarios cuando inputValue cambia
   useEffect(() => {
@@ -41,7 +41,7 @@ export const Search = () => {
     } else {
       setFilteredUsersWithProfiles([]);
     }
-  }, [inputValue, actions, store.listuser, store.listprofile]);
+  }, [inputValue, store.listuser, store.listprofile]);
 
   // Maneja el clic en un usuario para redirigir a su perfil
   const handleUserClick = (userId) => {

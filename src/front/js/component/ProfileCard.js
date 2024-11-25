@@ -6,7 +6,7 @@ import "../../styles/profilecard.css";
 import TapNewsLogo from '../../../../public/tapnewslogo.png';
 import { useAuth } from '../store/AuthContext.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { Storage, ID } from "appwrite";
 import client, { PROYECT_ID, STORAGE_ID } from '../../../../src/appwriteConfig.js';
 
@@ -17,7 +17,6 @@ const ProfileCard = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);  
-  const [showAddFriendButton, setShowAddFriendButton] = useState(false);
   const [description, setDescription] = useState(store.profile?.description || "");
   const [imageUrl, setImageUrl] = useState(store.profile?.img_url || "");
   const navigate = useNavigate();
@@ -42,15 +41,7 @@ const ProfileCard = () => {
     }
   }, [userId, navigate]);
 
-  useEffect(() => {
-    if (store.incomingFriends && store.incomingFriends.length > 0) {
-      setShowAddFriendButton(true);
-    } else {
-      setShowAddFriendButton(false);
-    }
-  }, [store.incomingFriends]);  
-
-
+ 
   useEffect(() => {
     if (store.profile && store.profile.img_url) {
       setImageUrl(store.profile.img_url);
@@ -104,6 +95,10 @@ const ProfileCard = () => {
     );
   }
 
+  const incomingStyle = () => {
+    return store.incomingFriends.length > 0 ? "primary" : "secondary"
+  }
+
   return (
     <>
       <Card style={{ width: '100%', backgroundColor: '#0044CC' }}>
@@ -119,11 +114,9 @@ const ProfileCard = () => {
         <ListGroup className="list-group-flush">
           <ListGroup.Item className="text-center">
             Amistades - {store.friends && store.friends.length ? store.friends.length : "0"}
-            {showAddFriendButton && (
-              <Button className="addfriend" onClick={openAddFriendModal}> 
-                <FontAwesomeIcon className="add" icon={faUserPlus} size="sm" style={{ color: "#ffffff" }} />
-              </Button>
-            )}
+            <Button className="addfriend" onClick={openAddFriendModal} variant={incomingStyle()} > 
+                <FontAwesomeIcon className="add" icon={faCircleExclamation} size="sm" style={{color: "#ffffff"}} />
+            </Button>
           </ListGroup.Item>
           <ListGroup.Item className="d-flex justify-content-center">
             <Button className="editprofile" onClick={openModal}>Editar perfil</Button>
@@ -166,10 +159,10 @@ const ProfileCard = () => {
  
       <Modal show={showModal3} onHide={closeAddFriendModal} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title className="title-add">Añadir amigo</Modal.Title>
+          <Modal.Title className="title-add">Solicitudes de amistad</Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-add">
-          Aquí puedes añadir un amigo.
+          {store.incomingFriends.length > 0 ? `Los siguientes usuarios quieren agregarte como amigo: ${store.incomingFriends}` : "No tienes ninguna solicitud pendiente"}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={closeAddFriendModal}>Cerrar</Button>
