@@ -34,7 +34,7 @@ const CardNew= () => {
 
   const userId = localStorage.getItem("user_id");
   const user_likes = store.likes;
-  const user_favorites = store.favouriteNews.map((news) => news.id);
+  const user_favorites = store.favouriteNews.map((news) => news.news_id);
 
   useEffect(() => {
     const checkAndLogout = async () => {
@@ -50,7 +50,7 @@ const CardNew= () => {
   }
 
   const bookmarkStyle = (id) => {
-    return user_favorites.includes(id) ? { color: "#0044CC" } : { color: "#FFFFFF" };
+    return user_favorites.includes(id) ? { color: "#69FBD0" } : { color: "#FFFFFF" };
   }
 
   useEffect(() => {
@@ -79,10 +79,10 @@ const CardNew= () => {
     setShow2(true);}    
   
   const handleBookmark = (id) => {
-    if (!user_favorites.includes(id)) {
-      actions.addFavouriteNew({ uuid: id });
+    if (!user_favorites.includes(id.uuid)) {
+      actions.addFavouriteNew(id);
     } else {
-      actions.deleteFavouriteNew(id);
+      actions.deleteFavouriteNew(id.uuid);
     }
   };
 
@@ -176,7 +176,7 @@ const CardNew= () => {
                 className="like p-2"
               />
               <FontAwesomeIcon
-                onClick={() => handleBookmark(singleNew.uuid)}
+                onClick={() => handleBookmark(singleNew)}
                 size="2xl"
                 icon={faBookmark}
                 style={bookmarkStyle(singleNew.uuid)}
@@ -210,7 +210,7 @@ const CardNew= () => {
         ))}
 
         <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Title className="title"><h1 className="text-center text-light mt-2">Comentarios:</h1></Modal.Title>
+        <Modal.Title className="title comment"><h1 className="text-center text-light mt-2">Comentarios:</h1></Modal.Title>
           <div
             style={{
               display: "flex",

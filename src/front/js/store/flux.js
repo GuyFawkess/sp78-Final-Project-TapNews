@@ -113,6 +113,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const news_id = item.uuid
 				try {
+					console.log(item.image_url)
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
 						method: 'POST',
 						headers: {
@@ -120,7 +121,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({
 							'user_id': user_id,
-							'news_id': news_id
+							'news_id': news_id,
+							'img_url': item.image_url
 						})
 					})
 					if (!resp.ok) {
