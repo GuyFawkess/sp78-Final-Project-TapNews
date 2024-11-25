@@ -245,12 +245,13 @@ def save_news():
     data = request.get_json()
     user_id = data.get('user_id')
     news_id = data.get('news_id')
+    img_url = data.get('img_url')
     if not user_id or not news_id:
         return jsonify({"error": "user_id and news_id is required"}), 400
     existing_save = SavedNews.query.filter_by(user_id=user_id, news_id=news_id).first()
     if existing_save:
         return jsonify({"error": "This user has already saved this news"}), 409
-    save = SavedNews(user_id=user_id, news_id=news_id)
+    save = SavedNews(user_id=user_id, news_id=news_id, img_url=img_url)
     db.session.add(save)
     db.session.commit()
     return jsonify(save.serialize()), 200
@@ -277,9 +278,7 @@ def get_user_saved_news(id):
     saved_news_list = SavedNews.query.filter_by(user_id=id).all()
     if not saved_news_list:
         return jsonify([]), 200
-    id_list = [news.news_id for news in saved_news_list]
-    news_list = News.query.filter(News.id.in_(id_list)).all()
-    response_body = [news.serialize() for news in news_list]
+    response_body = [news.serialize() for news in saved_news_list]
     return jsonify(response_body), 200
 
 @api.route('/news', methods=['POST'])
@@ -318,9 +317,7 @@ def get_single_news(id):
 
 @api.route('/news/<string:id>/likes', methods=['GET'])
 def get_news_like_count(id):
-    news = News.query.get(id)
-    if not news:
-        return jsonify({"error": "News id doesn't exist"}), 404
+    news = Like.query.filter_by(news_id=id).all()
     likes = len(news.likes)
     return jsonify({"like_count": likes}), 200
 
@@ -334,9 +331,6 @@ def post_comment(id):
     user = User.query.get(user_id)
     if not user:
         return jsonify({"error": "User doesn't exist"}), 404
-    news = News.query.get(id)
-    if not news:
-        return jsonify({"error": "News don't exist in database"}), 404
     comment = Comment(user_id=user_id, news_id=id, content=content)
     db.session.add(comment)
     db.session.commit()
@@ -344,9 +338,6 @@ def post_comment(id):
 
 @api.route('/news/<string:id>/comments', methods=['GET'])
 def get_news_comments(id):
-    news = News.query.get(id)
-    if not news:
-        return jsonify({"error": "News id doesn't exist"}), 404
     comments = Comment.query.filter_by(news_id=id).all()
     user_ids = [comment.user_id for comment in comments]
     users = {user.id: user for user in User.query.filter(User.id.in_(user_ids)).all()}

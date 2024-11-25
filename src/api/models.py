@@ -66,10 +66,7 @@ class News(db.Model):
     published_at = db.Column(db.TIMESTAMP)
     media_url = db.Column(db.String)
 
-    comments = db.relationship("Comment", back_populates="news")
-    likes = db.relationship("Like", back_populates="news")
-    saved_news = db.relationship("SavedNews", back_populates="news") 
-
+    
     def __repr__(self):
         return '<News %r>' % self.title
 
@@ -90,12 +87,11 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     user_id = db.Column(db.String(250), db.ForeignKey('user.id'))
-    news_id = db.Column(db.String(300), db.ForeignKey('news.id'))
+    news_id = db.Column(db.String(300))
     content = db.Column(db.String, nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
     user = db.relationship("User", back_populates="comments")
-    news = db.relationship("News", back_populates="comments")
     replies = db.relationship("CommentReply", back_populates="comment")
 
     def __repr__(self):
@@ -135,10 +131,9 @@ class CommentReply(db.Model):
 class Like(db.Model):
     __tablename__ = 'likes' 
     user_id = db.Column(db.String(250), db.ForeignKey('user.id'), primary_key=True)
-    news_id = db.Column(db.String(300), db.ForeignKey('news.id'), primary_key=True)
+    news_id = db.Column(db.String(300), primary_key=True)
 
     user = db.relationship("User", back_populates="likes")
-    news = db.relationship("News", back_populates="likes")
 
     def __repr__(self):
         return '<Like user_id=%r, news_id=%r>' % (self.user_id, self.news_id)
@@ -152,10 +147,10 @@ class Like(db.Model):
 class SavedNews(db.Model):
     __tablename__ = 'saved_news'
     user_id = db.Column(db.String(250), db.ForeignKey('user.id'), primary_key=True)
-    news_id = db.Column(db.String(300), db.ForeignKey('news.id'), primary_key=True)
+    news_id = db.Column(db.String(300), primary_key=True)
+    img_url = db.Column(db.String(300))
     
     user = db.relationship("User", back_populates="saved_news")
-    news = db.relationship("News", back_populates="saved_news")
 
 
     def __repr__(self):
@@ -164,7 +159,8 @@ class SavedNews(db.Model):
     def serialize(self):
         return {
             "user_id": self.user_id,
-            "news_id": self.news_id
+            "news_id": self.news_id,
+            "img_url": self.img_url
         }
     
 class Chat(db.Model):
