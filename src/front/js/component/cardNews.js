@@ -234,7 +234,7 @@ const CardNew= () => {
               <FontAwesomeIcon icon={faXmark} />
             </Button>
             <Modal.Header
-              className="bg-secondary text-light d-flex align-items-center justify-content-between"
+              className="text-light d-flex align-items-center justify-content-between"
               style={{
                 flexShrink: 0,
               }}
@@ -249,7 +249,7 @@ const CardNew= () => {
               )}
             </Modal.Header>
             <Modal.Body
-              className="modal-body-scrollable-bool bg-secondary text-light"
+              className="modal-body-scrollable-bool text-light"
               style={{
                 flex: 1,
                 overflowY: "auto",
@@ -270,7 +270,7 @@ const CardNew= () => {
               )}
             </Modal.Body>
             <Modal.Footer
-              className="bg-secondary text-light"
+              className="footer text-light"
               style={{
                 flexShrink: 0,
                 borderTop: "1px solid #dee2e6",

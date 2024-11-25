@@ -39,5 +39,20 @@
  }
 
  .title{
-    background-color: rgb(2, 2, 88);
+    background-color: #00148d;
  }
+
+ .text-light.d-flex.align-items-center.justify-content-between{
+    background-color: #065bf0;
+ }
+
+ .modal-body-scrollable-bool.text-light{
+    background-image: linear-gradient(to bottom, #065bf0, #c1cfff);
+    
+ }
+
+ .footer.text-light{
+    background-color: #c1cfff;
+ }
+ 
+ 
