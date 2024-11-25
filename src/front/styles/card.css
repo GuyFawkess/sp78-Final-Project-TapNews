@@ -37,3 +37,7 @@
  .comment.container{
     word-wrap: break-word;
  }
+
+ .title{
+    background-color: rgb(2, 2, 88);
+ }

@@ -209,7 +209,7 @@ const CardNew= () => {
         ))}
 
         <Modal show={showModal} onHide={handleCloseModal}>
-          <h1 className="text-center mt-2">Comentarios:</h1>
+        <Modal.Title className="title"><h1 className="text-center text-light mt-2">Comentarios:</h1></Modal.Title>
           <div
             style={{
               display: "flex",
@@ -218,6 +218,7 @@ const CardNew= () => {
               overflow: "hidden",
             }}
           >
+            
             <Button
               variant="secondary"
               className="me-3 bg-primary"
@@ -233,12 +234,12 @@ const CardNew= () => {
               <FontAwesomeIcon icon={faXmark} />
             </Button>
             <Modal.Header
-              className="bg-secondary text-light d-flex align-items-center justify-content-between mt-2"
+              className="bg-secondary text-light d-flex align-items-center justify-content-between"
               style={{
                 flexShrink: 0,
               }}
             >
-              <Modal.Title></Modal.Title>
+              
               {currentCommentNews ? (
                 <div>
                   <h5>{currentCommentNews.title}</h5>
@@ -283,7 +284,7 @@ const CardNew= () => {
                 }}
               >
                 <textarea
-                  className="form-control"
+                  className="form-control bg-info"
                   placeholder="Escribe tu comentario..."
                   rows="3"
                   value={comment}
