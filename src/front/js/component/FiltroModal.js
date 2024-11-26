@@ -27,13 +27,13 @@ const FiltroModal = ({ showModal, closeModal }) => {
 
     return (
         <Modal show={showModal} onHide={closeModal} animation={false}>
-            <Modal.Header closeButton>
-                <Modal.Title className="title-logout">Filtrar Noticias</Modal.Title>
+            <Modal.Header closeButton style={{ backgroundColor: '#0079FF' }}>
+                <Modal.Title className="text-white">Filtrar Noticias</Modal.Title>
             </Modal.Header>
-            <Modal.Body className="">
+            <Modal.Body style={{ backgroundColor: '#008AF3' }}>
                 <ul>
                     {store.allCategories?.map((category) => (
-                        <li key={category} className="text-decoration-none">
+                        <li key={category} className="text-decoration-none text-white">
                             <label className="text-capitalize">
                                 <input
                                     className="mx-2"
@@ -48,10 +48,14 @@ const FiltroModal = ({ showModal, closeModal }) => {
                     ))}
                 </ul>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="danger" onClick={clearAll}>Limpiar Todo</Button>
-                <Button variant="secondary" onClick={closeModal}>Cerrar</Button>
-                <Button variant="primary" onClick={applyFilter}>Aplicar</Button>
+            <Modal.Footer style={{ backgroundColor: '#0095D0' }} className="d-flex justify-content-between">
+                <div className="d-flex justify-content-start">
+                    <Button variant="danger" onClick={clearAll}>Limpiar Todo</Button>
+                </div>
+                <div className="d-flex justify-content-end">
+                    <Button variant="secondary" className="mx-2" onClick={closeModal}>Cerrar</Button>
+                    <Button variant="primary" onClick={applyFilter}>Aplicar</Button>
+                </div>
             </Modal.Footer>
         </Modal>
     );
