@@ -15,7 +15,7 @@
 }
 
 .actions.d-flex.flex-column {
-   margin-top: 70%;
+   margin-top: 50%;
    margin-left: 90%;
 }
 
@@ -56,7 +56,7 @@
  }
 
  .similarnew{
-   width: 30%;
+   width: 100%;
    text-decoration:underline;
    font-family: 'Quicksand';
    color: #ffffff; 
