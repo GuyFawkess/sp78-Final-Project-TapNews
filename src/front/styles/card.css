@@ -54,5 +54,15 @@
  .footer.text-light{
     background-color: #c1cfff;
  }
+
+ .similarnew{
+   width: 30%;
+   text-decoration:underline;
+   font-family: 'Quicksand';
+   color: #ffffff; 
+   font-weight: bold;
+   border: 1px solid white;
+   text-align: center;
+ }
  
  
