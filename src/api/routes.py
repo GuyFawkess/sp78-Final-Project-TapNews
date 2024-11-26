@@ -317,9 +317,9 @@ def get_single_news(id):
 
 @api.route('/news/<string:id>/likes', methods=['GET'])
 def get_news_like_count(id):
-    news = Like.query.filter_by(news_id=id).all()
-    likes = len(news.likes)
-    return jsonify({"like_count": likes}), 200
+    likes = Like.query.filter_by(news_id=id).all()
+    like_count = len(likes)
+    return jsonify({"like_count": like_count}), 200
 
 @api.route('/news/<string:id>/comments', methods=['POST'])
 def post_comment(id):
