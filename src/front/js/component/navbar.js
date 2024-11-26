@@ -8,11 +8,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import TapNewsLogo from '../../../../public/tapnewslogo.png';
 import { Context } from "../store/appContext";
+import { Modal } from "react-bootstrap";
+import FiltroModal from "./FiltroModal";
 
 
 const NavbarBottom = () => {
   const [userId, setUserId] = useState(false);
   const { store, actions } = useContext(Context);
+   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     setUserId(store.activeSession);
@@ -42,12 +45,16 @@ const NavbarBottom = () => {
             <Nav.Link as={Link} to="/search">
               <FontAwesomeIcon size="2xl" icon={faMagnifyingGlass} style={{ color: "#FFFFFF" }} className="nav-icon" />
             </Nav.Link>
-            <Nav.Link as={Link} to="#regional">
+            <Nav.Link onClick={() => setShowModal(true)}>
               <FontAwesomeIcon size="2xl" icon={faFilter} style={{ color: "#FFFFFF" }} className="nav-icon" />
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
+      <FiltroModal
+        showModal={showModal}
+        closeModal={() => setShowModal(false)}
+      />
     </Navbar>
   );
 };

@@ -11,7 +11,7 @@ import {
   faXmark,
   faTrash
 } from "@fortawesome/free-solid-svg-icons";
-import { ShareFriend } from "./shareFriend";  // Componente para compartir (ya existente en tu código)
+import { ShareFriend } from "./shareFriend";  
 import "../../styles/singlenewcard.css";
 
 const SingleNew = () => {
@@ -19,6 +19,7 @@ const SingleNew = () => {
   const { uuid } = useParams(); 
   const [showModal, setShowModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
   const [comment, setComment] = useState(""); 
   const [comments, setComments] = useState([]);
   const [currentNews, setCurrentNews] = useState({});
@@ -36,6 +37,8 @@ const SingleNew = () => {
   const openShareModal = () => setShowShareModal(true);
   const closeShareModal = () => setShowShareModal(false);
 
+  const openCommentModal = () => setShowCommentModal(true);
+  const closeCommentModal = () => setShowCommentModal(false);
 
   const handleLike = () => {
     const liked = store.likes.includes(uuid);
@@ -83,7 +86,7 @@ const SingleNew = () => {
             <Button className="showmore" onClick={openModal}>Noticia completa</Button>
             <div className="actions d-flex mt-4 mx-4">
               <FontAwesomeIcon onClick={handleLike} size="2xl" icon={faHeart} style={likeStyle} className="action-icon p-2" />
-              <FontAwesomeIcon onClick={() => setShowModal(true)} size="2xl" icon={faComment} style={{ color: "#FFFFFF" }} className="action-icon p-2" />
+              <FontAwesomeIcon onClick={openCommentModal} size="2xl" icon={faComment} style={{ color: "#FFFFFF" }} className="action-icon p-2" />
               <FontAwesomeIcon onClick={openShareModal} size="2xl" icon={faShare} style={{ color: "#FFFFFF" }} className="action-icon p-2" />
               <FontAwesomeIcon onClick={() => actions.deleteFavouriteNew(uuid)}  className="action-icon p-2" size="2xl" icon={faTrash} style={{color: "#ffffff"}} />
             </div>
@@ -116,7 +119,7 @@ const SingleNew = () => {
       </Modal>
 
    
-      <Modal show={showModal} onHide={closeModal}>
+      <Modal show={showCommentModal} onHide={closeCommentModal}>
         <Modal.Header className="text-light d-flex align-items-center justify-content-between">
           <h5>Comentarios</h5>
         </Modal.Header>

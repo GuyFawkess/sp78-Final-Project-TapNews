@@ -25,7 +25,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			pendingFriends: [],
 			incomingFriends: [],
 			incomingFriendsData: [],
-			activeSession: false
+			activeSession: false,
+			allCategories: ['general', 'science', 'sports', 'business', 'health',
+				'entertainment', 'tech', 'politics', 'food', 'travel'],
+			categories: [],
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -138,7 +141,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const store = getStore()
 					setStore({ favouriteNews: [...store.favouriteNews, news_id] })
 					await getActions().getFavouriteNews()
-					
+
 				}
 				catch (error) {
 					console.log(error)
@@ -149,40 +152,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 			addComments: async (news_id, content) => {
 				const user_id = localStorage.getItem("user_id"); // Asegúrate de que el user_id esté aquí
 				try {
-				  // Verifica si el user_id y content están correctamente definidos
-				  console.log('Enviando comentario:', { user_id, news_id, content });
-			  
-				  const response = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`, {
-					method: "POST",
-					headers: {
-					  "Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-					  "user_id": user_id,
-					  "content": content,
-					}),
-				  });
-			  
-				  // Verifica la respuesta
-				  if (!response.ok) {
-					console.error("Error al agregar comentario:", response.statusText);
-					return false;
-				  }
-			  
-				  // Si la solicitud es exitosa, loguea la respuesta
-				  const responseData = await response.json();
-				  console.log('Respuesta del backend:', responseData);
-			  
-				  return true;
+					// Verifica si el user_id y content están correctamente definidos
+					console.log('Enviando comentario:', { user_id, news_id, content });
+
+					const response = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							"user_id": user_id,
+							"content": content,
+						}),
+					});
+
+					// Verifica la respuesta
+					if (!response.ok) {
+						console.error("Error al agregar comentario:", response.statusText);
+						return false;
+					}
+
+					// Si la solicitud es exitosa, loguea la respuesta
+					const responseData = await response.json();
+					console.log('Respuesta del backend:', responseData);
+
+					return true;
 				} catch (error) {
-				  console.error("Error en la solicitud de agregar comentario:", error);
-				  return false;
+					console.error("Error en la solicitud de agregar comentario:", error);
+					return false;
 				}
-			  },
-			  
+			},
+
 
 			getComments: async (news_id) => {
-				try{
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`)
 					if (!resp.ok) {
 						throw new Error("Failed to access comments")
@@ -225,20 +228,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getFavouriteNews: async (userId) => {
 				const id = userId || localStorage.getItem("user_id");
 				if (!id) {
-				  return;
+					return;
 				}
 				try {
-				  const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`);
-				  if (!resp.ok) {
-					throw new Error("Failed to access user's saved news");
-				  }
-				  const data = await resp.json();
-				  setStore({ favouriteNews: data });
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`);
+					if (!resp.ok) {
+						throw new Error("Failed to access user's saved news");
+					}
+					const data = await resp.json();
+					setStore({ favouriteNews: data });
 				} catch (error) {
-				  console.log(error);
+					console.log(error);
 				}
-			  },
-			  
+			},
+
 
 			getUserLikes: async () => {
 				const id = localStorage.getItem('user_id')
@@ -291,6 +294,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json()
 					setStore ({numberlikes: data })
+					console.log(store.numberlikes)
 				}
 				catch (error) {
 					console.log(error)
@@ -337,32 +341,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getNews: async () => {
-				try {
-				  const response = await fetch(`${process.env.DOMAIN_API}/headlines?locale=es&language=es&api_token=${process.env.API_TOKEN}`);				  
-				  if (!response.ok) {
-					throw new Error("La respuesta no fue exitosa");
-				  }
-				  const data = await response.json();
-				  console.log('Datos de noticias:', data); 
-				  const categories = [
-					'general', 'science', 'sports', 'business', 'health', 
-					'entertainment', 'tech', 'politics', 'food', 'travel'
-				  ];
-				  let allNews = [];
-				  categories.forEach(category => {
-					if (data.data[category]) {
-					  allNews = [...allNews, ...data.data[category]];
-					}
-				  });
-				  setStore({ topnews: allNews });
-				  console.log('Nuevo estado de topnews:', allNews); 
-				} catch (error) {
-				  console.log("Error al cargar noticias", error);
-				}
-			  },
-			  
+				const store = getStore();
+				console.log("CategoriesAll:", store.categoriesAll);
 
-	
+				try {
+					const response = await fetch(`${process.env.DOMAIN_API}/headlines?locale=es&language=es&api_token=${process.env.API_TOKEN}`);
+					if (!response.ok) {
+						throw new Error("La respuesta no fue exitosa");
+					}
+					const data = await response.json();
+					console.log('Datos de noticias:', data);
+
+					let allNews = [];
+					console.log("CategoriesAll:", store.categoriesAll);
+					console.log("Categories:", store.categories);
+					console.log("Is categories an array?", Array.isArray(store.categories));
+					console.log("Categories length:", store.categories.length);
+
+
+					if (Array.isArray(store.categories) && store.categories.length === 0) {
+						store.allCategories?.forEach(category => {
+							if (data.data[category]) {
+								allNews = [...allNews, ...data.data[category]];
+							}
+						});
+					} else {
+						store.categories?.forEach(category => {
+							if (data.data[category]) {
+								allNews = [...allNews, ...data.data[category]];
+							}
+						});
+					}
+					setStore({ topnews: allNews });
+					console.log('Nuevo estado de topnews:', allNews);
+				} catch (error) {
+					console.log("Error al cargar noticias", error);
+				}
+			},
+
+			setCategories: (categories) => {
+				setStore({ categories });
+				console.log("categories updated:", categories)
+			},
 			getProfile: async (profile_id) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${profile_id}`)
@@ -410,7 +430,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({
 						profile: updatedData,
 					});
-					
+
 					console.log("Perfil actualizado con éxito:", updatedData);
 				} catch (error) {
 					console.error("Error al modificar el perfil:", error);
@@ -454,37 +474,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getRandomFriends:
-			async (user_id) => {
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
-					if (!response.ok) {
-						throw new Error("La respuesta no fue existosa");
+				async (user_id) => {
+					try {
+						const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
+						if (!response.ok) {
+							throw new Error("La respuesta no fue existosa");
+						}
+						const data = await response.json()
+						setStore({ randomFriends: data.friends })
+					} catch (error) {
+						console.log("Not friends found", error)
 					}
-					const data = await response.json()
-					setStore({ randomFriends: data.friends })
-				} catch (error) {
-					console.log("Not friends found", error)
-				}
-			},
+				},
 
-			getUserPendingFriends: async(user_id) => {
+			getUserPendingFriends: async (user_id) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends/pending`)
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Error trayendo amistades pendientes del usuario")
 					}
 					const data = await resp.json()
-					setStore({pendingFriends: data.pending_friends})
+					setStore({ pendingFriends: data.pending_friends })
 				}
-				catch(error) {
+				catch (error) {
 					console.log(error)
 				}
 			},
 
-			getUserIncomingFriends: async(user_id) => {
+			getUserIncomingFriends: async (user_id) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends/incoming`)
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Error trayendo amistades pendientes del usuario")
 					}
 					const data = await resp.json()
@@ -501,9 +521,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 							img_url: profile.img_url
 						};
 					});
-					setStore({ incomingFriendsData });					
+					setStore({ incomingFriendsData });				
 				}
-				catch(error) {
+				catch (error) {
 					console.log(error)
 				};
 			},
@@ -524,27 +544,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getFilterUser: (filter) => {
 				const store = getStore();
-			  
+
 				if (filter === "") {
-				  // Si el filtro está vacío, muestra todos los usuarios
-				  return store.listuser
+					// Si el filtro está vacío, muestra todos los usuarios
+					return store.listuser
 				} else {
-				  // Filtra los usuarios que coincidan con el término de búsqueda
-				  const filteredUsers = store.listuser.filter((user) =>
-					user.username.toLowerCase().includes(filter.toLowerCase())
-				//   console.log(user.username)}
-				  );
-				//   console.log(filter)				  
-				  return filteredUsers
-				  // Actualiza el store con los usuarios filtrados
-				//   setStore({ users: filteredUsers });
+					// Filtra los usuarios que coincidan con el término de búsqueda
+					const filteredUsers = store.listuser.filter((user) =>
+						user.username.toLowerCase().includes(filter.toLowerCase())
+						//   console.log(user.username)}
+					);
+					//   console.log(filter)				  
+					return filteredUsers
+					// Actualiza el store con los usuarios filtrados
+					//   setStore({ users: filteredUsers });
 				}
-			  },
-			  
-			  
-			getAllProfiles: async() => {
-				try{
-					const response = await fetch (`${process.env.BACKEND_URL}/api/profiles`)
+			},
+
+
+			getAllProfiles: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/profiles`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
