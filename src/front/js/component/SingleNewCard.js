@@ -27,8 +27,11 @@ const SingleNew = () => {
 
   useEffect(() => {
     actions.getSingleNew(uuid);
-    actions.getNumberLike(uuid);
   }, []);
+
+  useEffect(() => {
+    actions.getNumberLike(uuid);
+  }, [store.numberlikes]);
 
 
   const openModal = () => setShowModal(true);
@@ -73,8 +76,6 @@ const SingleNew = () => {
       setComments(store.news.comments || []);
     }
   }, [store.news, uuid]);
-
-  
   return (
     <>
       <Card className="Card-bg" style={{ backgroundImage: `url(${store.news.image_url})`, width: '100%', height: '55rem', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
@@ -85,10 +86,19 @@ const SingleNew = () => {
           <div className="d-flex actions2">
             <Button className="showmore" onClick={openModal}>Noticia completa</Button>
             <div className="actions d-flex mt-4 mx-4">
-              <FontAwesomeIcon onClick={handleLike} size="2xl" icon={faHeart} style={likeStyle} className="action-icon p-2" />
-              <FontAwesomeIcon onClick={openCommentModal} size="2xl" icon={faComment} style={{ color: "#FFFFFF" }} className="action-icon p-2" />
-              <FontAwesomeIcon onClick={openShareModal} size="2xl" icon={faShare} style={{ color: "#FFFFFF" }} className="action-icon p-2" />
+              <div className="d-flex flex-column">
+                <div><FontAwesomeIcon onClick={handleLike} size="2xl" icon={faHeart} style={likeStyle} className="action-icon p-2" /></div>
+                <div className="mx-auto numberlike">{store.numberlikes.like_count}</div>
+              </div>
+              <div>
+                <FontAwesomeIcon onClick={openCommentModal} size="2xl" icon={faComment} style={{ color: "#FFFFFF" }} className="action-icon p-2" />
+              </div>
+              <div>
+                <FontAwesomeIcon onClick={openShareModal} size="2xl" icon={faShare} style={{ color: "#FFFFFF" }} className="action-icon p-2" />
+              </div>
+              <div>
               <FontAwesomeIcon onClick={() => actions.deleteFavouriteNew(uuid)}  className="action-icon p-2" size="2xl" icon={faTrash} style={{color: "#ffffff"}} />
+              </div>
             </div>
           </div>
         </Card.Body>

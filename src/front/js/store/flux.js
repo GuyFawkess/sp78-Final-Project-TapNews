@@ -288,7 +288,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json()
 					setStore ({numberlikes: data })
-					console.log(store.numberlikes)
 				}
 				catch (error) {
 					console.log(error)

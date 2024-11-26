@@ -66,6 +66,8 @@ const CardNew= () => {
       actions.getNews();
   }, []);
 
+
+
   const handleLike = (id) => {
     if (!user_likes.includes(id)) {
       actions.addLike(id);
@@ -193,7 +195,7 @@ const CardNew= () => {
               />
               <FontAwesomeIcon size="2xl" onClick={() => handleShowShow2(singleNew.url)} icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
 
-              <FontAwesomeIcon icon={faFile} style={{color: "#ffffff",}}  size="2xl" className="open p-2" />
+              <Link to={`/news/${singleNew.uuid}`}><FontAwesomeIcon icon={faFile} style={{color: "#ffffff",}}  size="2xl" className="open p-2" /></Link>
             </div>
             <Card.Body
               style={{
