@@ -14,6 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			randomFriends: [],
 			friends: [],
 			likes: [],
+			numberlikes: [],
 			news:[],
 			files:[],
 			topnews: [], 
@@ -113,7 +114,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const news_id = item.uuid
 				try {
-					console.log(item.image_url)
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
 						method: 'POST',
 						headers: {
@@ -276,6 +276,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getNumberLike: async (news_id) => {
+				try{
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/likes`)
+					if (!resp.ok) {
+						throw new Error("Failed in likes account")
+					}
+					const data = await resp.json()
+					setStore ({numberlikes: data })
+				}
+				catch (error) {
+					console.log(error)
+				}
+			},
+
 			deleteLike: async (news_id) => {
 				const user_id = localStorage.getItem('user_id')
 				if (!user_id) return
@@ -303,7 +317,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getSingleNew: async (uuid) => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/news/${uuid}`);
+					const response = await fetch(`${process.env.DOMAIN_API}/uuid/${uuid}?api_token=${process.env.API_TOKEN}`);
 					if (!response.ok) {
 						throw new Error("La respuesta no fue exitosa");
 					}
@@ -314,6 +328,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error fetching news:", error);
 				}
 			},
+
 			getNews: async () => {
 				try {
 				  const response = await fetch(`${process.env.DOMAIN_API}/headlines?locale=es&language=es&api_token=${process.env.API_TOKEN}`);				  
@@ -339,6 +354,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			  },
 			  
+
+	
 			getProfile: async (profile_id) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${profile_id}`)

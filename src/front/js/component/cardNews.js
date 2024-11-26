@@ -194,7 +194,7 @@ const CardNew= () => {
             <Card.Body
               style={{
                 backgroundColor: '#002B80',
-                marginTop: description ? '150%' : '170%',
+                marginTop: description ? '140%' : '170%',
                 mask:'linear-gradient( black 40%, transparent)',
               }}
               className="mycardbody"
