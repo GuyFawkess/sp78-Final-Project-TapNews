@@ -15,6 +15,7 @@ import {
   faShare,
   faPlay,
   faXmark,
+  faFile
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
 
@@ -72,6 +73,7 @@ const CardNew= () => {
       actions.deleteLike(id);
     }
   };
+
   const handleCloseShow2 = () => setShow2(false);  
 
   const handleShowShow2 = (url) => {
@@ -190,6 +192,8 @@ const CardNew= () => {
                 onClick={() => handleCommentClick(singleNew)}
               />
               <FontAwesomeIcon size="2xl" onClick={() => handleShowShow2(singleNew.url)} icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
+
+              <FontAwesomeIcon icon={faFile} style={{color: "#ffffff",}}  size="2xl" className="open p-2" />
             </div>
             <Card.Body
               style={{
