@@ -131,17 +131,8 @@ const CardNew = () => {
 
   if (!store.topnews || store.topnews.length === 0) {
     return (
-      <div
-        style={{
-          position: "absolute",
-          top: "0",
-          bottom: "0",
-          right: "0",
-          left: "0",
-        }}
-        className="loading"
-      >
-        <img className="logo-4" src={TapNewsLogo} alt="Loading..." />
+      <div style={{ position: 'absolute', top: '0', bottom: '0', right: '0', left: '0' }} className="loading">
+        <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
       </div>
     );
   }
@@ -198,7 +189,7 @@ const CardNew = () => {
             <Card.Body
               style={{
                 backgroundColor: '#002B80',
-                marginTop: description ? '140%' : '170%',
+                marginTop: description ? '130%' : '170%',
                 mask: 'linear-gradient( black 40%, transparent)',
               }}
               className="mycardbody"
@@ -206,11 +197,13 @@ const CardNew = () => {
               <Card.Title className="title" style={{ color: '' }} onClick={visibility_description}>
                 {singleNew.title}
               </Card.Title>
+              <div className="d-flex justify-content-start">
               {(singleNew.similar || []).map((similar, index) => (
-                <Link key={index} to={`/news/${similar.uuid}`}>
+                <Link className="mx-2 mb-2" key={index} to={`/news/${similar.uuid}`}>
                   <div className="similarnew">Noticia similar</div>
-                </Link>
+                </Link> 
               ))}
+              </div>
               <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: '' }}>
                 {singleNew.description}
               </Card.Text>
