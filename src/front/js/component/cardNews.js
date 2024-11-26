@@ -15,7 +15,7 @@ import {
   faShare,
   faPlay,
   faXmark,
-  faFile
+  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
 
@@ -39,8 +39,8 @@ const CardNew = () => {
   const user_favorites = store.favouriteNews.map((news) => news.news_id);
 
   useEffect(() => {
-    actions.getNews()
-  }, [store.categories])
+    actions.getNews();
+  }, [store.categories]);
 
   // useEffect(() => {
   //   const checkAndLogout = async () => {
@@ -58,8 +58,10 @@ const CardNew = () => {
   };
 
   const bookmarkStyle = (id) => {
-    return user_favorites.includes(id) ? { color: "#69FBD0" } : { color: "#FFFFFF" };
-  }
+    return user_favorites.includes(id)
+      ? { color: "#69FBD0" }
+      : { color: "#FFFFFF" };
+  };
 
   useEffect(() => {
     if (localStorage.getItem("user_id")) {
@@ -83,9 +85,9 @@ const CardNew = () => {
   const handleCloseShow2 = () => setShow2(false);
 
   const handleShowShow2 = (url) => {
-    setUrlShare(url)
+    setUrlShare(url);
     setShow2(true);
-  }
+  };
 
   const handleBookmark = (id) => {
     if (!user_favorites.includes(id.uuid)) {
@@ -100,38 +102,46 @@ const CardNew = () => {
     setShowModal(true);
     // Obtener comentarios del backend si no están en el estado local
     actions.getComments(news.uuid);
-    
-      // try {
-      //   const fetchedComments = await actions.getComments(news.uuid);
-      //   setComments(fetchedComments);
-      // } catch (error) {
-      //   console.error("Error al cargar comentarios:", error);
-      // }
-    
+
+    // try {
+    //   const fetchedComments = await actions.getComments(news.uuid);
+    //   setComments(fetchedComments);
+    // } catch (error) {
+    //   console.error("Error al cargar comentarios:", error);
+    // }
   };
 
   useEffect(() => {
-    setComments(store.singleNewsComments);    
-  }, [store.singleNewsComments, actions.addComments])
-
+    setComments(store.singleNewsComments);
+  }, [store.singleNewsComments, actions.addComments]);
 
   const handleCloseModal = () => {
     setShowModal(false);
     setCurrentCommentNews(null);
   };
 
-
   const handleSendComment = async () => {
-    if (!comment) return; 
+    if (!comment) return;
     const newsId = currentCommentNews.uuid;
     const userId = localStorage.getItem("user_id");
     const success = await actions.addComments(newsId, comment);
-    if(success) {setComment("")}; 
-};
+    if (success) {
+      setComment("");
+    }
+  };
 
   if (!store.topnews || store.topnews.length === 0) {
     return (
-      <div style={{ position: 'absolute', top: '0', bottom: '0', right: '0', left: '0' }} className="loading">
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          bottom: "0",
+          right: "0",
+          left: "0",
+        }}
+        className="loading"
+      >
         <img className="logo-3" src={TapNewsLogo} alt="Loading..." />
       </div>
     );
@@ -182,29 +192,56 @@ const CardNew = () => {
                 className="comment p-2"
                 onClick={() => handleCommentClick(singleNew)}
               />
-              <FontAwesomeIcon size="2xl" onClick={() => handleShowShow2(singleNew.url)} icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
+              <FontAwesomeIcon
+                size="2xl"
+                onClick={() => handleShowShow2(singleNew.url)}
+                icon={faShare}
+                style={{ color: "#FFFFFF" }}
+                className="share p-2"
+              />
 
-              <Link to={`/news/${singleNew.uuid}`}><FontAwesomeIcon icon={faFile} style={{color: "#ffffff",}}  size="2xl" className="open p-2" /></Link>
+              <Link to={`/news/${singleNew.uuid}`}>
+                <FontAwesomeIcon
+                  icon={faFile}
+                  style={{ color: "#ffffff" }}
+                  size="2xl"
+                  className="open p-2"
+                />
+              </Link>
             </div>
             <Card.Body
               style={{
-                backgroundColor: '#002B80',
-                marginTop: description ? '130%' : '170%',
-                mask: 'linear-gradient( black 40%, transparent)',
+                backgroundColor: "#002B80",
+                marginTop: description ? "130%" : "170%",
+                mask: "linear-gradient( black 40%, transparent)",
               }}
               className="mycardbody"
             >
-              <Card.Title className="title" style={{ color: '' }} onClick={visibility_description}>
+              <Card.Title
+                className="title"
+                style={{ color: "" }}
+                onClick={visibility_description}
+              >
                 {singleNew.title}
               </Card.Title>
               <div className="d-flex justify-content-start">
-              {(singleNew.similar || []).map((similar, index) => (
-                <Link className="mx-2 mb-2" key={index} to={`/news/${similar.uuid}`}>
-                  <div className="similarnew">Noticia similar</div>
-                </Link> 
-              ))}
+                {(singleNew.similar || []).map((similar, index) => (
+                  <Link
+                    className="mx-2 mb-2"
+                    key={index}
+                    to={`/news/${similar.uuid}`}
+                  >
+                    <div className="similarnew">Noticia similar</div>
+                  </Link>
+                ))}
               </div>
-              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: '' }}>
+              <Card.Text
+                className="description"
+                style={{
+                  visibility: description ? "visible" : "hidden",
+                  color: "",
+                }}
+              >
                 {singleNew.description}
               </Card.Text>
             </Card.Body>
@@ -260,13 +297,17 @@ const CardNew = () => {
                 paddingRight: "2rem",
               }}
             >
-              {
-                comments?.comments?.map((comment, index) => {
-                  return(<div key={index} className="comment">
-                    <p>{comment.content}</p>
-                  </div>)}
-                )
-              }
+              {comments?.comments?.map((comment, index) => (
+                <div key={index} className="comment mb-3">
+                  <p className="text-light">
+                    <strong>{comment.username || "Anónimo"}</strong> -{" "}
+                    <small>
+                      {new Date(comment.created_at).toLocaleString()}
+                    </small>
+                  </p>
+                  <p>{comment.content}</p>
+                </div>
+              ))}
             </Modal.Body>
             <Modal.Footer
               className="footer text-light"
