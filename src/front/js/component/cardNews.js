@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
@@ -14,6 +15,7 @@ import {
   faShare,
   faPlay,
   faXmark,
+  faFile
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
 
@@ -34,7 +36,11 @@ const CardNew = () => {
 
   const userId = localStorage.getItem("user_id");
   const user_likes = store.likes;
-  const user_favorites = store.favouriteNews.map((news) => news.id);
+  const user_favorites = store.favouriteNews.map((news) => news.news_id);
+
+  useEffect(() => {
+    actions.getNews()
+  }, [store.categories])
 
   useEffect(() => {
     const checkAndLogout = async () => {
@@ -43,7 +49,7 @@ const CardNew = () => {
       }
     };
     checkAndLogout();
-  }, [user]);
+  }, [userId]);
 
   const likeStyle = (id) => {
     return user_likes.includes(id)
@@ -52,10 +58,8 @@ const CardNew = () => {
   };
 
   const bookmarkStyle = (id) => {
-    return user_favorites.includes(id)
-      ? { color: "#0044CC" }
-      : { color: "#FFFFFF" };
-  };
+    return user_favorites.includes(id) ? { color: "#69FBD0" } : { color: "#FFFFFF" };
+  }
 
   useEffect(() => {
     if (localStorage.getItem("user_id")) {
@@ -71,25 +75,25 @@ const CardNew = () => {
 
 
   const handleLike = (id) => {
-    console.log(id);
     if (!user_likes.includes(id)) {
       actions.addLike(id);
     } else {
       actions.deleteLike(id);
     }
   };
+
   const handleCloseShow2 = () => setShow2(false);
 
   const handleShowShow2 = (url) => {
-    setUrlShare(url);
+    setUrlShare(url)
     setShow2(true);
-  };
+  }
 
   const handleBookmark = (id) => {
-    if (!user_favorites.includes(id)) {
-      actions.addFavouriteNew({ uuid: id });
+    if (!user_favorites.includes(id.uuid)) {
+      actions.addFavouriteNew(id);
     } else {
-      actions.deleteFavouriteNew(id);
+      actions.deleteFavouriteNew(id.uuid);
     }
   };
 
@@ -136,11 +140,9 @@ const CardNew = () => {
   
 
   const handleSendComment = async () => {
-    if (!comment) return; // No enviar comentarios vacíos
-
+    if (!comment) return; 
     const newsId = currentCommentNews.uuid;
     const userId = localStorage.getItem("user_id");
-
     console.log("Comentario enviado:", comment);
 
     const success = await actions.addComments(newsId, comment);
@@ -164,8 +166,6 @@ const CardNew = () => {
         console.error("No se pudo agregar el comentario.");
     }
 };
- 
-  
   if (!store.topnews || store.topnews.length === 0) {
     return (
       <div
@@ -215,7 +215,7 @@ const CardNew = () => {
                 className="like p-2"
               />
               <FontAwesomeIcon
-                onClick={() => handleBookmark(singleNew.uuid)}
+                onClick={() => handleBookmark(singleNew)}
                 size="2xl"
                 icon={faBookmark}
                 style={bookmarkStyle(singleNew.uuid)}
@@ -228,36 +228,27 @@ const CardNew = () => {
                 className="comment p-2"
                 onClick={() => handleCommentClick(singleNew)}
               />
-              <FontAwesomeIcon
-                size="2xl"
-                onClick={() => handleShowShow2(singleNew.url)}
-                icon={faShare}
-                style={{ color: "#FFFFFF" }}
-                className="share p-2"
-              />
+              <FontAwesomeIcon size="2xl" onClick={() => handleShowShow2(singleNew.url)} icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
+
+              <Link to={`/news/${singleNew.uuid}`}><FontAwesomeIcon icon={faFile} style={{color: "#ffffff",}}  size="2xl" className="open p-2" /></Link>
             </div>
             <Card.Body
               style={{
-                backgroundColor: "#002B80",
-                marginTop: description ? "150%" : "170%",
-                mask: "linear-gradient( black 40%, transparent)",
+                backgroundColor: '#002B80',
+                marginTop: description ? '140%' : '170%',
+                mask: 'linear-gradient( black 40%, transparent)',
               }}
               className="mycardbody"
             >
-              <Card.Title
-                className="title"
-                style={{ color: "" }}
-                onClick={visibility_description}
-              >
+              <Card.Title className="title" style={{ color: '' }} onClick={visibility_description}>
                 {singleNew.title}
               </Card.Title>
-              <Card.Text
-                className="description"
-                style={{
-                  visibility: description ? "visible" : "hidden",
-                  color: "",
-                }}
-              >
+              {(singleNew.similar || []).map((similar, index) => (
+                <Link key={index} to={`/news/${similar.uuid}`}>
+                  <div className="similarnew">Noticia similar</div>
+                </Link>
+              ))}
+              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: '' }}>
                 {singleNew.description}
               </Card.Text>
             </Card.Body>

@@ -14,15 +14,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			randomFriends: [],
 			friends: [],
 			likes: [],
-			news:[],
-			files:[],
-			topnews: [], 
+			numberlikes: [],
+			news: [],
+			files: [],
+			topnews: [],
 			token: null,
 			users: [],
 			filteredUsers: [],
 			searchTerm: "",
 			pendingFriends: [],
-			incomingFriends: []
+			incomingFriends: [],
+			incomingFriendsData: [],
+			activeSession: false,
+			allCategories: ['general', 'science', 'sports', 'business', 'health',
+				'entertainment', 'tech', 'politics', 'food', 'travel'],
+			categories: [],
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -88,6 +94,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// Si todo está bien, guardamos el token y retornamos los datos
 					localStorage.setItem("jwt-token", data.token);
 					localStorage.setItem("user_id", data.user_id);
+					setStore({activeSession: true})
 
 					return data;
 				} catch (error) {
@@ -99,12 +106,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logout: () => {
 				localStorage.removeItem("jwt-token");
 				localStorage.removeItem("user_id");
-				setStore({ user: null, profile: null, friends: [] });
+				setStore({ user: null, profile: null, friends: [], activeSession: false });
 
 				console.log("Logout successful!");
 			},
 
-			
+			activateSession: () => {
+				if(localStorage.getItem('user_id')){
+					setStore({activeSession: true})
+				}
+			},
 
 			addFavouriteNew: async (item) => {
 				const user_id = localStorage.getItem("user_id")
@@ -120,7 +131,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({
 							'user_id': user_id,
-							'news_id': news_id
+							'news_id': news_id,
+							'img_url': item.image_url
 						})
 					})
 					if (!resp.ok) {
@@ -129,7 +141,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const store = getStore()
 					setStore({ favouriteNews: [...store.favouriteNews, news_id] })
 					await getActions().getFavouriteNews()
-					
+
 				}
 				catch (error) {
 					console.log(error)
@@ -169,15 +181,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			  
 				  return true;
 				} catch (error) {
-				  console.error("Error en la solicitud de agregar comentario:", error);
-				  return false;
+					console.error("Error en la solicitud de agregar comentario:", error);
+					return false;
 				}
 			  },
 
-						  
-
 			getComments: async (news_id) => {
-				try{
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`)
 					if (!resp.ok) {
 						throw new Error("Failed to access comments")
@@ -220,20 +230,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getFavouriteNews: async (userId) => {
 				const id = userId || localStorage.getItem("user_id");
 				if (!id) {
-				  return;
+					return;
 				}
 				try {
-				  const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`);
-				  if (!resp.ok) {
-					throw new Error("Failed to access user's saved news");
-				  }
-				  const data = await resp.json();
-				  setStore({ favouriteNews: data });
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/saved_news`);
+					if (!resp.ok) {
+						throw new Error("Failed to access user's saved news");
+					}
+					const data = await resp.json();
+					setStore({ favouriteNews: data });
 				} catch (error) {
-				  console.log(error);
+					console.log(error);
 				}
-			  },
-			  
+			},
+
 
 			getUserLikes: async () => {
 				const id = localStorage.getItem('user_id')
@@ -278,6 +288,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getNumberLike: async (news_id) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/likes`)
+					if (!resp.ok) {
+						throw new Error("Failed in likes account")
+					}
+					const data = await resp.json()
+					setStore ({numberlikes: data })
+				}
+				catch (error) {
+					console.log(error)
+				}
+			},
+
 			deleteLike: async (news_id) => {
 				const user_id = localStorage.getItem('user_id')
 				if (!user_id) return
@@ -305,7 +329,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getSingleNew: async (uuid) => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/news/${uuid}`);
+					const response = await fetch(`${process.env.DOMAIN_API}/uuid/${uuid}?api_token=${process.env.API_TOKEN}`);
 					if (!response.ok) {
 						throw new Error("La respuesta no fue exitosa");
 					}
@@ -316,31 +340,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error fetching news:", error);
 				}
 			},
+
 			getNews: async () => {
+				const store = getStore();
+				console.log("CategoriesAll:", store.categoriesAll);
+
 				try {
-				  const response = await fetch(`${process.env.DOMAIN_API}/headlines?locale=es&language=es&api_token=${process.env.API_TOKEN}`);				  
-				  if (!response.ok) {
-					throw new Error("La respuesta no fue exitosa");
-				  }
-				  const data = await response.json();
-				  console.log('Datos de noticias:', data); 
-				  const categories = [
-					'general', 'science', 'sports', 'business', 'health', 
-					'entertainment', 'tech', 'politics', 'food', 'travel'
-				  ];
-				  let allNews = [];
-				  categories.forEach(category => {
-					if (data.data[category]) {
-					  allNews = [...allNews, ...data.data[category]];
+					const response = await fetch(`${process.env.DOMAIN_API}/headlines?locale=es&language=es&api_token=${process.env.API_TOKEN}`);
+					if (!response.ok) {
+						throw new Error("La respuesta no fue exitosa");
 					}
-				  });
-				  setStore({ topnews: allNews });
-				  console.log('Nuevo estado de topnews:', allNews); 
+					const data = await response.json();
+					console.log('Datos de noticias:', data);
+
+					let allNews = [];
+
+					if (Array.isArray(store.categories) && store.categories.length === 0) {
+						store.allCategories?.forEach(category => {
+							if (data.data[category]) {
+								allNews = [...allNews, ...data.data[category]];
+							}
+						});
+					} else {
+						store.categories?.forEach(category => {
+							if (data.data[category]) {
+								allNews = [...allNews, ...data.data[category]];
+							}
+						});
+					}
+					setStore({ topnews: allNews });
+					console.log('Nuevo estado de topnews:', allNews);
 				} catch (error) {
-				  console.log("Error al cargar noticias", error);
+					console.log("Error al cargar noticias", error);
 				}
-			  },
-			  
+			},
+
+			setCategories: (categories) => {
+				setStore({ categories });
+				console.log("categories updated:", categories)
+			},
 			getProfile: async (profile_id) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/profile/${profile_id}`)
@@ -388,7 +426,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({
 						profile: updatedData,
 					});
-					
+
 					console.log("Perfil actualizado con éxito:", updatedData);
 				} catch (error) {
 					console.error("Error al modificar el perfil:", error);
@@ -432,45 +470,58 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getRandomFriends:
-			async (user_id) => {
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
-					if (!response.ok) {
-						throw new Error("La respuesta no fue existosa");
+				async (user_id) => {
+					try {
+						const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends`)
+						if (!response.ok) {
+							throw new Error("La respuesta no fue existosa");
+						}
+						const data = await response.json()
+						setStore({ randomFriends: data.friends })
+					} catch (error) {
+						console.log("Not friends found", error)
 					}
-					const data = await response.json()
-					setStore({ randomFriends: data.friends })
-				} catch (error) {
-					console.log("Not friends found", error)
-				}
-			},
+				},
 
-			getUserPendingFriends: async(user_id) => {
+			getUserPendingFriends: async (user_id) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends/pending`)
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Error trayendo amistades pendientes del usuario")
 					}
 					const data = await resp.json()
-					setStore({pendingFriends: data.pending_friends})
+					setStore({ pendingFriends: data.pending_friends })
 				}
-				catch(error) {
+				catch (error) {
 					console.log(error)
 				}
 			},
 
-			getUserIncomingFriends: async(user_id) => {
+			getUserIncomingFriends: async (user_id) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/friends/incoming`)
-					if (!resp.ok){
+					if (!resp.ok) {
 						throw new Error("Error trayendo amistades pendientes del usuario")
 					}
 					const data = await resp.json()
-					setStore({incomingFriends: data.incoming_friends})
+					setStore({ incomingFriends: data.incoming_friends })
+					const actions = getActions()
+					const allUsers = await actions.getAllUsers()
+					const allProfiles = await actions.getAllProfiles()
+					const incomingFriendsData = data.incoming_friends.map(friendId => {
+						const user = allUsers.find(u => u.id === friendId);
+						const profile = allProfiles.find(p => p.user_id === friendId);
+						return {
+							id: friendId,
+							username: user.username,
+							img_url: profile.img_url
+						};
+					});
+					setStore({ incomingFriendsData });
 				}
-				catch(error) {
+				catch (error) {
 					console.log(error)
-				}
+				};
 			},
 
 			getAllUsers: async () => {
@@ -480,40 +531,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({listuser: data})
-				}catch(error){
+					setStore({ listuser: data })
+					return data
+				} catch (error) {
 					console.log("Not users found", error)
 				}
 			},
 
 			getFilterUser: (filter) => {
 				const store = getStore();
-			  
+
 				if (filter === "") {
-				  // Si el filtro está vacío, muestra todos los usuarios
-				  return store.listuser
+					// Si el filtro está vacío, muestra todos los usuarios
+					return store.listuser
 				} else {
-				  // Filtra los usuarios que coincidan con el término de búsqueda
-				  const filteredUsers = store.listuser.filter((user) =>
-					user.username.toLowerCase().includes(filter.toLowerCase())
-				//   console.log(user.username)}
-				  );
-				//   console.log(filter)				  
-				  return filteredUsers
-				  // Actualiza el store con los usuarios filtrados
-				//   setStore({ users: filteredUsers });
+					// Filtra los usuarios que coincidan con el término de búsqueda
+					const filteredUsers = store.listuser.filter((user) =>
+						user.username.toLowerCase().includes(filter.toLowerCase())
+						//   console.log(user.username)}
+					);
+					//   console.log(filter)				  
+					return filteredUsers
+					// Actualiza el store con los usuarios filtrados
+					//   setStore({ users: filteredUsers });
 				}
-			  },
-			  
-			  
-			getAllProfiles: async() => {
-				try{
-					const response = await fetch (`${process.env.BACKEND_URL}/api/profiles`)
+			},
+
+
+			getAllProfiles: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/profiles`)
 					if (!response.ok) {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
 					setStore({ listprofile: data })
+					return data
 				} catch (error) {
 					console.log("Not users found", error)
 				}
@@ -536,10 +589,49 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Error al eliminar la amistad');
 					}
-					const result = await response.json();
-					console.log('Resultado:', result);
 				} catch (error) {
 					console.log('Error al eliminar la amistad:', error);
+				}
+				try {
+					const dataReverse = {
+						user_id: friendId,
+						friend_id: userId
+					};
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(dataReverse)
+					});
+
+					if (!resp.ok) {
+						throw new Error('Error al eliminar la amistad');
+					}
+				} catch (error) {
+					console.log('Error al eliminar la amistad:', error);
+				}
+			},
+
+			deleteFriendRequest: async (user_id, friend_id) => {
+				try {
+					const data = {
+						user_id: user_id,
+						friend_id: friend_id
+					};
+					const response = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(data)
+					});
+
+					if (!response.ok) {
+						throw new Error('Error al eliminar la solicitud');
+					}
+				} catch (error) {
+					console.log('Error al eliminar la solicitud:', error);
 				}
 			},
 
