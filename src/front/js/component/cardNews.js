@@ -68,6 +68,8 @@ const CardNew = () => {
     actions.getNews();
   }, []);
 
+
+
   const handleLike = (id) => {
     console.log(id);
     if (!user_likes.includes(id)) {
@@ -93,6 +95,8 @@ const CardNew = () => {
 
   const handleCommentClick = async (news) => {
     setCurrentCommentNews(news);
+    handleGetComment(news.uuid);
+    console.log(comments)
     setShowModal(true);
     // Obtener comentarios del backend si no están en el estado local
     if (!comments[news.uuid]) {
@@ -108,10 +112,28 @@ const CardNew = () => {
     }
   };
 
+  
+
   const handleCloseModal = () => {
     setShowModal(false);
     setCurrentCommentNews(null);
   };
+
+  const handleGetComment = async (news_Id) => {
+    try {
+      // Llama a la acción del contexto para obtener los comentarios del backend
+      const fetchedComments = await actions.getComments(news_Id);
+  
+      // Actualiza el estado local con los comentarios obtenidos
+      setComments((prev) => ({
+        ...prev,
+        [news_Id]: fetchedComments || [], // Si no hay comentarios, inicializa como un array vacío
+      }));
+    } catch (error) {
+      console.error("Error al cargar los comentarios:", error);
+    }
+  };
+  
 
   const handleSendComment = async () => {
     if (!comment) return; // No enviar comentarios vacíos
@@ -131,8 +153,9 @@ const CardNew = () => {
                 ...prev,
                 [newsId]: [
                     ...(Array.isArray(prev[newsId]) ? prev[newsId] : []),
+                    
                     { content: comment, user_id: userId },
-                ],
+                ]
             };
         });
 
@@ -143,7 +166,6 @@ const CardNew = () => {
 };
  
   
-
   if (!store.topnews || store.topnews.length === 0) {
     return (
       <div
@@ -291,8 +313,8 @@ const CardNew = () => {
                 paddingRight: "2rem",
               }}
             >
-              {comments[currentCommentNews?.uuid]?.length > 0 ? (
-                comments[currentCommentNews.uuid].map((comment, index) => (
+              {comments.length > 0 ? (
+                comments.map((comment, index) => (
                   <div key={index} className="comment">
                     <p>{comment.content}</p>
                   </div>
@@ -300,12 +322,6 @@ const CardNew = () => {
               ) : (
                 <p>No hay comentarios aún.</p>
               )}
-              {/* <p className="pb-1"></p> */}
-              {/* {currentCommentNews && (
-                <div className="comment container">
-                  
-                </div>
-              )} */}
             </Modal.Body>
             <Modal.Footer
               className="footer text-light"
