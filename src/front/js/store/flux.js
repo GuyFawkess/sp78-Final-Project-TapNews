@@ -147,6 +147,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: "POST",
 					headers: {
 					  "Content-Type": "application/json",
+					  "Authorization": `Bearer ${localStorage.getItem("token")}`,
 					},
 					body: JSON.stringify({
 					  "user_id": user_id,
@@ -157,6 +158,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  // Verifica la respuesta
 				  if (!response.ok) {
 					console.error("Error al agregar comentario:", response.statusText);
+					const errorDetail = await response.text(); // Si el servidor devuelve un mensaje de error
+    				console.error("Detalles del error:", errorDetail);
 					return false;
 				  }
 			  
@@ -170,7 +173,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  return false;
 				}
 			  },
-			  
+
+						  
 
 			getComments: async (news_id) => {
 				try{

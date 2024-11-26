@@ -38,8 +38,8 @@
     word-wrap: break-word;
  }
 
- .title{
-    background-color: #00148d;
+ .title.comments{
+    background-color: #004bf1;
  }
 
  .text-light.d-flex.align-items-center.justify-content-between{
@@ -47,12 +47,20 @@
  }
 
  .modal-body-scrollable-bool.text-light{
-    background-image: linear-gradient(to bottom, #065bf0, #c1cfff);
+    background-image: linear-gradient(to bottom, #065bf0, #4e76ff);
     
  }
 
  .footer.text-light{
-    background-color: #c1cfff;
+    background-color: #4e76ff;
+ }
+
+ .me-3{
+   background-color: #00148d;
+ }
+
+ .form-control::placeholder {
+   color: white;
  }
  
  

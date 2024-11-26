@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import TapNewsLogo from '../../../../public/tapnewslogo.png';
+import TapNewsLogo from "../../../../public/tapnewslogo.png";
 import "../../styles/card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ShareFriend } from "./shareFriend";
@@ -17,14 +17,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
 
-const CardNew= () => {
+const CardNew = () => {
   const [description, setDescription] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [show2, setShow2] = useState(false); 
-  const [urlshare,setUrlShare] = useState("") 
+  const [show2, setShow2] = useState(false);
+  const [urlshare, setUrlShare] = useState("");
   const [currentCommentNews, setCurrentCommentNews] = useState(null);
   const { store, actions } = useContext(Context);
-  const [comment, setComment] = useState(""); 
+  const [comment, setComment] = useState("");
   const [comments, setComments] = useState({});
   const { handleUserLogout, user } = useAuth();
 
@@ -41,43 +41,48 @@ const CardNew= () => {
       if (!userId && user) {
         await handleUserLogout();
       }
-    }
+    };
     checkAndLogout();
   }, [user]);
 
   const likeStyle = (id) => {
-    return user_likes.includes(id) ? { color: "#FF0000" } : { color: "#FFFFFF" };
-  }
+    return user_likes.includes(id)
+      ? { color: "#FF0000" }
+      : { color: "#FFFFFF" };
+  };
 
   const bookmarkStyle = (id) => {
-    return user_favorites.includes(id) ? { color: "#0044CC" } : { color: "#FFFFFF" };
-  }
+    return user_favorites.includes(id)
+      ? { color: "#0044CC" }
+      : { color: "#FFFFFF" };
+  };
 
   useEffect(() => {
-    if (localStorage.getItem('user_id')) {
+    if (localStorage.getItem("user_id")) {
       actions.getUserLikes();
       actions.getFavouriteNews();
     }
   }, [userId]);
 
   useEffect(() => {
-      actions.getNews();
+    actions.getNews();
   }, []);
 
   const handleLike = (id) => {
-    console.log(id)
+    console.log(id);
     if (!user_likes.includes(id)) {
       actions.addLike(id);
     } else {
       actions.deleteLike(id);
     }
   };
-  const handleCloseShow2 = () => setShow2(false);  
+  const handleCloseShow2 = () => setShow2(false);
 
   const handleShowShow2 = (url) => {
-    setUrlShare(url)
-    setShow2(true);}    
-  
+    setUrlShare(url);
+    setShow2(true);
+  };
+
   const handleBookmark = (id) => {
     if (!user_favorites.includes(id)) {
       actions.addFavouriteNew({ uuid: id });
@@ -92,15 +97,15 @@ const CardNew= () => {
     // Obtener comentarios del backend si no están en el estado local
     if (!comments[news.uuid]) {
       try {
-          const fetchedComments = await actions.getComments(news.uuid);
-          setComments((prev) => ({
-              ...prev,
-              [news.uuid]: fetchedComments || [],
-          }));
+        const fetchedComments = await actions.getComments(news.uuid);
+        setComments((prev) => ({
+          ...prev,
+          [news.uuid]: fetchedComments || [],
+        }));
       } catch (error) {
-          console.error("Error al cargar comentarios:", error);
+        console.error("Error al cargar comentarios:", error);
       }
-  }
+    }
   };
 
   const handleCloseModal = () => {
@@ -109,40 +114,48 @@ const CardNew= () => {
   };
 
   const handleSendComment = async () => {
-    // Verificar si el comentario no está vacío
-    if (comment === "") return; // No enviar comentarios vacíos
-  
+    if (!comment) return; // No enviar comentarios vacíos
+
     const newsId = currentCommentNews.uuid;
     const userId = localStorage.getItem("user_id");
-  
-    console.log("Comentario enviado:", comment); // Verifica si el comentario está siendo recogido
-  
-    // Llama a la acción para enviar el comentario al backend.
+
+    console.log("Comentario enviado:", comment);
+
     const success = await actions.addComments(newsId, comment);
-  
+
     if (success) {
-      // Si el comentario se agrega correctamente, actualiza los comentarios localmente
-      setComments((prev) => {
-        console.log("Comentarios previos:", prev);
-        return {
-          ...prev,
-          [newsId]: [
-            ...(prev[newsId] || []),
-            { content: comment, user_id: userId }, // Agregar el comentario al estado
-          ],
-        };
-      });
-  
-      setComment(""); // Limpiar el campo de texto después de enviar el comentario
+        setComments((prev) => {
+            console.log("Comentarios previos para esta noticia:", prev[newsId]);
+
+            return {
+                ...prev,
+                [newsId]: [
+                    ...(Array.isArray(prev[newsId]) ? prev[newsId] : []),
+                    { content: comment, user_id: userId },
+                ],
+            };
+        });
+
+        setComment(""); // Limpiar el campo de texto
     } else {
-      console.error("No se pudo agregar el comentario.");
+        console.error("No se pudo agregar el comentario.");
     }
-  };
+};
+ 
   
-  
+
   if (!store.topnews || store.topnews.length === 0) {
     return (
-      <div style={{ position: 'absolute', top: '0', bottom: '0', right: '0', left: '0' }} className="loading">
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          bottom: "0",
+          right: "0",
+          left: "0",
+        }}
+        className="loading"
+      >
         <img className="logo-4" src={TapNewsLogo} alt="Loading..." />
       </div>
     );
@@ -150,23 +163,27 @@ const CardNew= () => {
 
   return (
     <>
-      <div className="timeline" style={{ marginBlockEnd: '10%' }}>
+      <div className="timeline" style={{ marginBlockEnd: "10%" }}>
         {store.topnews.map((singleNew, index) => (
           <Card
             className="Card-bg"
             key={index}
             style={{
               backgroundImage: `url(${singleNew.image_url})`,
-              width: '100%',
-              height: '55rem',
-              backgroundPosition: 'center',
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
+              width: "100%",
+              height: "55rem",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
             }}
           >
             <div
               className="actions d-flex flex-column"
-              style={{ background: description ? 'rgba(0, 43, 128, 1)' : 'rgba(0, 43, 128, 0.8)' }}
+              style={{
+                background: description
+                  ? "rgba(0, 43, 128, 1)"
+                  : "rgba(0, 43, 128, 0.8)",
+              }}
             >
               <FontAwesomeIcon
                 onClick={() => handleLike(singleNew.uuid)}
@@ -189,20 +206,36 @@ const CardNew= () => {
                 className="comment p-2"
                 onClick={() => handleCommentClick(singleNew)}
               />
-              <FontAwesomeIcon size="2xl" onClick={() => handleShowShow2(singleNew.url)} icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
+              <FontAwesomeIcon
+                size="2xl"
+                onClick={() => handleShowShow2(singleNew.url)}
+                icon={faShare}
+                style={{ color: "#FFFFFF" }}
+                className="share p-2"
+              />
             </div>
             <Card.Body
               style={{
-                backgroundColor: '#002B80',
-                marginTop: description ? '150%' : '170%',
-                mask:'linear-gradient( black 40%, transparent)',
+                backgroundColor: "#002B80",
+                marginTop: description ? "150%" : "170%",
+                mask: "linear-gradient( black 40%, transparent)",
               }}
               className="mycardbody"
             >
-              <Card.Title className="title" style={{color: ''}} onClick={visibility_description}>
+              <Card.Title
+                className="title"
+                style={{ color: "" }}
+                onClick={visibility_description}
+              >
                 {singleNew.title}
               </Card.Title>
-              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: ''}}>
+              <Card.Text
+                className="description"
+                style={{
+                  visibility: description ? "visible" : "hidden",
+                  color: "",
+                }}
+              >
                 {singleNew.description}
               </Card.Text>
             </Card.Body>
@@ -210,7 +243,9 @@ const CardNew= () => {
         ))}
 
         <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Title className="title"><h1 className="text-center text-light mt-2">Comentarios:</h1></Modal.Title>
+          <Modal.Title className="title comments">
+            <h1 className="text-center text-light mt-2">Comentarios:</h1>
+          </Modal.Title>
           <div
             style={{
               display: "flex",
@@ -219,10 +254,9 @@ const CardNew= () => {
               overflow: "hidden",
             }}
           >
-            
             <Button
               variant="secondary"
-              className="me-3 bg-primary"
+              className="me-3"
               onClick={handleCloseModal}
               style={{
                 position: "absolute",
@@ -240,7 +274,6 @@ const CardNew= () => {
                 flexShrink: 0,
               }}
             >
-              
               {currentCommentNews ? (
                 <div>
                   <h5>{currentCommentNews.title}</h5>
@@ -258,17 +291,21 @@ const CardNew= () => {
                 paddingRight: "2rem",
               }}
             >
-              <p className="pb-1"></p>
-              {currentCommentNews && (
-                <div className="comment container">
-                  {(comments[currentCommentNews.uuid] || []).map((comment, idx) => (
-                    <p key={idx} className="comment-item">
-                      {/* {comment} */}
-                      <strong>Usuario {comment.user_id}:</strong> {comment.content}
-                    </p>
-                  ))}
-                </div>
+              {comments[currentCommentNews?.uuid]?.length > 0 ? (
+                comments[currentCommentNews.uuid].map((comment, index) => (
+                  <div key={index} className="comment">
+                    <p>{comment.content}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No hay comentarios aún.</p>
               )}
+              {/* <p className="pb-1"></p> */}
+              {/* {currentCommentNews && (
+                <div className="comment container">
+                  
+                </div>
+              )} */}
             </Modal.Body>
             <Modal.Footer
               className="footer text-light"
@@ -285,7 +322,7 @@ const CardNew= () => {
                 }}
               >
                 <textarea
-                  className="form-control bg-info"
+                  className="form-control text-light bg-info"
                   placeholder="Escribe tu comentario..."
                   rows="3"
                   value={comment}
@@ -319,18 +356,18 @@ const CardNew= () => {
           <Modal.Header className="">
             <Modal.Title>Compartir noticia</Modal.Title>
           </Modal.Header>
-          <Modal.Body  className="scrollable">
-          <ShareFriend url={urlshare}></ShareFriend>
+          <Modal.Body className="scrollable">
+            <ShareFriend url={urlshare}></ShareFriend>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseShow2}>
-              Cerrar 
+              Cerrar
             </Button>
           </Modal.Footer>
         </Modal>
       </div>
     </>
   );
-}
+};
 
 export default CardNew;
