@@ -42,14 +42,14 @@ const CardNew = () => {
     actions.getNews()
   }, [store.categories])
 
-  useEffect(() => {
-    const checkAndLogout = async () => {
-      if (!userId && user) {
-        await handleUserLogout();
-      }
-    };
-    checkAndLogout();
-  }, [userId]);
+  // useEffect(() => {
+  //   const checkAndLogout = async () => {
+  //     if (!userId && user) {
+  //       await handleUserLogout();
+  //     }
+  //   };
+  //   checkAndLogout();
+  // }, [userId]);
 
   const likeStyle = (id) => {
     return user_likes.includes(id)
@@ -71,8 +71,6 @@ const CardNew = () => {
   useEffect(() => {
     actions.getNews();
   }, []);
-
-
 
   const handleLike = (id) => {
     if (!user_likes.includes(id)) {
@@ -99,73 +97,38 @@ const CardNew = () => {
 
   const handleCommentClick = async (news) => {
     setCurrentCommentNews(news);
-    handleGetComment(news.uuid);
-    console.log(comments)
     setShowModal(true);
     // Obtener comentarios del backend si no están en el estado local
-    if (!comments[news.uuid]) {
-      try {
-        const fetchedComments = await actions.getComments(news.uuid);
-        setComments((prev) => ({
-          ...prev,
-          [news.uuid]: fetchedComments || [],
-        }));
-      } catch (error) {
-        console.error("Error al cargar comentarios:", error);
-      }
-    }
+    actions.getComments(news.uuid);
+    
+      // try {
+      //   const fetchedComments = await actions.getComments(news.uuid);
+      //   setComments(fetchedComments);
+      // } catch (error) {
+      //   console.error("Error al cargar comentarios:", error);
+      // }
+    
   };
 
-  
+  useEffect(() => {
+    setComments(store.singleNewsComments);    
+  }, [store.singleNewsComments, actions.addComments])
+
 
   const handleCloseModal = () => {
     setShowModal(false);
     setCurrentCommentNews(null);
   };
 
-  const handleGetComment = async (news_Id) => {
-    try {
-      // Llama a la acción del contexto para obtener los comentarios del backend
-      const fetchedComments = await actions.getComments(news_Id);
-  
-      // Actualiza el estado local con los comentarios obtenidos
-      setComments((prev) => ({
-        ...prev,
-        [news_Id]: fetchedComments || [], // Si no hay comentarios, inicializa como un array vacío
-      }));
-    } catch (error) {
-      console.error("Error al cargar los comentarios:", error);
-    }
-  };
-  
 
   const handleSendComment = async () => {
     if (!comment) return; 
     const newsId = currentCommentNews.uuid;
     const userId = localStorage.getItem("user_id");
-    console.log("Comentario enviado:", comment);
-
     const success = await actions.addComments(newsId, comment);
-
-    if (success) {
-        setComments((prev) => {
-            console.log("Comentarios previos para esta noticia:", prev[newsId]);
-
-            return {
-                ...prev,
-                [newsId]: [
-                    ...(Array.isArray(prev[newsId]) ? prev[newsId] : []),
-                    
-                    { content: comment, user_id: userId },
-                ]
-            };
-        });
-
-        setComment(""); // Limpiar el campo de texto
-    } else {
-        console.error("No se pudo agregar el comentario.");
-    }
+    if(success) {setComment("")}; 
 };
+
   if (!store.topnews || store.topnews.length === 0) {
     return (
       <div
@@ -304,15 +267,13 @@ const CardNew = () => {
                 paddingRight: "2rem",
               }}
             >
-              {comments.length > 0 ? (
-                comments.map((comment, index) => (
-                  <div key={index} className="comment">
+              {
+                comments?.comments?.map((comment, index) => {
+                  return(<div key={index} className="comment">
                     <p>{comment.content}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No hay comentarios aún.</p>
-              )}
+                  </div>)}
+                )
+              }
             </Modal.Body>
             <Modal.Footer
               className="footer text-light"

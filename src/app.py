@@ -9,7 +9,8 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
-from api.models import db, User, Friendship, Profile, Like, SavedNews, News
+from api.models import db
+from datetime import timedelta
 
 # Environment configuration
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -38,6 +39,7 @@ db.init_app(app)
 
 # JWT configuration
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this to a more secure secret key
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 jwt = JWTManager(app)
 
 # Setup admin and commands
