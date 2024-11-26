@@ -19,14 +19,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../store/AuthContext";
 
-const CardNew= () => {
+const CardNew = () => {
   const [description, setDescription] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [show2, setShow2] = useState(false); 
-  const [urlshare,setUrlShare] = useState("") 
+  const [show2, setShow2] = useState(false);
+  const [urlshare, setUrlShare] = useState("")
   const [currentCommentNews, setCurrentCommentNews] = useState(null);
   const { store, actions } = useContext(Context);
-  const [comment, setComment] = useState(""); 
+  const [comment, setComment] = useState("");
   const [comments, setComments] = useState({});
   const { handleUserLogout, user } = useAuth();
 
@@ -37,6 +37,10 @@ const CardNew= () => {
   const userId = localStorage.getItem("user_id");
   const user_likes = store.likes;
   const user_favorites = store.favouriteNews.map((news) => news.news_id);
+
+  useEffect(() => {
+    actions.getNews()
+  }, [store.categories])
 
   useEffect(() => {
     const checkAndLogout = async () => {
@@ -63,7 +67,7 @@ const CardNew= () => {
   }, [userId]);
 
   useEffect(() => {
-      actions.getNews();
+    actions.getNews();
   }, []);
 
   const handleLike = (id) => {
@@ -74,12 +78,13 @@ const CardNew= () => {
     }
   };
 
-  const handleCloseShow2 = () => setShow2(false);  
+  const handleCloseShow2 = () => setShow2(false);
 
   const handleShowShow2 = (url) => {
     setUrlShare(url)
-    setShow2(true);}    
-  
+    setShow2(true);
+  }
+
   const handleBookmark = (id) => {
     if (!user_favorites.includes(id.uuid)) {
       actions.addFavouriteNew(id);
@@ -94,15 +99,15 @@ const CardNew= () => {
     // Obtener comentarios del backend si no están en el estado local
     if (!comments[news.uuid]) {
       try {
-          const fetchedComments = await actions.getComments(news.uuid);
-          setComments((prev) => ({
-              ...prev,
-              [news.uuid]: fetchedComments || [],
-          }));
+        const fetchedComments = await actions.getComments(news.uuid);
+        setComments((prev) => ({
+          ...prev,
+          [news.uuid]: fetchedComments || [],
+        }));
       } catch (error) {
-          console.error("Error al cargar comentarios:", error);
+        console.error("Error al cargar comentarios:", error);
       }
-  }
+    }
   };
 
   const handleCloseModal = () => {
@@ -113,15 +118,15 @@ const CardNew= () => {
   const handleSendComment = async () => {
     // Verificar si el comentario no está vacío
     if (comment === "") return; // No enviar comentarios vacíos
-  
+
     const newsId = currentCommentNews.uuid;
     const userId = localStorage.getItem("user_id");
-  
+
     console.log("Comentario enviado:", comment); // Verifica si el comentario está siendo recogido
-  
+
     // Llama a la acción para enviar el comentario al backend.
     const success = await actions.addComments(newsId, comment);
-  
+
     if (success) {
       // Si el comentario se agrega correctamente, actualiza los comentarios localmente
       setComments((prev) => {
@@ -134,14 +139,14 @@ const CardNew= () => {
           ],
         };
       });
-  
+
       setComment(""); // Limpiar el campo de texto después de enviar el comentario
     } else {
       console.error("No se pudo agregar el comentario.");
     }
   };
-  
-  
+
+
   if (!store.topnews || store.topnews.length === 0) {
     return (
       <div style={{ position: 'absolute', top: '0', bottom: '0', right: '0', left: '0' }} className="loading">
@@ -193,25 +198,25 @@ const CardNew= () => {
               />
               <FontAwesomeIcon size="2xl" onClick={() => handleShowShow2(singleNew.url)} icon={faShare} style={{ color: "#FFFFFF" }} className="share p-2" />
 
-              <FontAwesomeIcon icon={faFile} style={{color: "#ffffff",}}  size="2xl" className="open p-2" />
+              <FontAwesomeIcon icon={faFile} style={{ color: "#ffffff", }} size="2xl" className="open p-2" />
             </div>
             <Card.Body
               style={{
                 backgroundColor: '#002B80',
                 marginTop: description ? '140%' : '170%',
-                mask:'linear-gradient( black 40%, transparent)',
+                mask: 'linear-gradient( black 40%, transparent)',
               }}
               className="mycardbody"
             >
-              <Card.Title className="title" style={{color: ''}} onClick={visibility_description}>
+              <Card.Title className="title" style={{ color: '' }} onClick={visibility_description}>
                 {singleNew.title}
               </Card.Title>
               {(singleNew.similar || []).map((similar, index) => (
-                    <Link key={index} to={`/news/${similar.uuid}`}>
-                        <div className="similarnew">Noticia similar</div>
-                    </Link>
-                  ))} 
-              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: ''}}>
+                <Link key={index} to={`/news/${similar.uuid}`}>
+                  <div className="similarnew">Noticia similar</div>
+                </Link>
+              ))}
+              <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: '' }}>
                 {singleNew.description}
               </Card.Text>
             </Card.Body>
@@ -219,7 +224,7 @@ const CardNew= () => {
         ))}
 
         <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Title className="title comment"><h1 className="text-center text-light mt-2">Comentarios:</h1></Modal.Title>
+          <Modal.Title className="title comment"><h1 className="text-center text-light mt-2">Comentarios:</h1></Modal.Title>
           <div
             style={{
               display: "flex",
@@ -228,7 +233,7 @@ const CardNew= () => {
               overflow: "hidden",
             }}
           >
-            
+
             <Button
               variant="secondary"
               className="me-3 bg-primary"
@@ -249,7 +254,7 @@ const CardNew= () => {
                 flexShrink: 0,
               }}
             >
-              
+
               {currentCommentNews ? (
                 <div>
                   <h5>{currentCommentNews.title}</h5>
@@ -328,12 +333,12 @@ const CardNew= () => {
           <Modal.Header className="">
             <Modal.Title>Compartir noticia</Modal.Title>
           </Modal.Header>
-          <Modal.Body  className="scrollable">
-          <ShareFriend url={urlshare}></ShareFriend>
+          <Modal.Body className="scrollable">
+            <ShareFriend url={urlshare}></ShareFriend>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseShow2}>
-              Cerrar 
+              Cerrar
             </Button>
           </Modal.Footer>
         </Modal>
