@@ -15,19 +15,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			friends: [],
 			likes: [],
 			numberlikes: [],
-			news:[],
-			files:[],
-			topnews: [], 
+			news: [],
+			files: [],
+			topnews: [],
 			token: null,
 			users: [],
 			filteredUsers: [],
 			searchTerm: "",
 			pendingFriends: [],
 			incomingFriends: [],
+			incomingFriendsData: [],
+			activeSession: false,
 			allCategories: ['general', 'science', 'sports', 'business', 'health',
 				'entertainment', 'tech', 'politics', 'food', 'travel'],
 			categories: [],
-			incomingFriendsData: []
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -93,6 +94,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// Si todo está bien, guardamos el token y retornamos los datos
 					localStorage.setItem("jwt-token", data.token);
 					localStorage.setItem("user_id", data.user_id);
+					setStore({activeSession: true})
 
 					return data;
 				} catch (error) {
@@ -104,12 +106,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logout: () => {
 				localStorage.removeItem("jwt-token");
 				localStorage.removeItem("user_id");
-				setStore({ user: null, profile: null, friends: [] });
+				setStore({ user: null, profile: null, friends: [], activeSession: false });
 
 				console.log("Logout successful!");
 			},
 
-
+			activateSession: () => {
+				if(localStorage.getItem('user_id')){
+					setStore({activeSession: true})
+				}
+			},
 
 			addFavouriteNew: async (item) => {
 				const user_id = localStorage.getItem("user_id")
@@ -281,7 +287,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getNumberLike: async (news_id) => {
-				try{
+				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/likes`)
 					if (!resp.ok) {
 						throw new Error("Failed in likes account")
@@ -346,11 +352,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Datos de noticias:', data);
 
 					let allNews = [];
-					console.log("CategoriesAll:", store.categoriesAll);
-					console.log("Categories:", store.categories);
-					console.log("Is categories an array?", Array.isArray(store.categories));
-					console.log("Categories length:", store.categories.length);
-
 
 					if (Array.isArray(store.categories) && store.categories.length === 0) {
 						store.allCategories?.forEach(category => {
@@ -501,20 +502,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("Error trayendo amistades pendientes del usuario")
 					}
 					const data = await resp.json()
-					setStore({incomingFriends: data.incoming_friends})
+					setStore({ incomingFriends: data.incoming_friends })
 					const actions = getActions()
 					const allUsers = await actions.getAllUsers()
 					const allProfiles = await actions.getAllProfiles()
 					const incomingFriendsData = data.incoming_friends.map(friendId => {
 						const user = allUsers.find(u => u.id === friendId);
-						const profile = allProfiles.find(p => p.user_id === friendId);			
+						const profile = allProfiles.find(p => p.user_id === friendId);
 						return {
 							id: friendId,
 							username: user.username,
 							img_url: profile.img_url
 						};
 					});
-					setStore({ incomingFriendsData });				
+					setStore({ incomingFriendsData });
 				}
 				catch (error) {
 					console.log(error)
@@ -528,9 +529,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue existosa");
 					}
 					const data = await response.json()
-					setStore({listuser: data})
+					setStore({ listuser: data })
 					return data
-				}catch(error){
+				} catch (error) {
 					console.log("Not users found", error)
 				}
 			},
@@ -607,9 +608,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (error) {
 					console.log('Error al eliminar la amistad:', error);
-			}},
+				}
+			},
 
-			deleteFriendRequest: async(user_id, friend_id) => {
+			deleteFriendRequest: async (user_id, friend_id) => {
 				try {
 					const data = {
 						user_id: user_id,

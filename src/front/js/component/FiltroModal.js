@@ -21,6 +21,10 @@ const FiltroModal = ({ showModal, closeModal }) => {
         closeModal()
     }
 
+    const clearAll = () => {
+        setSelectedCategories([]);
+    };
+
     return (
         <Modal show={showModal} onHide={closeModal} animation={false}>
             <Modal.Header closeButton>
@@ -29,9 +33,10 @@ const FiltroModal = ({ showModal, closeModal }) => {
             <Modal.Body className="">
                 <ul>
                     {store.allCategories?.map((category) => (
-                        <li key={category}>
-                            <label>
+                        <li key={category} className="text-decoration-none">
+                            <label className="text-capitalize">
                                 <input
+                                    className="mx-2"
                                     type="checkbox"
                                     value={category}
                                     checked={selectedCategories.includes(category)}
@@ -44,6 +49,7 @@ const FiltroModal = ({ showModal, closeModal }) => {
                 </ul>
             </Modal.Body>
             <Modal.Footer>
+                <Button variant="danger" onClick={clearAll}>Limpiar Todo</Button>
                 <Button variant="secondary" onClick={closeModal}>Cerrar</Button>
                 <Button variant="primary" onClick={applyFilter}>Aplicar</Button>
             </Modal.Footer>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/navbar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,22 +7,24 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import TapNewsLogo from '../../../../public/tapnewslogo.png';
+import { Context } from "../store/appContext";
 import { Modal } from "react-bootstrap";
 import FiltroModal from "./FiltroModal";
 
+
 const NavbarBottom = () => {
-  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const [showModal, setShowModal] = useState(false)
+  const [userId, setUserId] = useState(false);
+  const { store, actions } = useContext(Context);
+   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      setUserId(localStorage.getItem("user_id"));
-    };
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, [localStorage]);
+    setUserId(store.activeSession);
+    console.log(store.activeSession)
+  }, [store.activeSession]);
+
+  useEffect(() => {
+    actions.activateSession()
+  }, [])
 
   return (
     <Navbar className="navbar-fixed-bottom">
