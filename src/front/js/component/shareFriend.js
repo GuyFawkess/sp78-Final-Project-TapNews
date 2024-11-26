@@ -10,7 +10,6 @@ import TapNewsLogo from '../../../../public/tapnewslogo.png';
 const ShareFriend = ({url}) => {
   const { store, actions } = useContext(Context);
   const userId = localStorage.getItem("user_id");
-  console.log("URL en ShareFriend:", url);
 
   useEffect(() => {
     actions.getFriends(userId);

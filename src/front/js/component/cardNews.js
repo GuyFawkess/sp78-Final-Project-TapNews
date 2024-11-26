@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
@@ -43,7 +44,7 @@ const CardNew= () => {
       }
     }
     checkAndLogout();
-  }, [user]);
+  }, [userId]);
 
   const likeStyle = (id) => {
     return user_likes.includes(id) ? { color: "#FF0000" } : { color: "#FFFFFF" };
@@ -65,7 +66,6 @@ const CardNew= () => {
   }, []);
 
   const handleLike = (id) => {
-    console.log(id)
     if (!user_likes.includes(id)) {
       actions.addLike(id);
     } else {
@@ -194,7 +194,7 @@ const CardNew= () => {
             <Card.Body
               style={{
                 backgroundColor: '#002B80',
-                marginTop: description ? '150%' : '170%',
+                marginTop: description ? '140%' : '170%',
                 mask:'linear-gradient( black 40%, transparent)',
               }}
               className="mycardbody"
@@ -202,6 +202,11 @@ const CardNew= () => {
               <Card.Title className="title" style={{color: ''}} onClick={visibility_description}>
                 {singleNew.title}
               </Card.Title>
+              {(singleNew.similar || []).map((similar, index) => (
+                    <Link key={index} to={`/news/${similar.uuid}`}>
+                        <div className="similarnew">Noticia similar</div>
+                    </Link>
+                  ))} 
               <Card.Text className="description" style={{ visibility: description ? 'visible' : 'hidden', color: ''}}>
                 {singleNew.description}
               </Card.Text>

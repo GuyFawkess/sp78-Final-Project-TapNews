@@ -1,12 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Modal, Card, ListGroup, Form } from "react-bootstrap";
+import { Button, Modal, Card, ListGroup, Form, Row, Col } from "react-bootstrap";
 import "../../styles/profilecard.css";
 import TapNewsLogo from '../../../../public/tapnewslogo.png';
 import { useAuth } from '../store/AuthContext.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleExclamation, faCircleUser, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { Storage, ID } from "appwrite";
 import client, { PROYECT_ID, STORAGE_ID } from '../../../../src/appwriteConfig.js';
 
@@ -30,6 +30,7 @@ const ProfileCard = () => {
   const openAddFriendModal = () => setShowModal3(true);  
   const closeAddFriendModal = () => setShowModal3(false);  
 
+  
   useEffect(() => {
     if (userId) {
       actions.getProfile(userId);
@@ -39,7 +40,8 @@ const ProfileCard = () => {
     } else {
       navigate("/login");
     }
-  }, [userId, navigate]);
+  }, [userId, navigate, store.incomingFriends]);
+
 
  
   useEffect(() => {
@@ -97,6 +99,31 @@ const ProfileCard = () => {
 
   const incomingStyle = () => {
     return store.incomingFriends.length > 0 ? "primary" : "secondary"
+  }
+
+  const incomingCards = () => {
+    return store.incomingFriendsData.map((friend, index) => {
+      const key = `${friend.id}-${index}`
+      return (
+        <Card key={key} className="friendcard" style={{ width: '100%', height: '10rem' }}>
+          <Row className="row d-flex justify-content-center pt-4">
+            <Col className="col-4">
+              <Card.Img className="friendimage" variant="top" src={friend.img_url || 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg'} />
+            </Col>
+            <Col className="col-4">
+              <Card.Title className="frienduser">{friend.username}</Card.Title>
+            </Col>
+            <Col className="col-3 d-flex flex-column">
+              <Link className="mx-auto" to={`/search/${friend.id}`}>
+                <FontAwesomeIcon className="pb-2" icon={faCircleUser} size="2xl" style={{ color: "#ffffff" }} />
+              </Link>
+              <FontAwesomeIcon className="pb-2" onClick={() => {actions.addFriend(userId, friend.id)}}  icon={faCircleCheck} size="2xl" style={{ color: "#ffffff" }} />
+              <FontAwesomeIcon className="pb-2" onClick={() => actions.deleteFriendRequest(friend.id, userId)} icon={faCircleXmark} size="2xl" style={{ color: "#ffffff" }} />
+            </Col>
+          </Row>
+        </Card>
+      );
+    })
   }
 
   return (
@@ -162,7 +189,14 @@ const ProfileCard = () => {
           <Modal.Title className="title-add">Solicitudes de amistad</Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-add">
-          {store.incomingFriends.length > 0 ? `Los siguientes usuarios quieren agregarte como amigo: ${store.incomingFriends}` : "No tienes ninguna solicitud pendiente"}
+        {store.incomingFriends.length > 0 ? (
+          <>
+            <p>Los siguientes usuarios quieren agregarte como amigo:</p>
+            {incomingCards()}
+          </>
+          ) 
+          : "No tienes ninguna solicitud pendiente"
+        }
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={closeAddFriendModal}>Cerrar</Button>

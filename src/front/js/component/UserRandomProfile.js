@@ -46,7 +46,7 @@ const UserRandomProfile = () => {
       setIsFriend(false);
       setIsPending(false);
     }
-  }, [store.friends, store.pendingFriends, random_id, handleAddFriend]);
+  }, [store.friends, store.pendingFriends, random_id, handleAddFriend, handleDeleteRequest]);
 
   const user = store.randomUser
   const profile = store.randomProfile
@@ -76,6 +76,18 @@ const UserRandomProfile = () => {
     }
   };
 
+  const handleDeleteRequest = async () => {
+    try{
+      await actions.deleteFriendRequest(userId, random_id);
+      await actions.getRandomFriends(random_id);
+      await actions.getUserPendingFriends(userId);
+      await actions.getFriends(userId)
+    }
+    catch (err) {
+      setError("Hubo un error al añadir el amigo.");
+    }
+  }
+
   return (
     <>
       <Card style={{ width: '100%', backgroundColor: '#0044CC' }}>
@@ -99,15 +111,19 @@ const UserRandomProfile = () => {
             >
               Añadir amigo
             </Button>
-          ) : (
-            <Button 
+          ) : 
+              isPending ? (<Button 
+              variant="primary" 
+              className="w-100"
+              onClick={handleDeleteRequest}
+            >
+              Solicitud pendiente (cancelar)
+            </Button>) : (<Button 
               variant="secondary" 
               className="w-100" 
               disabled
-            >
-              {isPending ? "Solicitud pendiente" : "Ya sois amigos"}
-            </Button>
-          )}
+            >Ya sois amigos</Button>)
+          }
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroup.Item className="text-center">Amistades - {friends.length}</ListGroup.Item>
