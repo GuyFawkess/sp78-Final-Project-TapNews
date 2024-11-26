@@ -22,7 +22,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			filteredUsers: [],
 			searchTerm: "",
 			pendingFriends: [],
-			incomingFriends: []
+			incomingFriends: [],
+			incomingFriendsData: []
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -113,7 +114,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const news_id = item.uuid
 				try {
-					console.log(item.image_url)
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/saved_news`, {
 						method: 'POST',
 						headers: {
@@ -465,10 +465,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json()
 					setStore({incomingFriends: data.incoming_friends})
+					const actions = getActions()
+					const allUsers = await actions.getAllUsers()
+					const allProfiles = await actions.getAllProfiles()
+					const incomingFriendsData = data.incoming_friends.map(friendId => {
+						const user = allUsers.find(u => u.id === friendId);
+						const profile = allProfiles.find(p => p.user_id === friendId);			
+						return {
+							id: friendId,
+							username: user.username,
+							img_url: profile.img_url
+						};
+					});
+					setStore({ incomingFriendsData });					
 				}
 				catch(error) {
 					console.log(error)
-				}
+				};
 			},
 
 			getAllUsers: async () => {
@@ -479,6 +492,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await response.json()
 					setStore({listuser: data})
+					return data
 				}catch(error){
 					console.log("Not users found", error)
 				}
@@ -512,6 +526,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await response.json()
 					setStore({ listprofile: data })
+					return data
 				} catch (error) {
 					console.log("Not users found", error)
 				}
@@ -534,10 +549,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Error al eliminar la amistad');
 					}
-					const result = await response.json();
-					console.log('Resultado:', result);
 				} catch (error) {
 					console.log('Error al eliminar la amistad:', error);
+				}
+				try {
+					const dataReverse = {
+						user_id: friendId,
+						friend_id: userId
+					};
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(dataReverse)
+					});
+
+					if (!resp.ok) {
+						throw new Error('Error al eliminar la amistad');
+					}
+				} catch (error) {
+					console.log('Error al eliminar la amistad:', error);
+			}},
+
+			deleteFriendRequest: async(user_id, friend_id) => {
+				try {
+					const data = {
+						user_id: user_id,
+						friend_id: friend_id
+					};
+					const response = await fetch(`${process.env.BACKEND_URL}/api/friendship`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(data)
+					});
+
+					if (!response.ok) {
+						throw new Error('Error al eliminar la solicitud');
+					}
+				} catch (error) {
+					console.log('Error al eliminar la solicitud:', error);
 				}
 			},
 

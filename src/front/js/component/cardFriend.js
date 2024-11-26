@@ -24,8 +24,7 @@ const FriendCard = () => {
 
   useEffect(() => {
     actions.getFriends(userId);
-    console.log(store.friends)
-  }, [userId]);
+  }, [userId, store.friends]);
 
 
   useEffect(() => {
@@ -90,6 +89,7 @@ const FriendCard = () => {
           </Button>
           <Button className="delete" onClick={() => {
             actions.deleteFriend(userId, selectedFriendId); 
+            actions.getFriends(userId)
             handleClose();
           }}>
             Eliminar definitivamente

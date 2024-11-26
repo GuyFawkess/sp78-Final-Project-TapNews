@@ -43,7 +43,7 @@ const CardNew= () => {
       }
     }
     checkAndLogout();
-  }, [user]);
+  }, [userId]);
 
   const likeStyle = (id) => {
     return user_likes.includes(id) ? { color: "#FF0000" } : { color: "#FFFFFF" };
@@ -65,7 +65,6 @@ const CardNew= () => {
   }, []);
 
   const handleLike = (id) => {
-    console.log(id)
     if (!user_likes.includes(id)) {
       actions.addLike(id);
     } else {
