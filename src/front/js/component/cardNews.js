@@ -69,7 +69,7 @@ const CardNew = () => {
       actions.getFavouriteNews();
     }
   }, [userId]);
-
+console.log(comments)
   useEffect(() => {
     actions.getNews();
   }, []);
@@ -298,14 +298,33 @@ const CardNew = () => {
               }}
             >
               {comments?.comments?.map((comment, index) => (
-                <div key={index} className="comment mb-3">
-                  <p className="text-light">
-                    <strong>{comment.username || "Anónimo"}</strong> -{" "}
-                    <small>
-                      {new Date(comment.created_at).toLocaleString()}
-                    </small>
-                  </p>
-                  <p>{comment.content}</p>
+                <div
+                  key={index}
+                  className="comment mb-3 d-flex align-items-start"
+                >
+                  {/* Imagen del usuario */}
+                  <img
+                    src={comment.img_url || "/default-avatar.png"} // Ruta predeterminada si no hay imagen
+                    alt={`${comment.username || "Usuario"} avatar`}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      marginRight: "10px",
+                    }}
+                  />
+
+                  {/* Contenido del comentario */}
+                  <div>
+                    <p className="text-light mb-1">
+                      <strong>{comment.username || "Anónimo"}</strong> -{" "}
+                      <small>
+                        {new Date(comment.created_at).toLocaleString()}
+                      </small>
+                    </p>
+                    <p>{comment.content}</p>
+                  </div>
                 </div>
               ))}
             </Modal.Body>
