@@ -24,7 +24,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			searchTerm: "",
 			pendingFriends: [],
 			incomingFriends: [],
-			incomingFriendsData: []
+			incomingFriendsData: [],
+			activeSession: false
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -90,6 +91,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// Si todo está bien, guardamos el token y retornamos los datos
 					localStorage.setItem("jwt-token", data.token);
 					localStorage.setItem("user_id", data.user_id);
+					setStore({activeSession: true})
 
 					return data;
 				} catch (error) {
@@ -101,12 +103,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logout: () => {
 				localStorage.removeItem("jwt-token");
 				localStorage.removeItem("user_id");
-				setStore({ user: null, profile: null, friends: [] });
+				setStore({ user: null, profile: null, friends: [], activeSession: false });
 
 				console.log("Logout successful!");
 			},
 
-			
+			activateSession: () => {
+				if(localStorage.getItem('user_id')){
+					setStore({activeSession: true})
+				}
+			},
 
 			addFavouriteNew: async (item) => {
 				const user_id = localStorage.getItem("user_id")
