@@ -18,11 +18,8 @@ const Chat = () => {
 
     useEffect(() => {
         if (location.state && location.state.url) {
-          console.log("URL recibida en el chat:", location.state.url); 
           setMessageBody(location.state.url); 
-        } else {
-          console.log("No se recibió URL en el state");
-        }
+        } 
       }, [location]); 
 
     useEffect(() => {
@@ -179,13 +176,13 @@ const Chat = () => {
                         <textarea
                             required
                             maxLength={1000}
-                            placeholder="Type your message here..."
+                            placeholder="Escribe aquí tu mensaje..."
                             onChange={(e) => { setMessageBody(e.target.value) }}
                             value={messageBody}
                         />
                     </div>
                     <div className="send-btn--wrapper">
-                        <button className="btnchat btn-secondary" type="submit">Send</button>
+                        <button className="btnchat btn-secondary" type="submit">Enviar</button>
                     </div>
                 </form>
             </div>

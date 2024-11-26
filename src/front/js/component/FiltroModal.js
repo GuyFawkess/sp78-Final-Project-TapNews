@@ -25,6 +25,8 @@ const FiltroModal = ({ showModal, closeModal }) => {
         setSelectedCategories([]);
     };
 
+    const labels = ['General', 'Ciencia', 'Deportes', 'Economía', 'Salud', 'Ocio', 'Tecnología', 'Política', 'Alimentación', 'Turismo']
+
     return (
         <Modal show={showModal} onHide={closeModal} animation={false}>
             <Modal.Header closeButton style={{ backgroundColor: '#0079FF' }}>
@@ -32,7 +34,7 @@ const FiltroModal = ({ showModal, closeModal }) => {
             </Modal.Header>
             <Modal.Body style={{ backgroundColor: '#008AF3' }}>
                 <ul>
-                    {store.allCategories?.map((category) => (
+                    {store.allCategories?.map((category, index) => (
                         <li key={category} className="text-decoration-none text-white">
                             <label className="text-capitalize">
                                 <input
@@ -42,7 +44,7 @@ const FiltroModal = ({ showModal, closeModal }) => {
                                     checked={selectedCategories.includes(category)}
                                     onChange={() => handleCheckboxChange(category)}
                                 />
-                                {category}
+                                {labels[index]}
                             </label>
                         </li>
                     ))}

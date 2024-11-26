@@ -19,7 +19,6 @@ const NavbarBottom = () => {
 
   useEffect(() => {
     setUserId(store.activeSession);
-    console.log(store.activeSession)
   }, [store.activeSession]);
 
   useEffect(() => {
