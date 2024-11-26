@@ -29,6 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			allCategories: ['general', 'science', 'sports', 'business', 'health',
 				'entertainment', 'tech', 'politics', 'food', 'travel'],
 			categories: [],
+			singleNewsComments: []
 		},
 		actions: {
 			signup: async (username, email, password) => {
@@ -152,37 +153,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 			addComments: async (news_id, content) => {
 				const user_id = localStorage.getItem("user_id"); // Asegúrate de que el user_id esté aquí
 				try {
-					// Verifica si el user_id y content están correctamente definidos
-					console.log('Enviando comentario:', { user_id, news_id, content });
-
-					const response = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`, {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({
-							"user_id": user_id,
-							"content": content,
-						}),
-					});
-
-					// Verifica la respuesta
-					if (!response.ok) {
-						console.error("Error al agregar comentario:", response.statusText);
-						return false;
-					}
-
-					// Si la solicitud es exitosa, loguea la respuesta
-					const responseData = await response.json();
-					console.log('Respuesta del backend:', responseData);
-
-					return true;
+				  // Verifica si el user_id y content están correctamente definidos
+			  
+				  const response = await fetch(`${process.env.BACKEND_URL}/api/news/${news_id}/comments`, {
+					method: "POST",
+					headers: {
+					  "Content-Type": "application/json",
+					  "Authorization": `Bearer ${localStorage.getItem("token")}`,
+					},
+					body: JSON.stringify({
+					  "user_id": user_id,
+					  "content": content,
+					}),
+				  });
+			  
+				  // Verifica la respuesta
+				  if (!response.ok) {
+					console.error("Error al agregar comentario:", response.statusText);
+					const errorDetail = await response.text(); // Si el servidor devuelve un mensaje de error
+    				console.error("Detalles del error:", errorDetail);
+					return false;
+				  }
+			  
+				  // Si la solicitud es exitosa, loguea la respuesta
+				  const responseData = await response.json();
+				  getActions().getComments(news_id)
+			  
+				  return true;
 				} catch (error) {
 					console.error("Error en la solicitud de agregar comentario:", error);
 					return false;
 				}
-			},
-
+			  },
 
 			getComments: async (news_id) => {
 				try {
@@ -191,6 +193,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("Failed to access comments")
 					}
 					const data = await resp.json()
+					setStore({singleNewsComments: data})
 					return data
 				}
 				catch (error) {
@@ -341,7 +344,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getNews: async () => {
 				const store = getStore();
-				console.log("CategoriesAll:", store.categoriesAll);
+				//console.log("CategoriesAll:", store.categoriesAll);
 
 				try {
 					const response = await fetch(`${process.env.DOMAIN_API}/headlines?locale=es&language=es&api_token=${process.env.API_TOKEN}`);
@@ -349,7 +352,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("La respuesta no fue exitosa");
 					}
 					const data = await response.json();
-					console.log('Datos de noticias:', data);
+					//console.log('Datos de noticias:', data);
 
 					let allNews = [];
 
@@ -367,7 +370,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 					}
 					setStore({ topnews: allNews });
-					console.log('Nuevo estado de topnews:', allNews);
+					//console.log('Nuevo estado de topnews:', allNews);
 				} catch (error) {
 					console.log("Error al cargar noticias", error);
 				}
@@ -375,7 +378,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setCategories: (categories) => {
 				setStore({ categories });
-				console.log("categories updated:", categories)
+				//console.log("categories updated:", categories)
 			},
 			getProfile: async (profile_id) => {
 				try {
@@ -425,7 +428,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						profile: updatedData,
 					});
 
-					console.log("Perfil actualizado con éxito:", updatedData);
+					//console.log("Perfil actualizado con éxito:", updatedData);
 				} catch (error) {
 					console.error("Error al modificar el perfil:", error);
 				}

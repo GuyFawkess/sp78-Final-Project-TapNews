@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import TapNewsLogo from '../../../../public/tapnewslogo.png';
+import TapNewsLogo from "../../../../public/tapnewslogo.png";
 import "../../styles/card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ShareFriend } from "./shareFriend";
@@ -23,7 +23,7 @@ const CardNew = () => {
   const [description, setDescription] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [show2, setShow2] = useState(false);
-  const [urlshare, setUrlShare] = useState("")
+  const [urlshare, setUrlShare] = useState("");
   const [currentCommentNews, setCurrentCommentNews] = useState(null);
   const { store, actions } = useContext(Context);
   const [comment, setComment] = useState("");
@@ -42,25 +42,27 @@ const CardNew = () => {
     actions.getNews()
   }, [store.categories])
 
-  useEffect(() => {
-    const checkAndLogout = async () => {
-      if (!userId && user) {
-        await handleUserLogout();
-      }
-    }
-    checkAndLogout();
-  }, [userId]);
+  // useEffect(() => {
+  //   const checkAndLogout = async () => {
+  //     if (!userId && user) {
+  //       await handleUserLogout();
+  //     }
+  //   };
+  //   checkAndLogout();
+  // }, [userId]);
 
   const likeStyle = (id) => {
-    return user_likes.includes(id) ? { color: "#FF0000" } : { color: "#FFFFFF" };
-  }
+    return user_likes.includes(id)
+      ? { color: "#FF0000" }
+      : { color: "#FFFFFF" };
+  };
 
   const bookmarkStyle = (id) => {
     return user_favorites.includes(id) ? { color: "#69FBD0" } : { color: "#FFFFFF" };
   }
 
   useEffect(() => {
-    if (localStorage.getItem('user_id')) {
+    if (localStorage.getItem("user_id")) {
       actions.getUserLikes();
       actions.getFavouriteNews();
     }
@@ -69,8 +71,6 @@ const CardNew = () => {
   useEffect(() => {
     actions.getNews();
   }, []);
-
-
 
   const handleLike = (id) => {
     if (!user_likes.includes(id)) {
@@ -99,55 +99,35 @@ const CardNew = () => {
     setCurrentCommentNews(news);
     setShowModal(true);
     // Obtener comentarios del backend si no están en el estado local
-    if (!comments[news.uuid]) {
-      try {
-        const fetchedComments = await actions.getComments(news.uuid);
-        setComments((prev) => ({
-          ...prev,
-          [news.uuid]: fetchedComments || [],
-        }));
-      } catch (error) {
-        console.error("Error al cargar comentarios:", error);
-      }
-    }
+    actions.getComments(news.uuid);
+    
+      // try {
+      //   const fetchedComments = await actions.getComments(news.uuid);
+      //   setComments(fetchedComments);
+      // } catch (error) {
+      //   console.error("Error al cargar comentarios:", error);
+      // }
+    
   };
+
+  useEffect(() => {
+    setComments(store.singleNewsComments);    
+  }, [store.singleNewsComments, actions.addComments])
+
 
   const handleCloseModal = () => {
     setShowModal(false);
     setCurrentCommentNews(null);
   };
 
-  const handleSendComment = async () => {
-    // Verificar si el comentario no está vacío
-    if (comment === "") return; // No enviar comentarios vacíos
 
+  const handleSendComment = async () => {
+    if (!comment) return; 
     const newsId = currentCommentNews.uuid;
     const userId = localStorage.getItem("user_id");
-
-    console.log("Comentario enviado:", comment); // Verifica si el comentario está siendo recogido
-
-    // Llama a la acción para enviar el comentario al backend.
     const success = await actions.addComments(newsId, comment);
-
-    if (success) {
-      // Si el comentario se agrega correctamente, actualiza los comentarios localmente
-      setComments((prev) => {
-        console.log("Comentarios previos:", prev);
-        return {
-          ...prev,
-          [newsId]: [
-            ...(prev[newsId] || []),
-            { content: comment, user_id: userId }, // Agregar el comentario al estado
-          ],
-        };
-      });
-
-      setComment(""); // Limpiar el campo de texto después de enviar el comentario
-    } else {
-      console.error("No se pudo agregar el comentario.");
-    }
-  };
-
+    if(success) {setComment("")}; 
+};
 
   if (!store.topnews || store.topnews.length === 0) {
     return (
@@ -159,23 +139,27 @@ const CardNew = () => {
 
   return (
     <>
-      <div className="timeline" style={{ marginBlockEnd: '10%' }}>
+      <div className="timeline" style={{ marginBlockEnd: "10%" }}>
         {store.topnews.map((singleNew, index) => (
           <Card
             className="Card-bg"
             key={index}
             style={{
               backgroundImage: `url(${singleNew.image_url})`,
-              width: '100%',
-              height: '55rem',
-              backgroundPosition: 'center',
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
+              width: "100%",
+              height: "55rem",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
             }}
           >
             <div
               className="actions d-flex flex-column"
-              style={{ background: description ? 'rgba(0, 43, 128, 1)' : 'rgba(0, 43, 128, 0.8)' }}
+              style={{
+                background: description
+                  ? "rgba(0, 43, 128, 1)"
+                  : "rgba(0, 43, 128, 0.8)",
+              }}
             >
               <FontAwesomeIcon
                 onClick={() => handleLike(singleNew.uuid)}
@@ -228,7 +212,9 @@ const CardNew = () => {
         ))}
 
         <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Title className="title comment"><h1 className="text-center text-light mt-2">Comentarios:</h1></Modal.Title>
+          <Modal.Title className="title comments">
+            <h1 className="text-center text-light mt-2">Comentarios:</h1>
+          </Modal.Title>
           <div
             style={{
               display: "flex",
@@ -237,10 +223,9 @@ const CardNew = () => {
               overflow: "hidden",
             }}
           >
-
             <Button
               variant="secondary"
-              className="me-3 bg-primary"
+              className="me-3"
               onClick={handleCloseModal}
               style={{
                 position: "absolute",
@@ -258,7 +243,6 @@ const CardNew = () => {
                 flexShrink: 0,
               }}
             >
-
               {currentCommentNews ? (
                 <div>
                   <h5>{currentCommentNews.title}</h5>
@@ -276,17 +260,13 @@ const CardNew = () => {
                 paddingRight: "2rem",
               }}
             >
-              <p className="pb-1"></p>
-              {currentCommentNews && (
-                <div className="comment container">
-                  {(comments[currentCommentNews.uuid] || []).map((comment, idx) => (
-                    <p key={idx} className="comment-item">
-                      {/* {comment} */}
-                      <strong>Usuario {comment.user_id}:</strong> {comment.content}
-                    </p>
-                  ))}
-                </div>
-              )}
+              {
+                comments?.comments?.map((comment, index) => {
+                  return(<div key={index} className="comment">
+                    <p>{comment.content}</p>
+                  </div>)}
+                )
+              }
             </Modal.Body>
             <Modal.Footer
               className="footer text-light"
@@ -303,7 +283,7 @@ const CardNew = () => {
                 }}
               >
                 <textarea
-                  className="form-control bg-info"
+                  className="form-control text-light bg-info"
                   placeholder="Escribe tu comentario..."
                   rows="3"
                   value={comment}
@@ -349,6 +329,6 @@ const CardNew = () => {
       </div>
     </>
   );
-}
+};
 
 export default CardNew;

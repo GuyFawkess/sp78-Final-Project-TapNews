@@ -14,9 +14,10 @@ export const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        getUserOnLoad();
+        getUserOnLoad();//AQUI SE CHEQUEA SI YA HAY UNA SESION INICIADA
     }, []);
     const getUserOnLoad = async () => {
+        setLoading(true)
         try {
             const session = await account.getSession("current") //check if session existe
             console.log("Session found: ", session)
