@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import { Context } from "../store/appContext";
-
+import "../../styles/search.css";
 export const Search = () => {
   const { store, actions } = useContext(Context);
   const [filteredUsersWithProfiles, setFilteredUsersWithProfiles] = useState([]);
@@ -85,15 +85,14 @@ export const Search = () => {
           </button>
         </div>
 
-        {/* Mostrar los resultados debajo del input */}
         <div className="user-list text-light mt-5">
           {filteredUsersWithProfiles && filteredUsersWithProfiles.length > 0 ? (
             <div className="d-flex flex-column align-items-start gap-2">
               {filteredUsersWithProfiles.map((user) => (
                 <button
-                  key={user.id} // Asegúrate de que el 'id' sea único y esté disponible
+                  key={user.id} 
                   className="fs-1"
-                  onClick={() => handleUserClick(user.id)} // Redirige al perfil del usuario
+                  onClick={() => handleUserClick(user.id)} 
                   style={{
                     backgroundColor: "#00148D",
                     height: "5rem", // Un azul bonito
@@ -103,8 +102,8 @@ export const Search = () => {
                     textAlign: "left",
                     width: "100%",
                     display: "flex",
-                    alignItems: "center",  // Alinea el texto y la imagen de perfil
-                    gap: "10px", // Espacio entre la imagen y el nombre
+                    alignItems: "center",  
+                    gap: "10px", 
                   }}
                 >
                   {/* Imagen de perfil del usuario */}

@@ -283,6 +283,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const store = getStore()
 					setStore({ likes: [...store.likes, news_id] })
+					getActions().getNumberLike(news_id)
 				}
 				catch (error) {
 					console.log(error)
@@ -322,6 +323,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const store = getStore()
 					setStore({ likes: store.likes.filter((id) => id !== news_id) })
+					getActions().getNumberLike(news_id)
 				}
 				catch (error) {
 					console.log(error)

@@ -69,7 +69,6 @@ const CardNew = () => {
       actions.getFavouriteNews();
     }
   }, [userId]);
-console.log(comments)
   useEffect(() => {
     actions.getNews();
   }, []);
@@ -123,7 +122,6 @@ console.log(comments)
   const handleSendComment = async () => {
     if (!comment) return;
     const newsId = currentCommentNews.uuid;
-    const userId = localStorage.getItem("user_id");
     const success = await actions.addComments(newsId, comment);
     if (success) {
       setComment("");
@@ -344,7 +342,7 @@ console.log(comments)
               >
                 <textarea
 
-                  className="form-control2 text-light bg-info"
+                  className="form-control2 text-light"
                   placeholder="Escribe tu comentario..."
                   rows="3"
                   value={comment}
