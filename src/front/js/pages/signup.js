@@ -21,7 +21,7 @@ export const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  
   const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   // Function to validate credentials
@@ -125,6 +125,7 @@ export const SignUp = () => {
                     onChange={handleInputChange}
                   />
                   <FontAwesomeIcon
+                  className="eye mx-2"
                     icon={showPassword ? faEyeSlash : faEye}
                     size="xl"
                     style={{ color: "#0044CC", cursor: "pointer" }}
@@ -145,6 +146,7 @@ export const SignUp = () => {
                     onChange={handleInputChange}
                   />
                   <FontAwesomeIcon
+                    className="eye mx-2"
                     icon={showConfirmPassword ? faEyeSlash : faEye}
                     size="xl"
                     style={{ color: "#0044CC", cursor: "pointer" }}
