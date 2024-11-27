@@ -304,7 +304,7 @@ console.log(comments)
                 >
                   {/* Imagen del usuario */}
                   <img
-                    src={comment.img_url || "/default-avatar.png"} // Ruta predeterminada si no hay imagen
+                    src={comment.img_url || "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg"} // Ruta predeterminada si no hay imagen
                     alt={`${comment.username || "Usuario"} avatar`}
                     style={{
                       width: "40px",
