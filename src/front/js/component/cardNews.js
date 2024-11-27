@@ -343,7 +343,7 @@ console.log(comments)
                 }}
               >
                 <textarea
-                  className="form-control text-light bg-info"
+                  className="form-control text-light"
                   placeholder="Escribe tu comentario..."
                   rows="3"
                   value={comment}
@@ -352,6 +352,7 @@ console.log(comments)
                     width: "100%",
                     paddingRight: "4rem",
                     boxSizing: "border-box",
+                    background: "#0044cc"
                   }}
                 ></textarea>
 
