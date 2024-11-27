@@ -90,6 +90,7 @@ export const LogIn = () => {
                     onChange={handleInputChange}
                   />
                   <FontAwesomeIcon 
+                  className="eye mx-2"
                     icon={showPassword ? faEyeSlash : faEye} 
                     size="xl"
                     style={{ color: "#0044CC", cursor: "pointer" }}

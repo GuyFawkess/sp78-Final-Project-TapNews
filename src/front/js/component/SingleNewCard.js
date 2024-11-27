@@ -112,7 +112,7 @@ const SingleNew = () => {
         <Modal.Body className="text-new">Para acceder al texto completo de la noticia deberás salir de la aplicación. ¿Seguro que quieres completar esta acción?</Modal.Body>
         <Modal.Footer>
           <Button className="close" onClick={closeModal}>Cerrar</Button>
-          <Link to={store.news.url}><Button className="visitnew" onClick={closeModal}>Visitar medio</Button></Link>
+          <Link target="_blank" to={store.news.url}><Button className="visitnew" onClick={closeModal}>Visitar medio</Button></Link>
         </Modal.Footer>
       </Modal>
 
