@@ -31,10 +31,10 @@ const FiltroModal = ({ showModal, closeModal }) => {
 
     return (
         <Modal show={showModal} onHide={closeModal} animation={false}>
-            <Modal.Header closeButton style={{ backgroundColor: '#0079FF' }}>
+            <Modal.Header closeButton style={{ backgroundColor: '#0044CC' }}>
                 <Modal.Title className="text-white">Filtrar Noticias</Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{ backgroundColor: '#008AF3' }}>
+            <Modal.Body style={{background: "linear-gradient(to bottom, #0021A3, #065BF0)", }}>
                 <div className="d-flex flex-wrap">
                     {store.allCategories?.map((category, index) => (
                         <Button
@@ -47,7 +47,7 @@ const FiltroModal = ({ showModal, closeModal }) => {
                     ))}
                 </div>
             </Modal.Body>
-            <Modal.Footer style={{ backgroundColor: '#0095D0' }} className="d-flex justify-content-between">
+            <Modal.Footer style={{ backgroundColor: '#0044CC' }} className="d-flex justify-content-between">
                 <div className="d-flex justify-content-start">
                     <Button variant="danger" onClick={clearAll}>Limpiar Todo</Button>
                 </div>
