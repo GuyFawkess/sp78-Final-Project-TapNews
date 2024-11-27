@@ -283,7 +283,7 @@ const CardNew = () => {
                 }}
               >
                 <textarea
-                  className="form-control text-light bg-info"
+                  className="form-control2 text-light bg-info"
                   placeholder="Escribe tu comentario..."
                   rows="3"
                   value={comment}
