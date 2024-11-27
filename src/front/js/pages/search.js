@@ -54,7 +54,7 @@ export const Search = () => {
       style={{
         paddingTop: "20px",
         minHeight: "100vh",
-        background: "linear-gradient(to bottom, #003366, #66ccff)",
+        background: "linear-gradient(to bottom, #0021A3, #065BF0)",
       }}
     >
       <div
@@ -88,19 +88,20 @@ export const Search = () => {
         {/* Mostrar los resultados debajo del input */}
         <div className="user-list text-light mt-5">
           {filteredUsersWithProfiles && filteredUsersWithProfiles.length > 0 ? (
-            <div className="d-flex flex-column align-items-center gap-2">
+            <div className="d-flex flex-column align-items-start gap-2">
               {filteredUsersWithProfiles.map((user) => (
                 <button
                   key={user.id} // Asegúrate de que el 'id' sea único y esté disponible
-                  className="fs-1 bg-primary rounded-5"
+                  className="fs-1"
                   onClick={() => handleUserClick(user.id)} // Redirige al perfil del usuario
                   style={{
-                    backgroundColor: "#4A90E2", // Un azul bonito
+                    backgroundColor: "#00148D",
+                    height: "5rem", // Un azul bonito
                     color: "white",
                     borderRadius: "10px",
-                    padding: "0.5rem 1rem",
+                    padding: "0.5rem 1rem 0.5rem 4rem",
                     textAlign: "left",
-                    width: "fit-content",
+                    width: "100%",
                     display: "flex",
                     alignItems: "center",  // Alinea el texto y la imagen de perfil
                     gap: "10px", // Espacio entre la imagen y el nombre
@@ -108,9 +109,10 @@ export const Search = () => {
                 >
                   {/* Imagen de perfil del usuario */}
                   <img
+                  className="mx-3"
                     src={user.profile.img_url || "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg"} // Usa la URL de la imagen de perfil
                     alt={`${user.username}'s profile`}
-                    style={{ width: "40px", height: "40px", borderRadius: "50%" }}  // Estilo de la imagen circular
+                    style={{ width: "60px", height: "60px", borderRadius: "50%" }}  // Estilo de la imagen circular
                   />
                   <span>{user.username}</span>
                 </button>

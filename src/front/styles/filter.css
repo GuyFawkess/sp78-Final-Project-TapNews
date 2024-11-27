@@ -1,0 +1,18 @@
+/* Estilo base de los botones */
+.filter-button {
+    background-color: #9b9b9b; 
+    width: 35%;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+  .filter-button.selected {
+    background-color: #0044CC; 
+  }
+  
+  .filter-button:hover {
+    background-color: #707070;
+  }
+  
