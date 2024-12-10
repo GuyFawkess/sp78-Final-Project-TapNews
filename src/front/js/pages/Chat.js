@@ -7,30 +7,29 @@ import Header from "../component/Header";
 import { useLocation } from 'react-router-dom';
 
 const Chat = () => {
-
     const { user } = useAuth();
     const { friend_id } = useParams();
     const [messages, setMessages] = useState([]);
     const [messageBody, setMessageBody] = useState('');
     const senderID = localStorage.getItem("user_id");
-    const messagesEndRef = useRef(null);  
-    const location = useLocation();  
-
+    const messagesEndRef = useRef(null);
+    const location = useLocation();
+//
     useEffect(() => {
         if (location.state && location.state.url) {
-          setMessageBody(location.state.url); 
-        } 
-      }, [location]); 
+            const url = location.state.url;
+            setMessageBody(url); 
+        }
+    }, [location]);
 
     useEffect(() => {
-        getMessages()
+        getMessages();
         const unsubscribe = client.subscribe(
             `databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`,
             (response) => {
                 if (response.events.includes("databases.*.collections.*.documents.*.create")) {
                     const newMessage = response.payload;
 
-                    // Check if the new message belongs to the current chat
                     const isRelevantMessage =
                         (newMessage.senderID === senderID && newMessage.recipientID === friend_id) ||
                         (newMessage.senderID === friend_id && newMessage.recipientID === senderID);
@@ -43,15 +42,13 @@ const Chat = () => {
         );
 
         return () => {
-            unsubscribe(); // Clean up the subscription
+            unsubscribe();
         };
-    }, [senderID, friend_id]); // Re-run the subscription only when `senderID` or `friend_id` changes
-
-
+    }, [senderID, friend_id]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);  // Runs every time the messages change
+    }, [messages]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -72,7 +69,6 @@ const Chat = () => {
             Permission.write(Role.user(payload.senderID)),
             Permission.read(Role.user(payload.senderID)),
             Permission.read(Role.user(payload.recipientID)),
-
         ]
 
         let response = await databases.createDocument(
@@ -81,17 +77,11 @@ const Chat = () => {
             ID.unique(),
             payload,
         )
-        // console.log('response:', response);
-
-        // setMessages(prevState => [...prevState, response]);
         setMessageBody('');
-        console.log(user)
         console.log('MESSAGE CREATED', response);
-
     }
 
     const getMessages = async () => {
-
         if (!senderID || !friend_id) {
             console.error("Sender ID or friend ID is missing.");
             return;
@@ -102,12 +92,12 @@ const Chat = () => {
                 DATABASE_ID,
                 COLLECTION_ID_MESSAGES,
                 [
-                    Query.or([
-                        Query.and([
+                    Query.or([ 
+                        Query.and([ 
                             Query.equal("senderID", senderID),
                             Query.equal("recipientID", friend_id)
                         ]),
-                        Query.and([
+                        Query.and([ 
                             Query.equal("senderID", friend_id),
                             Query.equal("recipientID", senderID)
                         ])
@@ -121,23 +111,19 @@ const Chat = () => {
         }
     };
 
+    const convertToLink = (text) => {
+        const urlPattern = /https?:\/\/[^\s]+/g;
+        return text.replace(urlPattern, (url) => {
+            return `<a href="${url}" rel="noopener noreferrer">${url}</a>`;
+        });
+    };
 
-
-    // const deleteMessage = async (message_id) => {
-    //     await databases.deleteDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, message_id);
-    //     // setMessages(prevState => messages.filter(message => message.$id !== message_id));
-    // }
     return (
         <main className="chat-container">
-
             <Header />
             <div className="room--container">
-                <div className="message--wrapper ">
+                <div className="message--wrapper">
                     {messages.map((message) => {
-                        // console.log("SENDER", message.senderID); // Log para verificar el senderID de cada mensaje
-                        // console.log("USER_id", senderID);       // Log para verificar el ID del usuario actual
-
-                        // Determinar si el mensaje fue enviado por el usuario actual
                         const isSentByUser = message.senderID === senderID;
 
                         return (
@@ -163,13 +149,13 @@ const Chat = () => {
                                 </div>
 
                                 <div className={`${isSentByUser ? "message--body--sender message--body" : "message--body"}`}>
-                                    <span>{message.body}</span>
+                                    <span dangerouslySetInnerHTML={{ __html: convertToLink(message.body) }} />
                                 </div>
                             </div>
                         );
                     })}
 
-                    <div ref={messagesEndRef} /> {/* Empty div to mark the end of the messages */}
+                    <div ref={messagesEndRef} />
                 </div>
                 <form id="message--form" onSubmit={handleSubmit} className="message--form">
                     <div className="textAreaHolder">
@@ -186,7 +172,6 @@ const Chat = () => {
                     </div>
                 </form>
             </div>
-
         </main>
     );
 };
