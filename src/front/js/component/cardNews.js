@@ -192,7 +192,7 @@ const CardNew = () => {
               />
               <FontAwesomeIcon
                 size="2xl"
-                onClick={() => handleShowShow2(singleNew.url)}
+                onClick={() => handleShowShow2(`https://sp78-final-project-tapnews.onrender.com/${singleNew.uuid}`)}
                 icon={faShare}
                 style={{ color: "#FFFFFF" }}
                 className="share p-2"
