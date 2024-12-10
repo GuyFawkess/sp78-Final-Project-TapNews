@@ -14,7 +14,7 @@ const Chat = () => {
     const senderID = localStorage.getItem("user_id");
     const messagesEndRef = useRef(null);
     const location = useLocation();
-
+//
     useEffect(() => {
         if (location.state && location.state.url) {
             const url = location.state.url;
